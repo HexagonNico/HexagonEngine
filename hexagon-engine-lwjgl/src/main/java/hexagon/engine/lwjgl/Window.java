@@ -4,14 +4,14 @@ import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 
-public class Window {
+public final class Window {
 	
 	private static final Window instance = new Window();
 
 	private final long window;
 
 	private Window() {
-		this.window = GLFW.glfwCreateWindow(800, 300, "Hello!", MemoryUtil.NULL, MemoryUtil.NULL);
+		this.window = GLFW.glfwCreateWindow(800, 450, "Hello!", MemoryUtil.NULL, MemoryUtil.NULL);
 		GLFW.glfwMakeContextCurrent(this.window);
 	}
 
