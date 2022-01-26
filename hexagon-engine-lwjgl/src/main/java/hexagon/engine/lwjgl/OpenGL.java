@@ -62,4 +62,9 @@ public final class OpenGL {
 	public static void drawTriangles(int vertices) {
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices);
 	}
+
+	public static void cleanUp() {
+		vaos.forEach(GL30::glDeleteVertexArrays);
+		vbos.forEach(GL15::glDeleteBuffers);
+	}
 }
