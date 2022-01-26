@@ -8,6 +8,7 @@ import hexagon.engine.lwjgl.Window;
 public class Application {
 	
 	protected final void run() {
+		Engine.errorCallback(System.err);
 		Engine.init();
 		Engine.configure(false, true);
 		Window.makeVisible();
@@ -16,11 +17,12 @@ public class Application {
 		TestRenderer renderer = new TestRenderer();
 
 		while(!Window.shouldClose()) {
-			OpenGL.clearFrame(0.9f, 0.9f, 0.9f);
+			OpenGL.clearFrame(0.5f, 0.5f, 1.0f);
 			renderer.render();
 			Window.update();
 		}
 
+		OpenGL.cleanUp();
 		Window.destroy();
 		Engine.terminate();
 	}
