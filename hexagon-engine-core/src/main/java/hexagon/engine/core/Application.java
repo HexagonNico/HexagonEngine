@@ -1,8 +1,7 @@
 package hexagon.engine.core;
 
-import org.lwjgl.opengl.GL11;
-
 import hexagon.engine.lwjgl.Engine;
+import hexagon.engine.lwjgl.OpenGL;
 import hexagon.engine.lwjgl.Window;
 
 public class Application {
@@ -13,8 +12,7 @@ public class Application {
 		Window.makeVisible();
 		Engine.createCapabilities();
 		while(!Window.shouldClose()) {
-			GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
-			GL11.glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
+			OpenGL.clearFrame(0.9f, 0.9f, 0.9f);
 			Window.update();
 		}
 		Window.destroy();
