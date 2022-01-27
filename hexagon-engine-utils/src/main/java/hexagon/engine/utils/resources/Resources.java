@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.stream.Collectors;
 
+import hexagon.engine.utils.Log;
+
 /**
  * A utility class to manage the loading of resources.
  * 
@@ -23,10 +25,10 @@ public final class Resources {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(Resources.class.getResourceAsStream(filePath)))) {
 			return reader.lines().collect(Collectors.joining("\n"));
 		} catch(NullPointerException e) {
-			System.out.println("Could not find file " + filePath);
+			Log.error("Could not find file " + filePath);
 			throw new ResourceLoadingException("Exception loading resource " + filePath, e);
 		} catch(IOException e) {
-			System.out.print("IO error occurred while reading " + filePath);
+			Log.error("IO error occurred while reading " + filePath);
 			throw new ResourceLoadingException("Exception loading resource " + filePath, e);
 		}
 	}
