@@ -19,6 +19,14 @@ import hexagon.engine.math.vector.Int4;
 
 public final class ShaderProgram {
 	
+	public static void start(ShaderProgram program) {
+		GL20.glUseProgram(program.id);
+	}
+
+	public static void stop() {
+		GL20.glUseProgram(0);
+	}
+
 	public final int id;
 	private final HashMap<String, Integer> uniformVariables;
 
@@ -44,7 +52,7 @@ public final class ShaderProgram {
 		buffer.put(matrix.m10()); buffer.put(matrix.m11()); buffer.put(matrix.m12()); buffer.put(matrix.m13());
 		buffer.put(matrix.m20()); buffer.put(matrix.m21()); buffer.put(matrix.m22()); buffer.put(matrix.m23());
 		buffer.put(matrix.m30()); buffer.put(matrix.m31()); buffer.put(matrix.m32()); buffer.put(matrix.m33());
-		GL20.glUniformMatrix4fv(location, false, buffer);
+		GL20.glUniformMatrix4fv(location, false, buffer.flip());
 	}
 
 	public void load(String variableName, Float2 vector) {
@@ -128,8 +136,9 @@ public final class ShaderProgram {
 		public ShaderProgram create() {
 			int id = OpenGL.createShaderProgram();
 			this.shaders.forEach(shader -> OpenGL.attachShaderToProgram(id, shader));
-			this.attributes.forEach(attribute -> OpenGL.bindShaderVariableToAttribute(id, attribute.list, attribute.name));
-			OpenGL.validateShaderProgram(id);
+			this.attributes.forEach(attribute -> GL20.glBindAttribLocation(id, attribute.list(), attribute.name()));
+			GL20.glLinkProgram(id);
+			GL20.glValidateProgram(id);
 			return new ShaderProgram(id);
 		}
 

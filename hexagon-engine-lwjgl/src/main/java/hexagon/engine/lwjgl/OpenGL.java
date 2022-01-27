@@ -1,12 +1,9 @@
 package hexagon.engine.lwjgl;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -17,15 +14,16 @@ import org.lwjgl.opengl.GL30;
  * @author Nico
  */
 public final class OpenGL {
-	
-	// TODO - This class does not really need *everything*
 
 	/**Keeps track of all VAOs to delete them later */
 	private static final ArrayList<Integer> vaos = new ArrayList<>();
 	/**Keeps track of all VBOs to delete them later */
 	private static final ArrayList<Integer> vbos = new ArrayList<>();
+	/**Keeps track of all shaders to delete them later */
 	private static final ArrayList<Integer> shaders = new ArrayList<>();
+	/**Keeps track of all shader programs to detach shaders and delete them later */
 	private static final HashMap<Integer, ArrayList<Integer>> shaderPrograms = new HashMap<>();
+	/**Keeps track of all textures to delete them later */
 	private static final ArrayList<Integer> textures = new ArrayList<>();
 
 	/**
@@ -42,10 +40,11 @@ public final class OpenGL {
 	}
 
 	/**
-	 * Used in {@link VertexObject} to create a vertex array object.
+	 * Creates a vertex array object using {@link GL30#glGenVertexArrays()}
+	 * and stores the VAO id in a list to keep track of it.
 	 * <p>
-	 * 	All VAOs that are created are immediately stored in a list so that
-	 * 	they can be deleted later by calling {@link OpenGL#cleanUp()}.
+	 * 	VAOs should be created with this method instead of {@link GL30#glGenVertexArrays()} because they need to be deleted at the end.
+	 * 	VAOs are deleted by calling {@link OpenGL#cleanUp()}.
 	 * </p>
 	 * 
 	 * @return The vao id of the newly created vertex array object.
@@ -57,29 +56,11 @@ public final class OpenGL {
 	}
 
 	/**
-	 * Binds a vertex array object.
-	 * VAOs need to be bound before they can be used to store or read data.
-	 * VAOs also need to be unbound when they are no longer being used by calling {@link OpenGL#unbindVAO()}.
-	 * 
-	 * @param vao Id of the VAO to bind
-	 */
-	public static void bindVAO(int vao) {
-		GL30.glBindVertexArray(vao);
-	}
-
-	/**
-	 * Unbinds the currently bound vertex array object.
-	 * VAOs need to be unbound when they are no longer being used.
-	 */
-	public static void unbindVAO() {
-		GL30.glBindVertexArray(0);
-	}
-
-	/**
-	 * Used in {@link VertexObject} to create a vertex buffer object.
+	 * Creates a vertex buffer object using {@link GL30#glGenBuffers()}
+	 * and stores the VBO id in a list to keep track of it.
 	 * <p>
-	 * 	All VBOs that are created are immediately stored in a list so that
-	 * 	they can be deleted later by calling {@link OpenGL#cleanUp()}.
+	 * 	VBOs should be created with this method instead of {@link GL30#glGenBuffers()} because they need to be deleted at the end.
+	 * 	VBOs are deleted by calling {@link OpenGL#cleanUp()}.
 	 * </p>
 	 * 
 	 * @return The vbo id of the newly created vertex buffer object.
@@ -91,138 +72,89 @@ public final class OpenGL {
 	}
 
 	/**
-	 * Binds a vertex buffer object.
-	 * VBOs need to be bound before they can be used to store or read data.
-	 * VBOs also need to be unbound when they are no longer being used by calling {@link OpenGL#unbindVBO()}.
+	 * Creates a vertex shader using {@link GL30#glCreateShader(int)} and {@link GL20#GL_VERTEX_SHADER}
+	 * and stores the shader id in a list to keep track of it.
+	 * <p>
+	 * 	Shaders should be created with this method instead of {@link GL30#glCreateShader(int)} because they need to be deleted at the end.
+	 * 	Shaders are deleted by calling {@link OpenGL#cleanUp()}.
+	 * </p>
 	 * 
-	 * @param vao Id of the VAO to bind
+	 * @return The id of the newly created shader object.
 	 */
-	public static void bindVBO(int vbo) {
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-	}
-
-	/**
-	 * Stores data in a VBO.
-	 * 
-	 * @param data The data to store.
-	 * @param index Index of the attribute list to use.
-	 * @param size 2 for 2D coordinates, 3 for 3D.
-	 */
-	public static void storeDataInVBO(float[] data, int index, int size) {
-		GL15.glBufferData(GL15.GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(data.length).put(data).flip(), GL15.GL_STATIC_DRAW);
-		GL20.glVertexAttribPointer(index, size, GL11.GL_FLOAT, false, 0, 0);
-	}
-
-	/**
-	 * Unbinds the currently bound vertex buffer object.
-	 * VBOs need to be unbound when they are no longer being used.
-	 */
-	public static void unbindVBO() {
-		GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-	}
-
-	/**
-	 * Enables an attribute list so that it can be used for rendering.
-	 * Attribute lists need to be disabled by calling {@link OpenGL#disableAttributeList(int)}.
-	 * 
-	 * @param list Index of the attribute list to enable.
-	 */
-	public static void enableAttributeList(int list) {
-		GL20.glEnableVertexAttribArray(list);
-	}
-
-	/**
-	 * Disables an attribute list after it has been used for rendering.
-	 * 
-	 * @param list Index of the attribute list to disable.
-	 */
-	public static void disableAttributeList(int list) {
-		GL20.glDisableVertexAttribArray(list);
-	}
-
-	/**
-	 * A draw call that can be used to render models.
-	 * Calls {@code glDrawArrays} with the {@code GL_TRIANGLES} mode.
-	 * 
-	 * @param vertices The number of vertices to render.
-	 */
-	public static void drawTriangles(int vertices) {
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices);
-	}
-
 	public static int createVertexShader() {
 		int id = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
 		shaders.add(id);
 		return id;
 	}
 
+	/**
+	 * Creates a fragment shader using {@link GL30#glCreateShader(int)} and {@link GL20#GL_FRAGMENT_SHADER}
+	 * and stores the shader id in a list to keep track of it.
+	 * <p>
+	 * 	Shaders should be created with this method instead of {@link GL30#glCreateShader(int)} because they need to be deleted at the end.
+	 * 	Shaders are deleted by calling {@link OpenGL#cleanUp()}.
+	 * </p>
+	 * 
+	 * @return The id of the newly created shader object.
+	 */
 	public static int createFragmentShader() {
 		int id = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
 		shaders.add(id);
 		return id;
 	}
 
-	public static boolean compileShader(String source, int id) {
-		GL20.glShaderSource(id, source);
-		GL20.glCompileShader(id);
-		return GL20.glGetShaderi(id, GL20.GL_COMPILE_STATUS) == GL11.GL_TRUE;
-	}
-
-	public static String shaderCompilationInfo(int id) {
-		return GL20.glGetShaderInfoLog(id, 512);
-	}
-
+	/**
+	 * Creates a shader program using {@link GL20#glCreateProgram()}
+	 * and stores the program id in a list to keep track of it.
+	 * <p>
+	 * 	Shader programs should be created with this method instead of {@link GL20#glCreateProgram()} because they need to be deleted at the end.
+	 * 	Shader programs are deleted by calling {@link OpenGL#cleanUp()}.
+	 * </p>
+	 * 
+	 * @return The id of the newly created shader program.
+	 */
 	public static int createShaderProgram() {
 		int id = GL20.glCreateProgram();
 		shaderPrograms.put(id, new ArrayList<>());
 		return id;
 	}
 
+	/**
+	 * Attaches a shader to a shader program using {@link GL20#glAttachShader(int, int)}
+	 * and stores the shader id in a map to keep track of it.
+	 * 
+	 * <p>
+	 * 	Shaders should be attached with this method instead of {@link GL20#glAttachShader(int, int)} because they need to be detached at the end.
+	 * 	Shaders are detached by calling {@link OpenGL#cleanUp()}.
+	 * </p>
+	 * 
+	 * @param program Id of the shader program
+	 * @param shader Id of the shader
+	 */
 	public static void attachShaderToProgram(int program, int shader) {
 		GL20.glAttachShader(program, shader);
 		shaderPrograms.get(program).add(shader);
 	}
 
-	public static void bindShaderVariableToAttribute(int program, int attribute, String variable) {
-		GL20.glBindAttribLocation(program, attribute, variable);
-	}
-
-	public static void validateShaderProgram(int id) {
-		GL20.glLinkProgram(id);
-		GL20.glValidateProgram(id);
-	}
-
-	public static void startShader(int id) {
-		GL20.glUseProgram(id);
-	}
-
-	public static void stopShader() {
-		GL20.glUseProgram(0);
-	}
-
+	/**
+	 * Creates a texture object using {@link GL11#glGenTextures()}
+	 * and stores the texture id in a list to keep track of it.
+	 * <p>
+	 * 	Textures should be created with this method instead of {@link GL11#glGenTextures()} because they need to be deleted at the end.
+	 * 	Textures are deleted by calling {@link OpenGL#cleanUp()}.
+	 * </p>
+	 * 
+	 * @return The id of the newly created texture object.
+	 */
 	public static int createTexture() {
 		int id = GL11.glGenTextures();
 		textures.add(id);
 		return id;
 	}
 
-	public static void decodeTexture(int id, int width, int height, ByteBuffer buffer) {
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
-		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
-		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
-	}
-
-	public static void bindTexture(int id) {
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
-		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
-	}
-
 	/**
-	 * Clean up function.
-	 * Deletes all VAOs and VBOs.
-	 * Must be called before terminating the engine.
+	 * Clean up function that is called when terminating the engine.
+	 * Deletes all VAOs, VBOs, shaders and textures.
 	 */
 	public static void cleanUp() {
 		vaos.forEach(GL30::glDeleteVertexArrays);
