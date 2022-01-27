@@ -1,10 +1,12 @@
 package hexagon.engine.lwjgl;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
@@ -22,6 +24,7 @@ public final class OpenGL {
 	private static final ArrayList<Integer> vbos = new ArrayList<>();
 	private static final ArrayList<Integer> shaders = new ArrayList<>();
 	private static final HashMap<Integer, ArrayList<Integer>> shaderPrograms = new HashMap<>();
+	private static final ArrayList<Integer> textures = new ArrayList<>();
 
 	/**
 	 * Clears the frame buffer and swaps the color buffer.
@@ -195,6 +198,25 @@ public final class OpenGL {
 		GL20.glUseProgram(0);
 	}
 
+	public static int createTexture() {
+		int id = GL11.glGenTextures();
+		textures.add(id);
+		return id;
+	}
+
+	public static void decodeTexture(int id, int width, int height, ByteBuffer buffer) {
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
+	}
+
+	public static void bindTexture(int id) {
+		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+	}
+
 	/**
 	 * Clean up function.
 	 * Deletes all VAOs and VBOs.
@@ -206,5 +228,6 @@ public final class OpenGL {
 		shaders.forEach(GL20::glDeleteShader);
 		shaderPrograms.forEach((program, shaders) -> shaders.forEach(shader -> GL20.glDetachShader(program, shader)));
 		shaderPrograms.keySet().forEach(GL20::glDeleteProgram);
+		textures.forEach(GL15::glDeleteTextures);
 	}
 }
