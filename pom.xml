@@ -11,6 +11,7 @@
 		<module>hexagon-engine-core</module>
 		<module>hexagon-engine-lwjgl</module>
 		<module>hexagon-engine-math</module>
+		<module>hexagon-engine-utils</module>
 	</modules>
 
 	<build>

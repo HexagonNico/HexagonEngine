@@ -32,6 +32,11 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>hexagon.engine.utils</groupId>
+			<artifactId>hexagon-engine-utils</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
 			<groupId>org.lwjgl</groupId>
 			<artifactId>lwjgl</artifactId>
 		</dependency>
