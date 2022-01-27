@@ -18,6 +18,8 @@ import org.lwjgl.opengl.GL30;
  */
 public final class OpenGL {
 	
+	// TODO - This class does not really need *everything*
+
 	/**Keeps track of all VAOs to delete them later */
 	private static final ArrayList<Integer> vaos = new ArrayList<>();
 	/**Keeps track of all VBOs to delete them later */
