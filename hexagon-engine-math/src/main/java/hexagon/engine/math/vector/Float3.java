@@ -4,7 +4,7 @@ public record Float3(float x, float y, float z) implements FloatVector<Float3, I
 
 	@Override
 	public Float3 plus(Float3 vector) {
-		return this.plus(vector.x, vector.y, vector.z);
+		return this.plus(vector.x(), vector.y(), vector.z());
 	}
 
 	public Float3 plus(float x, float y, float z) {
@@ -27,7 +27,7 @@ public record Float3(float x, float y, float z) implements FloatVector<Float3, I
 
 	@Override
 	public float dotProduct(Float3 vector) {
-		return this.dotProduct(vector.x, vector.y, vector.z);
+		return this.dotProduct(vector.x(), vector.y(), vector.z());
 	}
 
 	public float dotProduct(float x, float y, float z) {
