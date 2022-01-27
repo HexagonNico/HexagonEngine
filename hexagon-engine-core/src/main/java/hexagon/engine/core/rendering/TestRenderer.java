@@ -5,6 +5,8 @@ import hexagon.engine.lwjgl.VertexObject;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
 import hexagon.engine.lwjgl.texture.Texture;
+import hexagon.engine.math.matrix.Matrices;
+import hexagon.engine.math.vector.Float3;
 
 public final class TestRenderer {
 	
@@ -37,6 +39,7 @@ public final class TestRenderer {
 
 	public void render() {
 		OpenGL.startShader(this.shaderProgram.id);
+		this.shaderProgram.load("transformation_matrix", Matrices.transformation(new Float3(-0.25f, 0.0f, 0.0f), new Float3(0.0f, 0.0f, 0.0f), new Float3(1.5f, 1.5f, 1.5f)));
 		this.quadModel.drawTriangles(6);
 		OpenGL.stopShader();
 	}
