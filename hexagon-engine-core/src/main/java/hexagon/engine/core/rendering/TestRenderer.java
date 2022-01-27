@@ -4,6 +4,7 @@ import hexagon.engine.lwjgl.OpenGL;
 import hexagon.engine.lwjgl.VertexObject;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
+import hexagon.engine.lwjgl.texture.Texture;
 
 public final class TestRenderer {
 	
@@ -20,6 +21,7 @@ public final class TestRenderer {
 
 	private final VertexObject quadModel;
 	private final ShaderProgram shaderProgram;
+	private final Texture texture;
 
 	public TestRenderer() {
 		this.quadModel = VertexObject.with()
@@ -29,6 +31,8 @@ public final class TestRenderer {
 				.shader(Shader.vertex("/shaders/test_vertex.glsl"))
 				.shader(Shader.fragment("/shaders/test_fragment.glsl"))
 				.create();
+		this.texture = Texture.getOrLoad("/textures/test.png");
+		OpenGL.bindTexture(this.texture.id);
 	}
 
 	public void render() {

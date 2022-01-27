@@ -2,9 +2,9 @@
 
 in vec2 vertex;
 
-out vec3 color;
+out vec2 texture_coords;
 
 void main(void) {
     gl_Position =vec4(vertex, 0.0, 1.0);
-    color = vec3(vertex.x + 0.5, vertex.y - 0.5, 0.5);
+    texture_coords = vec2(vertex.x + 0.5, 0.5 - vertex.y);
 }
