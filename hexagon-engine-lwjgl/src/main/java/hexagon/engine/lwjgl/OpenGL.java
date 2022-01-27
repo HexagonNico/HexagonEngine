@@ -1,6 +1,7 @@
 package hexagon.engine.lwjgl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -19,6 +20,8 @@ public final class OpenGL {
 	private static final ArrayList<Integer> vaos = new ArrayList<>();
 	/**Keeps track of all VBOs to delete them later */
 	private static final ArrayList<Integer> vbos = new ArrayList<>();
+	private static final ArrayList<Integer> shaders = new ArrayList<>();
+	private static final HashMap<Integer, ArrayList<Integer>> shaderPrograms = new HashMap<>();
 
 	/**
 	 * Clears the frame buffer and swaps the color buffer.
@@ -142,6 +145,56 @@ public final class OpenGL {
 		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices);
 	}
 
+	public static int createVertexShader() {
+		int id = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
+		shaders.add(id);
+		return id;
+	}
+
+	public static int createFragmentShader() {
+		int id = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
+		shaders.add(id);
+		return id;
+	}
+
+	public static boolean compileShader(String source, int id) {
+		GL20.glShaderSource(id, source);
+		GL20.glCompileShader(id);
+		return GL20.glGetShaderi(id, GL20.GL_COMPILE_STATUS) == GL11.GL_TRUE;
+	}
+
+	public static String shaderCompilationInfo(int id) {
+		return GL20.glGetShaderInfoLog(id, 512);
+	}
+
+	public static int createShaderProgram() {
+		int id = GL20.glCreateProgram();
+		shaderPrograms.put(id, new ArrayList<>());
+		return id;
+	}
+
+	public static void attachShaderToProgram(int program, int shader) {
+		GL20.glAttachShader(program, shader);
+		shaderPrograms.get(program).add(shader);
+	}
+
+	public static void bindShaderVariableToAttribute(int program, int attribute, String variable) {
+		GL20.glBindAttribLocation(program, attribute, variable);
+	}
+
+	public static void validateShaderProgram(int id) {
+		GL20.glLinkProgram(id);
+		GL20.glValidateProgram(id);
+	}
+
+	public static void startShader(int id) {
+		GL20.glUseProgram(id);
+	}
+
+	public static void stopShader() {
+		GL20.glUseProgram(0);
+	}
+
 	/**
 	 * Clean up function.
 	 * Deletes all VAOs and VBOs.
@@ -150,5 +203,8 @@ public final class OpenGL {
 	public static void cleanUp() {
 		vaos.forEach(GL30::glDeleteVertexArrays);
 		vbos.forEach(GL15::glDeleteBuffers);
+		shaders.forEach(GL20::glDeleteShader);
+		shaderPrograms.forEach((program, shaders) -> shaders.forEach(shader -> GL20.glDetachShader(program, shader)));
+		shaderPrograms.keySet().forEach(GL20::glDeleteProgram);
 	}
 }
