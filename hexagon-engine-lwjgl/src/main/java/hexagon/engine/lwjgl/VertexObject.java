@@ -3,6 +3,12 @@ package hexagon.engine.lwjgl;
 import java.util.HashMap;
 import java.util.Set;
 
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+
 /**
  * A class to represent a Vertex Array Object, or VAO.
  * Can be used for rendering.
@@ -36,11 +42,11 @@ public final class VertexObject {
 	 * @param vertices Number of vertices to draw.
 	 */
 	public void drawTriangles(int vertices) {
-		OpenGL.bindVAO(this.vao);
-		this.attributes.forEach(OpenGL::enableAttributeList);
-		OpenGL.drawTriangles(vertices);
-		this.attributes.forEach(OpenGL::disableAttributeList);
-		OpenGL.unbindVAO();
+		GL30.glBindVertexArray(this.vao);
+		this.attributes.forEach(GL20::glEnableVertexAttribArray);
+		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices);
+		this.attributes.forEach(GL20::glDisableVertexAttribArray);
+		GL30.glBindVertexArray(0);
 	}
 
 	/**
@@ -88,9 +94,9 @@ public final class VertexObject {
 		 */
 		public VertexObject create() {
 			int vao = OpenGL.createVAO();
-			OpenGL.bindVAO(vao);
+			GL30.glBindVertexArray(vao);
 			this.attributes.values().forEach(Attribute::storeData);
-			OpenGL.unbindVAO();
+			GL30.glBindVertexArray(0);
 			return new VertexObject(vao, this.attributes.keySet());
 		}
 	}
@@ -128,9 +134,10 @@ public final class VertexObject {
 		@Override
 		public void storeData() {
 			int vbo = OpenGL.createVBO();
-			OpenGL.bindVBO(vbo);
-			OpenGL.storeDataInVBO(data, list, size);
-			OpenGL.unbindVBO();
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(this.data.length).put(this.data).flip(), GL15.GL_STATIC_DRAW);
+			GL20.glVertexAttribPointer(this.list, this.size, GL11.GL_FLOAT, false, 0, 0);
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		}
 	}
 }
