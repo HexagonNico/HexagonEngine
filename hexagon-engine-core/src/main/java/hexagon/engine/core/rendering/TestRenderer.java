@@ -1,6 +1,5 @@
 package hexagon.engine.core.rendering;
 
-import hexagon.engine.lwjgl.OpenGL;
 import hexagon.engine.lwjgl.VertexObject;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
@@ -34,13 +33,13 @@ public final class TestRenderer {
 				.shader(Shader.fragment("/shaders/test_fragment.glsl"))
 				.create();
 		this.texture = Texture.getOrLoad("/textures/test.png");
-		OpenGL.bindTexture(this.texture.id);
+		this.texture.bind();
 	}
 
 	public void render() {
-		OpenGL.startShader(this.shaderProgram.id);
+		ShaderProgram.start(this.shaderProgram);
 		this.shaderProgram.load("transformation_matrix", Matrices.transformation(new Float3(-0.25f, 0.0f, 0.0f), new Float3(0.0f, 0.0f, 0.0f), new Float3(1.5f, 1.5f, 1.5f)));
 		this.quadModel.drawTriangles(6);
-		OpenGL.stopShader();
+		ShaderProgram.stop();
 	}
 }
