@@ -33,26 +33,10 @@ public final class VertexObject {
 		this.attributes = attributes;
 	}
 
-	/**
-	 * <p>
-	 * 	Draw call.
-	 * </p>
-	 * Uses the data in this VAO to draw a model using {@code glDrawArrays} and {@code GL_TRIANGLES}.
-	 * 
-	 * @param vertices Number of vertices to draw.
-	 */
-	public void drawTriangles(int vertices) {
+	public void activate(Runnable action) {
 		GL30.glBindVertexArray(this.vao);
 		this.attributes.forEach(GL20::glEnableVertexAttribArray);
-		GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, vertices);
-		this.attributes.forEach(GL20::glDisableVertexAttribArray);
-		GL30.glBindVertexArray(0);
-	}
-
-	public void drawElements(int indices) {
-		GL30.glBindVertexArray(this.vao);
-		this.attributes.forEach(GL20::glEnableVertexAttribArray);
-		GL11.glDrawElements(GL11.GL_TRIANGLES, indices, GL11.GL_UNSIGNED_INT, 0);
+		action.run();
 		this.attributes.forEach(GL20::glDisableVertexAttribArray);
 		GL30.glBindVertexArray(0);
 	}

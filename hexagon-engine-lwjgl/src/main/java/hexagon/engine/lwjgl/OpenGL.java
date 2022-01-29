@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL30;
  */
 public final class OpenGL {
 
+	// TODO - Separate vaos/vbos/textures/shaders from enable/disable stuff
+
 	/**Keeps track of all VAOs to delete them later */
 	private static final ArrayList<Integer> vaos = new ArrayList<>();
 	/**Keeps track of all VBOs to delete them later */
@@ -42,6 +44,12 @@ public final class OpenGL {
 	public static void depthTest(boolean enable) {
 		if(enable) GL11.glEnable(GL11.GL_DEPTH_TEST);
 		else GL11.glDisable(GL11.GL_DEPTH_TEST);
+	}
+
+	public static void cullFace(boolean enable) {
+		if(enable) GL11.glEnable(GL11.GL_CULL_FACE);
+		else GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
 	}
 
 	/**
