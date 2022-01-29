@@ -23,16 +23,16 @@ public class Application {
 
 			TestRenderer renderer = new TestRenderer();
 			GameManager gameManager = new GameManager();
-			GameEntity testEntity = gameManager.createEntity();
-			GameEntity testEntity2 = gameManager.createEntity();
-			gameManager.addComponent(testEntity, new TestComponent("pog"));
-			gameManager.addComponent(testEntity2, new TestComponent("pog2"));
-			gameManager.addComponent(testEntity2, new TestComponent("pog?"));
+			GameEntity entity0 = gameManager.createEntity();
+			GameEntity entity1 = gameManager.createEntity();
+			gameManager.addComponent(entity0, new TestComponent("test1"));
+			gameManager.addComponent(entity1, new TestComponent("test2"));
+			gameManager.addSystem(new TestSystem());
 
 			while(!Window.shouldClose()) {
 				OpenGL.clearFrame(0.5f, 0.5f, 1.0f);
 				renderer.render();
-				gameManager.test();
+				gameManager.update();
 				Window.update();
 			}
 		} catch(Exception any) {
