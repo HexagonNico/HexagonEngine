@@ -1,5 +1,8 @@
 package hexagon.engine.core;
 
+import hexagon.engine.core.ecs.GameEntity;
+import hexagon.engine.core.ecs.GameManager;
+import hexagon.engine.core.ecs.TestComponent;
 import hexagon.engine.core.rendering.TestRenderer;
 import hexagon.engine.lwjgl.Engine;
 import hexagon.engine.lwjgl.OpenGL;
@@ -19,10 +22,17 @@ public class Application {
 			OpenGL.depthTest(true);
 
 			TestRenderer renderer = new TestRenderer();
+			GameManager gameManager = new GameManager();
+			GameEntity testEntity = gameManager.createEntity();
+			GameEntity testEntity2 = gameManager.createEntity();
+			gameManager.addComponent(testEntity, new TestComponent("pog"));
+			gameManager.addComponent(testEntity2, new TestComponent("pog2"));
+			gameManager.addComponent(testEntity2, new TestComponent("pog?"));
 
 			while(!Window.shouldClose()) {
 				OpenGL.clearFrame(0.5f, 0.5f, 1.0f);
 				renderer.render();
+				gameManager.test();
 				Window.update();
 			}
 		} catch(Exception any) {
