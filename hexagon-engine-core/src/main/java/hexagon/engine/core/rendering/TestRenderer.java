@@ -31,6 +31,7 @@ public final class TestRenderer {
 		this.shaderProgram = ShaderProgram.with()
 				.shader(Shader.vertex("/shaders/test_vertex.glsl"))
 				.shader(Shader.fragment("/shaders/test_fragment.glsl"))
+				.attribute(0, "vertex")
 				.create();
 		this.texture = Texture.getOrLoad("/textures/test.png");
 		this.texture.bind();
@@ -38,7 +39,9 @@ public final class TestRenderer {
 
 	public void render() {
 		ShaderProgram.start(this.shaderProgram);
-		this.shaderProgram.load("transformation_matrix", Matrices.transformation(new Float3(-0.25f, 0.0f, 0.0f), new Float3(0.0f, 0.0f, 0.0f), new Float3(1.5f, 1.5f, 1.5f)));
+		this.shaderProgram.load("transformation_matrix", Matrices.transformation(new Float3(0.0f, 0.0f, 0.0f), new Float3(0.0f, 0.0f, 0.0f), new Float3(1.0f, 1.0f, 1.0f)));
+		this.shaderProgram.load("projection_matrix", Matrices.projection(70.0f, 0.1f, 100.0f));
+		this.shaderProgram.load("view_matrix", Matrices.view(new Float3(0.0f, 0.0f, 2.0f), 0.0f, 0.0f));
 		this.quadModel.drawTriangles(6);
 		ShaderProgram.stop();
 	}

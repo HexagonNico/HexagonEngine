@@ -63,7 +63,7 @@ public final class Matrices {
 
 	public static Matrix4 projection(float fov, float near, float far) {
 		float m00 = 1.0f / (float) Math.tan(Math.toRadians(fov / 2.0f));
-		float m11 = m00 * (800 / 450); // TODO - Aspect ratio
+		float m11 = m00 * ((float) 800 / (float) 450); // TODO - Aspect ratio
 		float m22 = -(far + near) / (far - near);
 		float m32 = -(2 * far * near) / (far - near);
 		return new Matrix4(
@@ -77,6 +77,6 @@ public final class Matrices {
 	public static Matrix4 view(Float3 cameraPosition, float pitch, float yaw) {
 		return xRotation((float) Math.toRadians(pitch))
 			.multiply(yRotation((float) Math.toRadians(yaw)))
-			.multiply(translation(cameraPosition.negative()));
+			.multiply(translation(cameraPosition.negative()).transposed());
 	}
 }
