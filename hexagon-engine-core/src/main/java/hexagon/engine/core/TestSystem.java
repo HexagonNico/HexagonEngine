@@ -17,7 +17,8 @@ public class TestSystem extends GameSystem {
 
 	@Override
 	protected void process(GameEntity entity) {
-		System.out.println("Process " + entity.id);
+		TestComponent test = entity.getComponent(TestComponent.class);
+		System.out.println("Process " + test.test);
 	}
 
 	@Override

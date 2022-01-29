@@ -25,8 +25,8 @@ public class Application {
 			GameManager gameManager = new GameManager();
 			GameEntity entity0 = gameManager.createEntity();
 			GameEntity entity1 = gameManager.createEntity();
-			gameManager.addComponent(entity0, new TestComponent("test1"));
-			gameManager.addComponent(entity1, new TestComponent("test2"));
+			entity0.addComponent(new TestComponent("test1"));
+			entity1.addComponent(new TestComponent("test2"));
 			gameManager.addSystem(new TestSystem());
 
 			while(!Window.shouldClose()) {

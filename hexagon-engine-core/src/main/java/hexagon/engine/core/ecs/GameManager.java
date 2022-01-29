@@ -15,7 +15,7 @@ public final class GameManager {
 	}
 
 	public GameEntity createEntity() {
-		GameEntity entity = new GameEntity(this.nextId());
+		GameEntity entity = new GameEntity(this, this.nextId());
 		this.componentsTable.put(entity, new HashMap<>());
 		return entity;
 	}
@@ -36,6 +36,10 @@ public final class GameManager {
 				.forEach(entry -> system.process(entry.getKey()));
 			system.afterAll();
 		});
+	}
+
+	public <T> T getComponent(GameEntity entity, Class<T> type) {
+		return type.cast(this.componentsTable.get(entity).get(type));
 	}
 
 	public void removeEntity(GameEntity entity) {

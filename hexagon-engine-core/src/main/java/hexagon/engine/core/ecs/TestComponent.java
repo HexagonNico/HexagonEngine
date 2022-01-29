@@ -7,9 +7,4 @@ public class TestComponent {
 	public TestComponent(String test) {
 		this.test = test;
 	}
-
-	@Override
-	public String toString() {
-		return this.test;
-	}
 }
