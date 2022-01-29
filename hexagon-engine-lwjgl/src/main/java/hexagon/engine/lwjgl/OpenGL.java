@@ -9,13 +9,12 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
 /**
- * Utility class that wraps the most used OpenGL functions.
+ * Utility class used to create OpenGL objects
+ * and to wrap some OpenGL functions.
  * 
  * @author Nico
  */
 public final class OpenGL {
-
-	// TODO - Separate vaos/vbos/textures/shaders from enable/disable stuff
 
 	/**Keeps track of all VAOs to delete them later */
 	private static final ArrayList<Integer> vaos = new ArrayList<>();
@@ -41,11 +40,23 @@ public final class OpenGL {
 		GL11.glClearColor(red, green, blue, 1.0f);
 	}
 
+	/**
+	 * Toggles depth test.
+	 * When enabled OpenGL will render further objects behind closer objects.
+	 * 
+	 * @param enable True to enable, false to disable.
+	 */
 	public static void depthTest(boolean enable) {
 		if(enable) GL11.glEnable(GL11.GL_DEPTH_TEST);
 		else GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 
+	/**
+	 * Toggles back face culling.
+	 * When enabled OpenGL will not render faces that are not visible.
+	 * 
+	 * @param enable True to enable, false to disable.
+	 */
 	public static void cullFace(boolean enable) {
 		if(enable) GL11.glEnable(GL11.GL_CULL_FACE);
 		else GL11.glDisable(GL11.GL_CULL_FACE);

@@ -1,7 +1,6 @@
 package hexagon.engine.lwjgl.shader;
 
 import java.util.HashMap;
-import java.util.function.IntSupplier;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -11,31 +10,85 @@ import hexagon.engine.utils.Log;
 import hexagon.engine.utils.resources.ResourceLoadingException;
 import hexagon.engine.utils.resources.Resources;
 
+/**
+ * Class to represent an OpenGL shader.
+ * Also used as a utility class to load and store references to shaders.
+ * 
+ * @author Nico
+ */
 public final class Shader {
 	
+	/**Map that stores all vertex shaders */
 	private static final HashMap<String, Shader> vertexShaders = new HashMap<>();
+	/**Map that stores all fragment shaders */
 	private static final HashMap<String, Shader> fragmentShaders = new HashMap<>();
 
+	/**
+	 * Gets or loads a vertex shader.
+	 * <p>
+	 * 	If the shader is not yet loaded, loads it and returns the shader object.
+	 * 	If it is already loaded, returns the same instance.
+	 * </p>
+	 * 
+	 * @param file Path to the shader file, from the resources folder starting with {@code /}.
+	 * 
+	 * @return The requested shader
+	 */
 	public static Shader vertex(String file) {
 		Shader shader = vertexShaders.get(file);
-		return shader != null ? shader : loadShader(file, OpenGL::createVertexShader, vertexShaders);
+		if(shader == null) {
+			int id = OpenGL.createVertexShader();
+			return loadShader(file, id, vertexShaders);
+		} else {
+			return shader;
+		}
 	}
 
+	/**
+	 * Gets or loads a fragment shader.
+	 * <p>
+	 * 	If the shader is not yet loaded, loads it and returns the shader object.
+	 * 	If it is already loaded, returns the same instance.
+	 * </p>
+	 * 
+	 * @param file Path to the shader file, from the resources folder starting with {@code /}.
+	 * 
+	 * @return The requested shader
+	 */
 	public static Shader fragment(String file) {
 		Shader shader = fragmentShaders.get(file);
-		return shader != null ? shader : loadShader(file, OpenGL::createFragmentShader, fragmentShaders);
+		if(shader == null) {
+			int id = OpenGL.createFragmentShader();
+			return loadShader(file, id, fragmentShaders);
+		} else {
+			return shader;
+		}
 	}
 
+	/**Shader id */
 	public final int id;
 
+	/**
+	 * Creates a shader.
+	 * 
+	 * @param id Shader id.
+	 */
 	private Shader(int id) {
 		this.id = id;
 	}
 
-	private static Shader loadShader(String filePath, IntSupplier type, HashMap<String, Shader> map) {
+	/**
+	 * Loads a shader.
+	 * 
+	 * @param filePath Path to the shader file.
+	 * @param id Shader id.
+	 * @param map Map where to store the shader.
+	 * 
+	 * @return Instance of the shader.
+	 */
+	private static Shader loadShader(String filePath, int id, HashMap<String, Shader> map) {
 		try {
 			String shaderCode = Resources.readAsString(filePath);
-			int id = type.getAsInt();
 			GL20.glShaderSource(id, shaderCode);
 			GL20.glCompileShader(id);
 			if(GL20.glGetShaderi(id, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
