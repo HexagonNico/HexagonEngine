@@ -44,6 +44,12 @@ public final class OpenGL {
 		else GL11.glDisable(GL11.GL_DEPTH_TEST);
 	}
 
+	public static void cullFace(boolean enable) {
+		if(enable) GL11.glEnable(GL11.GL_CULL_FACE);
+		else GL11.glDisable(GL11.GL_CULL_FACE);
+		GL11.glCullFace(GL11.GL_BACK);
+	}
+
 	/**
 	 * Creates a vertex array object using {@link GL30#glGenVertexArrays()}
 	 * and stores the VAO id in a list to keep track of it.
