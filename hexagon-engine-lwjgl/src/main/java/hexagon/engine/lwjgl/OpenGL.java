@@ -15,6 +15,8 @@ import org.lwjgl.opengl.GL30;
  */
 public final class OpenGL {
 
+	// TODO - Separate vaos/vbos/textures/shaders from enable/disable stuff
+
 	/**Keeps track of all VAOs to delete them later */
 	private static final ArrayList<Integer> vaos = new ArrayList<>();
 	/**Keeps track of all VBOs to delete them later */
