@@ -49,6 +49,14 @@ public final class VertexObject {
 		GL30.glBindVertexArray(0);
 	}
 
+	public void drawElements(int indices) {
+		GL30.glBindVertexArray(this.vao);
+		this.attributes.forEach(GL20::glEnableVertexAttribArray);
+		GL11.glDrawElements(GL11.GL_TRIANGLES, indices, GL11.GL_UNSIGNED_INT, 0);
+		this.attributes.forEach(GL20::glDisableVertexAttribArray);
+		GL30.glBindVertexArray(0);
+	}
+
 	/**
 	 * Creates a Vertex Object Builder.
 	 * Uses the builder pattern to create a Vertex Object.
@@ -84,6 +92,11 @@ public final class VertexObject {
 		 */
 		public Builder attribute(int list, float[] data, int size) {
 			this.attributes.put(list, new FloatAttribArray(list, data, size));
+			return this;
+		}
+
+		public Builder indices(int[] indices) {
+			this.attributes.put(-1, new IndicesBuffer(indices));
 			return this;
 		}
 
@@ -139,5 +152,22 @@ public final class VertexObject {
 			GL20.glVertexAttribPointer(this.list, this.size, GL11.GL_FLOAT, false, 0, 0);
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		}
+	}
+
+	private static class IndicesBuffer implements Attribute {
+
+		private final int[] indices;
+
+		private IndicesBuffer(int[] indices) {
+			this.indices = indices;
+		}
+
+		@Override
+		public void storeData() {
+			int vbo = OpenGL.createVBO();
+			GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, vbo);
+			GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, BufferUtils.createIntBuffer(indices.length).put(indices).flip(), GL15.GL_STATIC_DRAW);
+		}
+
 	}
 }
