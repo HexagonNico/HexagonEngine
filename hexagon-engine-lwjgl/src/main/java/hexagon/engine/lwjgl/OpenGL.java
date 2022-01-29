@@ -39,6 +39,11 @@ public final class OpenGL {
 		GL11.glClearColor(red, green, blue, 1.0f);
 	}
 
+	public static void depthTest(boolean enable) {
+		if(enable) GL11.glEnable(GL11.GL_DEPTH_TEST);
+		else GL11.glDisable(GL11.GL_DEPTH_TEST);
+	}
+
 	/**
 	 * Creates a vertex array object using {@link GL30#glGenVertexArrays()}
 	 * and stores the VAO id in a list to keep track of it.
