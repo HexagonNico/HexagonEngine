@@ -12,9 +12,11 @@ public class Application {
 		try {
 			Engine.errorCallback(System.err);
 			Engine.init();
-			Engine.configure(false, true);
+			Engine.configure(false, false);
 			Window.makeVisible();
 			Engine.createCapabilities();
+
+			OpenGL.depthTest(true);
 
 			TestRenderer renderer = new TestRenderer();
 
