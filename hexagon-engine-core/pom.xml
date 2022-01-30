@@ -19,5 +19,10 @@
 			<artifactId>hexagon-engine-lwjgl</artifactId>
 			<version>0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20211205</version>
+		</dependency>
 	</dependencies>
 </project>

@@ -1,0 +1,26 @@
+{
+	"entities": [
+		{
+			"hexagon.engine.core.components.Transform2D": {
+				"position": { "x": 0.0, "y": 0.0 },
+				"rotation": { "x": 0.0, "y": 0.0 },
+				"scale": { "x": 4.0, "y": 4.0 }
+			},
+			"hexagon.engine.core.components.SpriteComponent": {
+				"texture": "/textures/test.png",
+				"uv": [0.0, 0.0, 1.0, 1.0]
+			}
+		},
+		{
+			"hexagon.engine.core.components.Transform2D": {
+				"position": { "x": 0.0, "y": 0.0 },
+				"rotation": { "x": 0.0, "y": 0.0 },
+				"scale": { "x": 1.0, "y": 2.0 }
+			},
+			"hexagon.engine.core.components.SpriteComponent": {
+				"texture": "/textures/windmill.png",
+				"uv": [0.0, 0.0, 1.0, 1.0]
+			}
+		}
+	]
+}
