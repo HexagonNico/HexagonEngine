@@ -33,6 +33,16 @@ public final class VertexObject {
 		this.attributes = attributes;
 	}
 
+	/**
+	 * Safe method to use this vertex object.
+	 * <p>
+	 * 	First binds the vertex array and enables all attribute lists,
+	 * 	then performs an action,
+	 * 	then disables all attribute lists and unbind the vertex array.
+	 * </p>
+	 * 
+	 * @param action Action to execute after binding the VAO and before unbinding it.
+	 */
 	public void activate(Runnable action) {
 		GL30.glBindVertexArray(this.vao);
 		this.attributes.forEach(GL20::glEnableVertexAttribArray);
@@ -72,13 +82,22 @@ public final class VertexObject {
 		 * @param list Index of the attribute list.
 		 * @param data Data to store.
 		 * @param size 2 for 2D coords, 3 for 3D coords.
-		 * @return {@code this}
+		 * 
+		 * @return {@code this} for builder pattern.
 		 */
 		public Builder attribute(int list, float[] data, int size) {
 			this.attributes.put(list, new FloatAttribArray(list, data, size));
 			return this;
 		}
 
+		/**
+		 * Adds an index buffer.
+		 * Vertex objects with index buffers can be rendered with {@link DrawCalls#drawElements(int)}.
+		 * 
+		 * @param indices Array containing the indices.
+		 * 
+		 * @return {@code this} for builder pattern.
+		 */
 		public Builder indices(int[] indices) {
 			this.attributes.put(-1, new IndicesBuffer(indices));
 			return this;
@@ -138,10 +157,19 @@ public final class VertexObject {
 		}
 	}
 
+	/**
+	 * Class to represent an indices buffer.
+	 */
 	private static class IndicesBuffer implements Attribute {
 
+		/**Array containing the indices */
 		private final int[] indices;
 
+		/**
+		 * Creates an index buffer.
+		 * 
+		 * @param indices Array containing the indices.
+		 */
 		private IndicesBuffer(int[] indices) {
 			this.indices = indices;
 		}

@@ -10,27 +10,62 @@ import org.lwjgl.opengl.GL13;
 import de.matthiasmann.twl.utils.PNGDecoder;
 import hexagon.engine.lwjgl.OpenGL;
 
+/**
+ * Class that represents an OpenGL Texture object.
+ * Also used as a utility class to load and store references to loaded textures.
+ * 
+ * @author Nico
+ */
 public final class Texture {
 	
+	/**Map that stores all loaded textures */
 	private static final HashMap<String, Texture> textures = new HashMap<>();
 
+	/**
+	 * Gets or loads a texture.
+	 * <p>
+	 * 	If the texture is not yet loaded, loads it and returns the texture object.
+	 * 	If it is already loaded, returns the same instance.
+	 * </p>
+	 * 
+	 * @param textureFile Path to the texture file, from the resources folder starting with {@code /}.
+	 * 
+	 * @return The requested texture object.
+	 */
 	public static Texture getOrLoad(String textureFile) {
 		Texture texture = textures.get(textureFile);
 		return texture != null ? texture : loadTexture(textureFile);
 	}
 
+	/**Texture id */
 	public final int id;
 
-	public Texture(int id) {
+	/**
+	 * Creates a texture.
+	 * 
+	 * @param id Texture id.
+	 */
+	private Texture(int id) {
 		this.id = id;
 	}
 
+	/**
+	 * Binds this texture using.
+	 * Textures need to be bound before they can be used.
+	 */
 	public void bind() {
 		// TODO - Texture unit
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
 	}
 
+	/**
+	 * Loads a texture.
+	 * 
+	 * @param file Path to texture file.
+	 * 
+	 * @return The new texture.
+	 */
 	private static Texture loadTexture(String file) {
 		try {
 			// TODO - PNG Decoder
