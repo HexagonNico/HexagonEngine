@@ -2,6 +2,15 @@ package hexagon.engine.math.vector;
 
 public record Int3(int a, int b, int c) implements IntVector<Int3, Float3> {
 
+	public static final Int3 ZERO = new Int3(0, 0, 0);
+	public static final Int3 ONE = new Int3(1, 1, 1);
+	public static final Int3 UP = new Int3(0, 1, 0);
+	public static final Int3 DOWN = new Int3(0, -1, 0);
+	public static final Int3 LEFT = new Int3(-1, 0, 0);
+	public static final Int3 RIGHT = new Int3(1, 0, 0);
+	public static final Int3 FORWARD = new Int3(0, 0, 1);
+	public static final Int3 BACK = new Int3(0, 0, -1);
+	
 	@Override
 	public Int3 plus(Int3 vector) {
 		return this.plus(vector.a(), vector.b(), vector.c());
