@@ -14,12 +14,12 @@ public final class Transform2D {
 	public Float2 scale;
 
 	public Transform2D(JSONObject jsonObject) {
-		JSONObject positionJson = jsonObject.getJSONObject("position");
-		JSONObject rotationJson = jsonObject.getJSONObject("rotation");
-		JSONObject scaleJson = jsonObject.getJSONObject("scale");
-		this.position = new Float2(positionJson.getFloat("x"), positionJson.getFloat("y"));
-		this.rotation = new Float2(rotationJson.getFloat("x"), rotationJson.getFloat("y"));
-		this.scale = new Float2(scaleJson.getFloat("x"), scaleJson.getFloat("y"));
+		JSONObject positionJson = jsonObject.optJSONObject("position", new JSONObject());
+		JSONObject rotationJson = jsonObject.optJSONObject("rotation", new JSONObject());
+		JSONObject scaleJson = jsonObject.optJSONObject("scale", new JSONObject());
+		this.position = new Float2(positionJson.optFloat("x", 0.0f), positionJson.optFloat("y", 0.0f));
+		this.rotation = new Float2(rotationJson.optFloat("x", 0.0f), rotationJson.optFloat("y", 0.0f));
+		this.scale = new Float2(scaleJson.optFloat("x", 1.0f), scaleJson.optFloat("y", 1.0f));
 	}
 
 	public Transform2D() {

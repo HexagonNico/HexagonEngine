@@ -3,18 +3,8 @@ package hexagon.engine.core.ecs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.Function;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import hexagon.engine.core.components.SpriteComponent;
-import hexagon.engine.core.components.Transform2D;
-import hexagon.engine.core.components.Transform3D;
-import hexagon.engine.utils.Log;
-import hexagon.engine.utils.resources.ResourceLoadingException;
-import hexagon.engine.utils.resources.Resources;
+import hexagon.engine.core.scene.SceneLoader;
 
 /**
  * Class that holds all the components that are currently in the scene and all the running systems.
@@ -66,34 +56,15 @@ public final class GameManager {
 		this.systems.add(system);
 	}
 
-	private static final HashMap<String, Function<JSONObject, Object>> temporaryComponentMap = new HashMap<>();
-
-	static {
-		temporaryComponentMap.put(SpriteComponent.class.getName(), SpriteComponent::new);
-		temporaryComponentMap.put(Transform2D.class.getName(), Transform2D::new);
-		temporaryComponentMap.put(Transform3D.class.getName(), Transform3D::new);
-	}
-
+	/**
+	 * Loads a scene by deleting all entities in the game manager
+	 * and adding all the entities from the scene file.
+	 * 
+	 * @param sceneFile Path to the scene file from the resources folder starting with {@code /}.
+	 */
 	public void loadScene(String sceneFile) {
-		// TODO - Json parser
-		try {
-			JSONObject sceneJson = new JSONObject(Resources.readAsString(sceneFile));
-			JSONArray entitiesArray = sceneJson.getJSONArray("entities");
-			this.componentsTable.clear();
-			for(int i = 0; i < entitiesArray.length(); i++) {
-				JSONObject entityJson = entitiesArray.getJSONObject(i);
-				GameEntity entity = this.createEntity();
-				for(String componentKey : entityJson.keySet()) {
-					Function<JSONObject, Object> component = temporaryComponentMap.get(componentKey);
-					JSONObject componentJson = entityJson.getJSONObject(componentKey);
-					if(component != null) {
-						this.addComponent(entity, component.apply(componentJson));
-					}
-				}
-			}
-		} catch (JSONException | ResourceLoadingException e) {
-			Log.error("Could not read scene file " + sceneFile);
-		}
+		this.componentsTable.clear();
+		SceneLoader.loadScene(sceneFile, this);
 	}
 
 	/**

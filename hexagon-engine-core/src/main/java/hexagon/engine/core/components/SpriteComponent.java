@@ -1,6 +1,5 @@
 package hexagon.engine.core.components;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import hexagon.engine.lwjgl.texture.Texture;
@@ -15,9 +14,10 @@ public final class SpriteComponent {
 
 	public SpriteComponent(JSONObject jsonObject) {
 		this.texture = Texture.getOrLoad(jsonObject.getString("texture"));
-		JSONArray uvArray = jsonObject.getJSONArray("uv");
-		this.uv = new Float2(uvArray.getFloat(0), uvArray.getFloat(1));
-		this.size = new Float2(uvArray.getFloat(2), uvArray.getFloat(3));
+		JSONObject uvJson = jsonObject.optJSONObject("uv", new JSONObject());
+		JSONObject sizeJson = jsonObject.optJSONObject("uv", new JSONObject());
+		this.uv = new Float2(uvJson.optFloat("x", 0.0f), uvJson.optFloat("y", 0.0f));
+		this.size = new Float2(sizeJson.optFloat("x", 1.0f), sizeJson.optFloat("y", 1.0f));
 	}
 
 	public SpriteComponent(String texture, Float2 uv, Float2 size) {
