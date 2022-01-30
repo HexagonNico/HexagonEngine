@@ -64,6 +64,18 @@ public final class OpenGL {
 	}
 
 	/**
+	 * Toggles alpha blending.
+	 * When enabled OpenGL will render transparent pixels as transparent.
+	 * 
+	 * @param enable True to enable, false to disable.
+	 */
+	public static void alphaBlending(boolean enable) {
+		if(enable) GL11.glEnable(GL11.GL_BLEND);
+		else GL11.glDisable(GL11.GL_BLEND);
+        GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	/**
 	 * Creates a vertex array object using {@link GL30#glGenVertexArrays()}
 	 * and stores the VAO id in a list to keep track of it.
 	 * <p>
