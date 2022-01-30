@@ -6,6 +6,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
+import hexagon.engine.utils.Log;
+
 /**
  * Engine class used to initialize the engine.
  * 
@@ -32,6 +34,7 @@ public class Engine {
 		if(!GLFW.glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
+		Log.info("Engine initialized");
 	}
 
 	/**
@@ -66,5 +69,6 @@ public class Engine {
 	public static void terminate() {
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).set();
+		Log.info("Engine terminated");
 	}
 }

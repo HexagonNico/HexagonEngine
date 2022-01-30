@@ -8,6 +8,8 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
+import hexagon.engine.utils.Log;
+
 /**
  * Utility class used to create OpenGL objects
  * and to wrap some OpenGL functions.
@@ -87,6 +89,7 @@ public final class OpenGL {
 	 */
 	public static int createVAO() {
 		int vao = GL30.glGenVertexArrays();
+		Log.info("Creating VAO with ID " + vao);
 		vaos.add(vao);
 		return vao;
 	}
@@ -103,6 +106,7 @@ public final class OpenGL {
 	 */
 	public static int createVBO() {
 		int vbo = GL15.glGenBuffers();
+		Log.info("Creating VBO with ID " + vbo);
 		vbos.add(vbo);
 		return vbo;
 	}
@@ -119,6 +123,7 @@ public final class OpenGL {
 	 */
 	public static int createVertexShader() {
 		int id = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
+		Log.info("Creating vertex shader with id " + id);
 		shaders.add(id);
 		return id;
 	}
@@ -135,6 +140,7 @@ public final class OpenGL {
 	 */
 	public static int createFragmentShader() {
 		int id = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
+		Log.info("Creating fragment shader with id " + id);
 		shaders.add(id);
 		return id;
 	}
@@ -151,6 +157,7 @@ public final class OpenGL {
 	 */
 	public static int createShaderProgram() {
 		int id = GL20.glCreateProgram();
+		Log.info("Creating shader program with id " + id);
 		shaderPrograms.put(id, new ArrayList<>());
 		return id;
 	}
@@ -184,6 +191,7 @@ public final class OpenGL {
 	 */
 	public static int createTexture() {
 		int id = GL11.glGenTextures();
+		Log.info("Creating texture with id " + id);
 		textures.add(id);
 		return id;
 	}
@@ -193,11 +201,14 @@ public final class OpenGL {
 	 * Deletes all VAOs, VBOs, shaders and textures.
 	 */
 	public static void cleanUp() {
+		Log.info("Deleting " + vaos.size() + " VAOs and " + vbos.size() + " VBOs");
 		vaos.forEach(GL30::glDeleteVertexArrays);
 		vbos.forEach(GL15::glDeleteBuffers);
+		Log.info("Deleting " + shaders.size() + " shaders and " + shaderPrograms.size() + " programs");
 		shaders.forEach(GL20::glDeleteShader);
 		shaderPrograms.forEach((program, shaders) -> shaders.forEach(shader -> GL20.glDetachShader(program, shader)));
 		shaderPrograms.keySet().forEach(GL20::glDeleteProgram);
+		Log.info("Deleting " + textures.size() + " textures");
 		textures.forEach(GL15::glDeleteTextures);
 	}
 }

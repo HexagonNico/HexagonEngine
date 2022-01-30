@@ -87,6 +87,7 @@ public final class Shader {
 	 * @return Instance of the shader.
 	 */
 	private static Shader loadShader(String filePath, int id, HashMap<String, Shader> map) {
+		Log.info("Loading shader " + filePath);
 		try {
 			String shaderCode = Resources.readAsString(filePath);
 			GL20.glShaderSource(id, shaderCode);

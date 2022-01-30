@@ -4,6 +4,8 @@ import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 
+import hexagon.engine.utils.Log;
+
 /**
  * Window class used to manage the GLFW window.
  * 
@@ -21,6 +23,7 @@ public final class Window {
 	 * Creates the window.
 	 */
 	private Window() {
+		Log.info("Creating GLFW window");
 		this.window = GLFW.glfwCreateWindow(800, 450, "Hello!", MemoryUtil.NULL, MemoryUtil.NULL);
 		GLFW.glfwMakeContextCurrent(this.window);
 	}
@@ -61,5 +64,6 @@ public final class Window {
 	public static void destroy() {
 		Callbacks.glfwFreeCallbacks(instance.window);
 		GLFW.glfwDestroyWindow(instance.window);
+		Log.info("Window destroyed");
 	}
 }

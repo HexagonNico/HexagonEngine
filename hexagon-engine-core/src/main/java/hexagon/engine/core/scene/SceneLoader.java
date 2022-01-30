@@ -54,6 +54,7 @@ public final class SceneLoader {
 	 * @param gameManager Reference to the game manager to add entities.
 	 */
 	public static void loadScene(String filePath, GameManager gameManager) {
+		Log.info("Loading scene " + filePath);
 		try {
 			JSONObject sceneJson = new JSONObject(Resources.readAsString(filePath));
 			JSONArray entitiesArray = sceneJson.getJSONArray("entities");
