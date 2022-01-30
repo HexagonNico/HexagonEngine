@@ -11,7 +11,7 @@ public final class Transform3D {
 	public Float3 scale;
 
 	public Transform3D() {
-		this(new Float3(0.0f, 0.0f, 0.0f), new Float3(0.0f, 0.0f, 0.0f), new Float3(1.0f, 1.0f, 1.0f));
+		this(Float3.ZERO, Float3.ZERO, Float3.ONE);
 	}
 
 	public Transform3D(Float3 position, Float3 rotation, Float3 scale) {

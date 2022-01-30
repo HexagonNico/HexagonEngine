@@ -1,14 +1,14 @@
 package hexagon.engine.core;
 
 import hexagon.engine.core.components.SpriteComponent;
-import hexagon.engine.core.components.Transform3D;
+import hexagon.engine.core.components.Transform2D;
 import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.core.ecs.GameManager;
-import hexagon.engine.core.rendering.TestRenderingSystem;
+import hexagon.engine.core.rendering.SpriteRenderer;
 import hexagon.engine.lwjgl.Engine;
 import hexagon.engine.lwjgl.OpenGL;
 import hexagon.engine.lwjgl.Window;
-import hexagon.engine.math.vector.Float3;
+import hexagon.engine.math.vector.Float2;
 import hexagon.engine.utils.Log;
 
 public class Application {
@@ -25,12 +25,9 @@ public class Application {
 
 			GameManager gameManager = new GameManager();
 			GameEntity entity0 = gameManager.createEntity();
-			GameEntity entity1 = gameManager.createEntity();
-			entity0.addComponent(new Transform3D());
-			entity0.addComponent(new SpriteComponent("/textures/test.png"));
-			entity1.addComponent(new Transform3D(new Float3(-2.0f, 0.0f, 0.0f), new Float3(0, 0, 0), new Float3(1, 1, 1)));
-			entity1.addComponent(new SpriteComponent("/textures/test.png"));
-			gameManager.addSystem(new TestRenderingSystem());
+			entity0.addComponent(new Transform2D(Float2.ZERO, Float2.ZERO, new Float2(1.0f, 2.0f)));
+			entity0.addComponent(new SpriteComponent("/textures/windmill.png"));
+			gameManager.addSystem(new SpriteRenderer());
 
 			while(!Window.shouldClose()) {
 				OpenGL.clearFrame(0.5f, 0.5f, 1.0f);
