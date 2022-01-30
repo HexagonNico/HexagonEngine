@@ -23,7 +23,6 @@ public final class SpriteRenderer extends GameSystem {
 
 	public SpriteRenderer() {
 		super(Transform2D.class, SpriteComponent.class);
-		// TODO - uv
 		this.model = VertexObject.with()
 			.attribute(0, new float[] {-0.5f,0.5f, -0.5f,-0.5f, 0.5f,-0.5f, 0.5f,0.5f}, 2)
 			.indices(new int[] {0,1,3, 3,1,2})

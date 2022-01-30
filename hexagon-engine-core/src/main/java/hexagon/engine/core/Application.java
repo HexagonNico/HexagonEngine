@@ -17,7 +17,7 @@ public class Application {
 			Window.makeVisible();
 			Engine.createCapabilities();
 
-			OpenGL.depthTest(true);
+			OpenGL.alphaBlending(true);
 
 			GameManager gameManager = new GameManager();
 			gameManager.loadScene("/scenes/test.json");
