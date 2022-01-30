@@ -2,6 +2,13 @@ package hexagon.engine.math.vector;
 
 public record Int2(int a, int b) implements IntVector<Int2, Float2> {
 	
+	public static final Int2 ZERO = new Int2(0, 0);
+	public static final Int2 ONE = new Int2(1, 1);
+	public static final Int2 UP = new Int2(0, 1);
+	public static final Int2 DOWN = new Int2(0, -1);
+	public static final Int2 LEFT = new Int2(-1, 0);
+	public static final Int2 RIGHT = new Int2(1, 0);
+	
 	@Override
 	public Int2 plus(Int2 vector) {
 		return this.plus(vector.a(), vector.b());
