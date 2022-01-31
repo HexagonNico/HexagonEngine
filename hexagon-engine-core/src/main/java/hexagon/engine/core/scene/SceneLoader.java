@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import hexagon.engine.core.components.ObjModelComponent;
 import hexagon.engine.core.components.SpriteComponent;
 import hexagon.engine.core.components.Transform2D;
 import hexagon.engine.core.components.Transform3D;
@@ -31,6 +32,7 @@ public final class SceneLoader {
 		registerComponent(SpriteComponent.class, SpriteComponent::new);
 		registerComponent(Transform2D.class, Transform2D::new);
 		registerComponent(Transform3D.class, Transform3D::new);
+		registerComponent(ObjModelComponent.class, ObjModelComponent::new);
 	}
 
 	/**

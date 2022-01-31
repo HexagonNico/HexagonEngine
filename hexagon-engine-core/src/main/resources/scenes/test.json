@@ -1,20 +1,35 @@
 {
 	"entities": [
 		{
-			"hexagon.engine.core.components.Transform2D": {
-				"position": { "x": -1.0 },
-				"scale": { "x": 4.0, "y": 4.0 }
+			"hexagon.engine.core.components.Transform3D": {
+				"position": { "y": -1.0, "z": -2.0 }
 			},
-			"hexagon.engine.core.components.SpriteComponent": {
-				"texture": "/textures/test.png"
+			"hexagon.engine.core.components.ObjModelComponent": {
+				"model": "/models/dragon.obj"
 			}
 		},
 		{
-			"hexagon.engine.core.components.Transform2D": {
-				"scale": { "x": 1.0, "y": 2.0 }
+			"hexagon.engine.core.components.Transform3D": {
+				"position": { "x": -15.0, "y": -1.0, "z": -20.0 }
 			},
-			"hexagon.engine.core.components.SpriteComponent": {
-				"texture": "/textures/windmill.png"
+			"hexagon.engine.core.components.ObjModelComponent": {
+				"model": "/models/dragon.obj"
+			}
+		},
+		{
+			"hexagon.engine.core.components.Transform3D": {
+				"position": { "y": -1.0, "z": -20.0 }
+			},
+			"hexagon.engine.core.components.ObjModelComponent": {
+				"model": "/models/building.obj"
+			}
+		},
+		{
+			"hexagon.engine.core.components.Transform3D": {
+				"position": { "x": 9.0, "y": -1.0, "z": -8.0 }
+			},
+			"hexagon.engine.core.components.ObjModelComponent": {
+				"model": "/models/dragon.obj"
 			}
 		}
 	]
