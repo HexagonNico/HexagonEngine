@@ -54,9 +54,9 @@ public class ObjParser {
 			indices.add(faceVertex.vertex);
 		}
 		for(int i = 0; i < verticesValues.length; i += 3) {
-			verticesValues[i] = verticesData.get(i).x;
-			verticesValues[i + 1] = verticesData.get(i).y;
-			verticesValues[i + 2] = verticesData.get(i).z;
+			verticesValues[i] = verticesData.get(i / 3).x;
+			verticesValues[i + 1] = verticesData.get(i / 3).y;
+			verticesValues[i + 2] = verticesData.get(i / 3).z;
 		}
 		int[] indicesValues = indices.stream().mapToInt(i -> i).toArray();
 		return new Data(verticesValues, normalsValues, textureValues, indicesValues);

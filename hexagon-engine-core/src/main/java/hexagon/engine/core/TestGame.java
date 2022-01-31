@@ -7,9 +7,10 @@ public final class TestGame extends Application {
 
 	@Override
 	protected void onInit() {
-		OpenGL.alphaBlending(true);
-		this.gameManager.loadScene("/scenes/test.json");
-		this.gameManager.addSystem(new SpriteRenderer());
+		OpenGL.alphaBlending(false);
+		OpenGL.depthTest(true);
+		//this.gameManager.loadScene("/scenes/test.json");
+		//this.gameManager.addSystem(new SpriteRenderer());
 	}
 	
 	public static void main(String[] args) {
