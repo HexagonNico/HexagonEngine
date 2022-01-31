@@ -2,34 +2,51 @@
 	"entities": [
 		{
 			"hexagon.engine.core.components.Transform3D": {
-				"position": { "y": -1.0, "z": -2.0 }
+				"position": { "y": -1.0, "z": -5.0 }
 			},
 			"hexagon.engine.core.components.ObjModelComponent": {
-				"model": "/models/dragon.obj"
+				"model": "/models/building.obj",
+				"texture": "/textures/building.png"
 			}
 		},
 		{
 			"hexagon.engine.core.components.Transform3D": {
-				"position": { "x": -15.0, "y": -1.0, "z": -20.0 }
+				"position": { "y": -1.0, "z": -5.0 },
+				"rotation": { "y": 30}
 			},
 			"hexagon.engine.core.components.ObjModelComponent": {
-				"model": "/models/dragon.obj"
+				"model": "/models/building.obj",
+				"texture": "/textures/building.png"
 			}
 		},
 		{
 			"hexagon.engine.core.components.Transform3D": {
-				"position": { "y": -1.0, "z": -20.0 }
+				"position": { "y": -1.0, "z": -5.0 },
+				"rotation": { "y": 45}
 			},
 			"hexagon.engine.core.components.ObjModelComponent": {
-				"model": "/models/building.obj"
+				"model": "/models/building.obj",
+				"texture": "/textures/building.png"
 			}
 		},
 		{
 			"hexagon.engine.core.components.Transform3D": {
-				"position": { "x": 9.0, "y": -1.0, "z": -8.0 }
+				"position": { "y": -1.0, "z": -5.0 },
+				"rotation": { "y": 60}
 			},
 			"hexagon.engine.core.components.ObjModelComponent": {
-				"model": "/models/dragon.obj"
+				"model": "/models/building.obj",
+				"texture": "/textures/building.png"
+			}
+		},
+		{
+			"hexagon.engine.core.components.Transform3D": {
+				"position": { "y": -1.0, "z": -5.0 },
+				"rotation": { "y": 90}
+			},
+			"hexagon.engine.core.components.ObjModelComponent": {
+				"model": "/models/building.obj",
+				"texture": "/textures/building.png"
 			}
 		}
 	]
