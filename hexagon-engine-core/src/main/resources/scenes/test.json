@@ -1,6 +1,12 @@
 {
 	"entities": [
 		{
+			"hexagon.engine.core.components.Camera3D": {
+				"position": { "y": 2.0, "z": 10},
+				"pitch": 30.0
+			}
+		},
+		{
 			"hexagon.engine.core.components.Transform3D": {
 				"position": { "y": -1.0, "z": -5.0 }
 			},

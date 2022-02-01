@@ -3,6 +3,7 @@ package hexagon.engine.core.rendering;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hexagon.engine.core.components.Camera3D;
 import hexagon.engine.core.components.SpriteComponent;
 import hexagon.engine.core.components.Transform2D;
 import hexagon.engine.core.ecs.GameEntity;
@@ -12,8 +13,6 @@ import hexagon.engine.lwjgl.VertexObject;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
 import hexagon.engine.lwjgl.texture.Texture;
-import hexagon.engine.math.matrix.Matrices;
-import hexagon.engine.math.vector.Float3;
 
 /**
  * Game system that renders 2d sprites.
@@ -70,9 +69,12 @@ public final class SpriteRenderer extends GameSystem {
 	protected void afterAll() {
 		this.model.activate(() -> {
 			ShaderProgram.start(this.shader);
-			// TODO - Camera
-			this.shader.load("projection_matrix", Matrices.projection(70.0f, 0.1f, 100.0f));
-			this.shader.load("view_matrix", Matrices.view(new Float3(0.0f, 0.0f, 5.0f), 0.0f, 0.0f));
+			// TODO - 2D orthographic camera
+			if(Camera3D.main() != null) {
+				// TODO - Looks kinda ugly
+				this.shader.load("projection_matrix", Camera3D.main().projectionMatrix());
+				this.shader.load("view_matrix", Camera3D.main().viewMatrix());
+			}
 			this.renderBatch.forEach((texture, entities) -> {
 				texture.bind();
 				entities.forEach(entity -> {
