@@ -1,6 +1,7 @@
 package hexagon.engine.core;
 
-import hexagon.engine.core.rendering.ObjModelRenderer;
+import hexagon.engine.core.rendering.ModelRenderer;
+import hexagon.engine.core.rendering.TexturedModelRenderer;
 import hexagon.engine.lwjgl.OpenGL;
 
 public final class TestGame extends Application {
@@ -10,7 +11,8 @@ public final class TestGame extends Application {
 		OpenGL.alphaBlending(false);
 		OpenGL.depthTest(true);
 		this.gameManager.loadScene("/scenes/test.json");
-		this.gameManager.addSystem(new ObjModelRenderer());
+		this.gameManager.addSystem(new ModelRenderer());
+		this.gameManager.addSystem(new TexturedModelRenderer());
 	}
 	
 	public static void main(String[] args) {

@@ -15,12 +15,27 @@ import hexagon.engine.lwjgl.texture.Texture;
 import hexagon.engine.math.matrix.Matrices;
 import hexagon.engine.math.vector.Float3;
 
+/**
+ * Game system that renders 2d sprites.
+ * <p>
+ * 	Renders all entities with a {@link SpriteComponent} and a {@link Transform2D}.
+ * </p>
+ * 
+ * @author Nico
+ */
 public final class SpriteRenderer extends GameSystem {
 
+	/**Vertex object storing a quad model */
 	private final VertexObject model;
+	/**Shader program used for this renderer */
 	private final ShaderProgram shader;
+	/**Map that stores entities in batches to render them more efficiently */
 	private final HashMap<Texture, ArrayList<GameEntity>> renderBatch;
 
+	/**
+	 * Creates sprite renderer.
+	 * Initializes vertex object and shader.
+	 */
 	public SpriteRenderer() {
 		super(Transform2D.class, SpriteComponent.class);
 		this.model = VertexObject.with()
@@ -28,8 +43,8 @@ public final class SpriteRenderer extends GameSystem {
 			.indices(new int[] {0,1,3, 3,1,2})
 			.create();
 		this.shader = ShaderProgram.with()
-			.shader(Shader.vertex("/shaders/sprite_vertex.glsl"))
-			.shader(Shader.fragment("/shaders/sprite_fragment.glsl"))
+			.shader(Shader.vertex("/shaders/vertex/sprite_shader.glsl"))
+			.shader(Shader.fragment("/shaders/fragment/texture_shader.glsl"))
 			.attribute(0, "vertex")
 			.attribute(1, "uv")
 			.create();
