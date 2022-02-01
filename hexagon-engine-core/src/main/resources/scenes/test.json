@@ -14,6 +14,15 @@
 				"model": "/models/dragon.obj",
 				"color": { "r": 212, "g": 175, "b": 55 }
 			}
+		},
+		{
+			"hexagon.engine.core.components.LightComponent": {
+				"color": { "r": 1, "g": 1, "b": 1},
+				"intensity": 1.0
+			},
+			"hexagon.engine.core.components.Transform3D": {
+				"position": { "z": -20.0 }
+			}
 		}
 	]
 }

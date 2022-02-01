@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import hexagon.engine.core.components.Camera3D;
+import hexagon.engine.core.components.LightComponent;
 import hexagon.engine.core.components.ModelComponent;
 import hexagon.engine.core.components.Transform3D;
 import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.core.ecs.GameManager;
 import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.core.resources.Model;
+import hexagon.engine.core.systems.LightSystem;
 import hexagon.engine.lwjgl.DrawCalls;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
@@ -39,8 +41,10 @@ public final class ModelRenderer extends GameSystem {
 		super(gameManager, ModelComponent.class, Transform3D.class);
 		this.shader = ShaderProgram.with()
 			.shader(Shader.vertex("/shaders/vertex/model_shader.glsl"))
+			.shader(Shader.vertex("/shaders/vertex/light.glsl"))
 			.shader(Shader.fragment("/shaders/fragment/plain_color_shader.glsl"))
 			.attribute(0, "vertex")
+			.attribute(2, "normal")
 			.create();
 		this.renderBatch = new HashMap<>();
 	}
@@ -64,11 +68,36 @@ public final class ModelRenderer extends GameSystem {
 	@Override
 	protected void afterAll() {
 		ShaderProgram.start(this.shader);
+		this.loadCamera();
+		this.loadLights();
+		this.renderEach();
+		ShaderProgram.stop();
+		this.renderBatch.clear();
+	}
+
+	private void loadCamera() {
 		if(Camera3D.main() != null) {
 			// TODO - Looks kinda ugly
 			this.shader.load("projection_matrix", Camera3D.main().projectionMatrix());
 			this.shader.load("view_matrix", Camera3D.main().viewMatrix());
 		}
+	}
+
+	private void loadLights() {
+		LightSystem lightSystem = super.gameManager.getSystem(LightSystem.class);
+		if(lightSystem != null) {
+			lightSystem.lightEntities.forEach(entity -> {
+				Transform3D transform = entity.getComponent(Transform3D.class);
+				LightComponent light = entity.getComponent(LightComponent.class);
+				// TODO - Multiple lights
+				this.shader.load("light_position", transform.position);
+				// TODO - Load uniform float
+				this.shader.load("light_color", light.color.r(), light.color.g(), light.color.b());
+			});
+		}
+	}
+
+	private void renderEach() {
 		this.renderBatch.forEach((key, entities) -> {
 			key.model.vertexObject.activate(() -> {
 				entities.forEach(entity -> {
@@ -79,8 +108,6 @@ public final class ModelRenderer extends GameSystem {
 				});
 			});
 		});
-		ShaderProgram.stop();
-		this.renderBatch.clear();
 	}
 	
 	/**

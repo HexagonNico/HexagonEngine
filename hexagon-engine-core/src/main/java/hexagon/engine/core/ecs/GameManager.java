@@ -105,7 +105,7 @@ public final class GameManager {
 	 * @return The requested system.
 	 */
 	public <T extends GameSystem> T getSystem(Class<T> type) {
-		return type.cast(this.systems.stream().filter(type::isInstance).findFirst());
+		return type.cast(this.systems.stream().filter(type::isInstance).findFirst().orElse(null));
 	}
 
 	/**
