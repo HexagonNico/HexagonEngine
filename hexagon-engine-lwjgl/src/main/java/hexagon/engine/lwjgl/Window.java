@@ -23,6 +23,7 @@ public final class Window {
 	private Window() {
 		this.window = GLFW.glfwCreateWindow(800, 450, "Hello!", MemoryUtil.NULL, MemoryUtil.NULL);
 		GLFW.glfwMakeContextCurrent(this.window);
+		GLFW.glfwSetKeyCallback(window, new Keyboard());
 	}
 
 	// TODO - Center the window
