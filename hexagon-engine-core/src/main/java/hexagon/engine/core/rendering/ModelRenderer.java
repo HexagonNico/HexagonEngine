@@ -13,7 +13,7 @@ import hexagon.engine.core.resources.Model;
 import hexagon.engine.lwjgl.DrawCalls;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
-import hexagon.engine.math.vector.Float3;
+import hexagon.engine.math.color.Color;
 
 /**
  * Game system that renders 3d models.
@@ -74,7 +74,7 @@ public final class ModelRenderer extends GameSystem {
 				entities.forEach(entity -> {
 					Transform3D transform = entity.getComponent(Transform3D.class);
 					this.shader.load("transformation_matrix", transform.matrix());
-					this.shader.load("color", key.color);
+					this.shader.load("color", key.color.r(), key.color.g(), key.color.b());
 					DrawCalls.drawElements(key.model.vertexCount);
 				});
 			});
@@ -86,6 +86,6 @@ public final class ModelRenderer extends GameSystem {
 	/**
 	 * Used as a key for the render batch
 	 */
-	private static record BatchKey(Model model, Float3 color) {
+	private static record BatchKey(Model model, Color color) {
 	}
 }
