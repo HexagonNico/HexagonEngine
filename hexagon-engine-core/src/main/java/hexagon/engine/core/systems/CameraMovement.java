@@ -2,14 +2,15 @@ package hexagon.engine.core.systems;
 
 import hexagon.engine.core.components.Camera3D;
 import hexagon.engine.core.ecs.GameEntity;
+import hexagon.engine.core.ecs.GameManager;
 import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.lwjgl.Keyboard;
 import hexagon.engine.math.vector.Float3;
 
 public final class CameraMovement extends GameSystem {
 
-	public CameraMovement() {
-		super(Camera3D.class);
+	public CameraMovement(GameManager gameManager) {
+		super(gameManager, Camera3D.class);
 	}
 
 	@Override

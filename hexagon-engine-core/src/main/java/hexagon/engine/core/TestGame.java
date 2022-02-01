@@ -12,8 +12,8 @@ public final class TestGame extends Application {
 		OpenGL.cullFace(true);
 		OpenGL.depthTest(true);
 		this.gameManager.loadScene("/scenes/test.json");
-		this.gameManager.addSystem(new ModelRenderer());
-		this.gameManager.addSystem(new CameraMovement());
+		this.gameManager.addSystem(ModelRenderer::new);
+		this.gameManager.addSystem(CameraMovement::new);
 	}
 	
 	public static void main(String[] args) {

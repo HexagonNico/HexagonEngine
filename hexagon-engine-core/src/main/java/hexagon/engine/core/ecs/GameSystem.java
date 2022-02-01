@@ -11,15 +11,19 @@ import java.util.Collection;
  */
 public abstract class GameSystem {
 	
+	/**Reference to the game manager */
+	protected final GameManager gameManager;
 	/**All the components that an entity needs for this system */
 	private final Collection<Class<?>> requiredComponents;
 
 	/**
 	 * Creates a game system.
 	 * 
+	 * @param gameManager Reference to the game manager.
 	 * @param requiredComponents List of all the components an entity needs.
 	 */
-	public GameSystem(Class<?>... requiredComponents) {
+	public GameSystem(GameManager gameManager, Class<?>... requiredComponents) {
+		this.gameManager = gameManager;
 		this.requiredComponents = Arrays.asList(requiredComponents);
 	}
 

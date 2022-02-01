@@ -7,6 +7,7 @@ import hexagon.engine.core.components.Camera3D;
 import hexagon.engine.core.components.TexturedModelComponent;
 import hexagon.engine.core.components.Transform3D;
 import hexagon.engine.core.ecs.GameEntity;
+import hexagon.engine.core.ecs.GameManager;
 import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.core.resources.Model;
 import hexagon.engine.lwjgl.DrawCalls;
@@ -30,11 +31,12 @@ public final class TexturedModelRenderer extends GameSystem {
 	private final HashMap<BatchKey, ArrayList<GameEntity>> renderBatch;
 
 	/**
-	 * Creates textured model renderer.
-	 * Initializes shader.
+	 * Creates textured model renderer, initializes shader.
+	 * 
+	 * @param gameManager Reference to the game manager.
 	 */
-	public TexturedModelRenderer() {
-		super(TexturedModelComponent.class, Transform3D.class);
+	public TexturedModelRenderer(GameManager gameManager) {
+		super(gameManager, TexturedModelComponent.class, Transform3D.class);
 		this.shader = ShaderProgram.with()
 			.shader(Shader.vertex("/shaders/vertex/model_shader.glsl"))
 			.shader(Shader.fragment("/shaders/fragment/texture_shader.glsl"))

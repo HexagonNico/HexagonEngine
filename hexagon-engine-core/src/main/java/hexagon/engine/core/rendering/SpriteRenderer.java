@@ -7,6 +7,7 @@ import hexagon.engine.core.components.Camera3D;
 import hexagon.engine.core.components.SpriteComponent;
 import hexagon.engine.core.components.Transform2D;
 import hexagon.engine.core.ecs.GameEntity;
+import hexagon.engine.core.ecs.GameManager;
 import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.lwjgl.DrawCalls;
 import hexagon.engine.lwjgl.VertexObject;
@@ -32,11 +33,12 @@ public final class SpriteRenderer extends GameSystem {
 	private final HashMap<Texture, ArrayList<GameEntity>> renderBatch;
 
 	/**
-	 * Creates sprite renderer.
-	 * Initializes vertex object and shader.
+	 * Creates sprite renderer, initializes vertex object and shader.
+	 * 
+	 * @param gameManager Reference to the game manager.
 	 */
-	public SpriteRenderer() {
-		super(Transform2D.class, SpriteComponent.class);
+	public SpriteRenderer(GameManager gameManager) {
+		super(gameManager, Transform2D.class, SpriteComponent.class);
 		this.model = VertexObject.with()
 			.attribute(0, new float[] {-0.5f,0.5f, -0.5f,-0.5f, 0.5f,-0.5f, 0.5f,0.5f}, 2)
 			.indices(new int[] {0,1,3, 3,1,2})

@@ -3,6 +3,7 @@ package hexagon.engine.core.ecs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Function;
 
 import hexagon.engine.core.scene.SceneLoader;
 
@@ -50,10 +51,11 @@ public final class GameManager {
 	/**
 	 * Adds a game system.
 	 * 
-	 * @param system The system to add.
+	 * @param system Constructor of the system to add.
 	 */
-	public void addSystem(GameSystem system) {
-		this.systems.add(system);
+	public void addSystem(Function<GameManager, GameSystem> system) {
+		// TODO - Add systems to scene file (?)
+		this.systems.add(system.apply(this));
 	}
 
 	/**
@@ -92,6 +94,18 @@ public final class GameManager {
 	 */
 	public <T> T getComponent(GameEntity entity, Class<T> type) {
 		return type.cast(this.componentsTable.get(entity).get(type));
+	}
+
+	/**
+	 * Gets one of the active systems.
+	 * 
+	 * @param <T> Type of the system.
+	 * @param type Class of the system.
+	 * 
+	 * @return The requested system.
+	 */
+	public <T extends GameSystem> T getSystem(Class<T> type) {
+		return type.cast(this.systems.stream().filter(type::isInstance).findFirst());
 	}
 
 	/**
