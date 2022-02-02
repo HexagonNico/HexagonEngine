@@ -41,6 +41,7 @@ public final class ModelRenderer extends GameSystem {
 		super(gameManager, ModelComponent.class, Transform3D.class);
 		this.shader = ShaderProgram.with()
 			.shader(Shader.vertex("/shaders/vertex/model_shader.glsl"))
+			.shader(Shader.fragment("/shaders/fragment/light.glsl"))
 			.shader(Shader.fragment("/shaders/fragment/plain_color_shader.glsl"))
 			.attribute(0, "vertex")
 			.attribute(2, "normal")
