@@ -92,6 +92,17 @@ public final class ShaderProgram {
 	}
 
 	/**
+	 * Loads a float uniform variable.
+	 * 
+	 * @param variableName Name of the variable in the shader code.
+	 * @param value The value to load.
+	 */
+	public void load(String variableName, float value) {
+		int location = this.getUniformLocation(variableName);
+		GL20.glUniform1f(location, value);
+	}
+
+	/**
 	 * Loads a 2D float vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
@@ -111,6 +122,17 @@ public final class ShaderProgram {
 	public void load(String variableName, float x, float y) {
 		int location = this.getUniformLocation(variableName);
 		GL20.glUniform2f(location, x, y);
+	}
+
+	/**
+	 * Loads an int uniform variable.
+	 * 
+	 * @param variableName Name of the variable in the shader code.
+	 * @param value The value to load.
+	 */
+	public void load(String variableName, int value) {
+		int location = this.getUniformLocation(variableName);
+		GL20.glUniform1i(location, value);
 	}
 
 	/**
