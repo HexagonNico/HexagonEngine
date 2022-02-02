@@ -105,6 +105,8 @@ public final class ModelRenderer extends GameSystem {
 					Transform3D transform = entity.getComponent(Transform3D.class);
 					this.shader.load("transformation_matrix", transform.matrix());
 					this.shader.load("color", key.color.r(), key.color.g(), key.color.b());
+					this.shader.load("reflectivity", 1.0f);
+					this.shader.load("shine_damper", 5.0f);
 					DrawCalls.drawElements(key.model.vertexCount);
 				});
 			});
