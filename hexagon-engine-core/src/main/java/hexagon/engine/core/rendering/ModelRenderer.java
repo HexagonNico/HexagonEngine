@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import hexagon.engine.core.components.Camera3D;
-import hexagon.engine.core.components.LightComponent;
 import hexagon.engine.core.components.ModelComponent;
 import hexagon.engine.core.components.Transform3D;
 import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.core.ecs.GameManager;
 import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.core.resources.Model;
-import hexagon.engine.core.systems.LightSystem;
 import hexagon.engine.lwjgl.DrawCalls;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
@@ -84,7 +82,8 @@ public final class ModelRenderer extends GameSystem {
 	}
 
 	private void loadLights() {
-		LightSystem lightSystem = super.gameManager.getSystem(LightSystem.class);
+		// TODO - Something
+		/*LightSystem lightSystem = super.gameManager.getSystem(LightSystem.class);
 		if(lightSystem != null) {
 			lightSystem.lightEntities.forEach(entity -> {
 				Transform3D transform = entity.getComponent(Transform3D.class);
@@ -95,7 +94,7 @@ public final class ModelRenderer extends GameSystem {
 				this.shader.load("light_intensity", light.intensity);
 				this.shader.load("diffuse_light", 0.2f);
 			});
-		}
+		}*/
 	}
 
 	private void renderEach() {

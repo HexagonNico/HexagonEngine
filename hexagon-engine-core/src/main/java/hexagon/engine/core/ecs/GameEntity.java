@@ -48,4 +48,9 @@ public final class GameEntity {
 	public <T> T getComponent(Class<T> type) {
 		return this.gameManager.getComponent(this, type);
 	}
+
+	@Override
+	public String toString() {
+		return "Entity" + this.id;
+	}
 }
