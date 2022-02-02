@@ -41,7 +41,6 @@ public final class ModelRenderer extends GameSystem {
 		super(gameManager, ModelComponent.class, Transform3D.class);
 		this.shader = ShaderProgram.with()
 			.shader(Shader.vertex("/shaders/vertex/model_shader.glsl"))
-			.shader(Shader.vertex("/shaders/vertex/light.glsl"))
 			.shader(Shader.fragment("/shaders/fragment/plain_color_shader.glsl"))
 			.attribute(0, "vertex")
 			.attribute(2, "normal")
@@ -91,8 +90,9 @@ public final class ModelRenderer extends GameSystem {
 				LightComponent light = entity.getComponent(LightComponent.class);
 				// TODO - Multiple lights
 				this.shader.load("light_position", transform.position);
-				// TODO - Load uniform float
 				this.shader.load("light_color", light.color.r(), light.color.g(), light.color.b());
+				this.shader.load("light_intensity", light.intensity);
+				this.shader.load("diffuse_light", 0.2f);
 			});
 		}
 	}

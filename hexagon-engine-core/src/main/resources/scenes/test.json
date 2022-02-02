@@ -8,7 +8,7 @@
 		},
 		{
 			"hexagon.engine.core.components.Transform3D": {
-				"position": { "y": -1.0, "z": -5.0 }
+				"position": { "z": -25.0 }
 			},
 			"hexagon.engine.core.components.ModelComponent": {
 				"model": "/models/dragon.obj",
@@ -21,7 +21,7 @@
 				"intensity": 1.0
 			},
 			"hexagon.engine.core.components.Transform3D": {
-				"position": { "z": -20.0 }
+				"position": { "x": 200, "y": 200, "z": 100 }
 			}
 		}
 	]
