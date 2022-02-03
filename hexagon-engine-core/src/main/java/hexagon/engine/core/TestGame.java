@@ -1,8 +1,7 @@
 package hexagon.engine.core;
 
-import hexagon.engine.core.components.SpriteComponent;
-import hexagon.engine.core.ecs.GameEntity;
-import hexagon.engine.core.rendering.SpriteRenderer;
+import hexagon.engine.core.ecs.SceneLoader;
+import hexagon.engine.core.systems.SpriteRenderer;
 import hexagon.engine.lwjgl.OpenGL;
 
 public final class TestGame extends Application {
@@ -12,8 +11,7 @@ public final class TestGame extends Application {
 		OpenGL.alphaBlending(true);
 		OpenGL.cullFace(true);
 		OpenGL.depthTest(true);
-		GameEntity entity = this.gameManager.createEntity();
-		entity.addComponent(new SpriteComponent("/textures/windmill.png"));
+		SceneLoader.loadScene("/scenes/test.json", this.gameManager);
 		this.gameManager.addSystem(new SpriteRenderer());
 	}
 	
