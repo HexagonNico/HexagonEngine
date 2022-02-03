@@ -5,13 +5,28 @@ import hexagon.engine.math.color.Color;
 import hexagon.engine.math.vector.Float2;
 import hexagon.engine.utils.json.JsonObject;
 
+/**
+ * Component used by sprite renderer.
+ * 
+ * @author Nico
+ */
 public class SpriteComponent extends Transform2D {
 
+	/**Reference to the texture */
 	public Texture texture;
+	/**Coordinates of top left corner of the sprite in the texture */
 	public Float2 uv;
+	/**Size of the sprite relative to the texture */
 	public Float2 size;
+	/**Color tint of the sprite */
 	public Color color;
 
+	/**
+	 * Constructs a sprite component from a {@link JsonObject}.
+	 * Constructor used when loading the component from a json file.
+	 * 
+	 * @param jsonObject JsonObject containing the component's data.
+	 */
 	public SpriteComponent(JsonObject jsonObject) {
 		super(jsonObject);
 		// TODO - Error texture
@@ -31,6 +46,11 @@ public class SpriteComponent extends Transform2D {
 		});
 	}
 
+	/**
+	 * Constructs a basic sprite component with a texture.
+	 * 
+	 * @param texture Name of the texture.
+	 */
 	public SpriteComponent(String texture) {
 		this.texture = Texture.getOrLoad(texture);
 		this.uv = Float2.ZERO;

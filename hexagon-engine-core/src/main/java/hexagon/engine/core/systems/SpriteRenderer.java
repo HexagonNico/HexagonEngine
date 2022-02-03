@@ -55,12 +55,7 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 	protected void afterAll() {
 		this.model.activate(() -> {
 			ShaderProgram.start(this.shader);
-			// TODO - 2D orthographic camera
-			/*if(Camera3D.main() != null) {
-				// TODO - Looks kinda ugly
-				this.shader.load("projection_matrix", Camera3D.main().projectionMatrix());
-				this.shader.load("view_matrix", Camera3D.main().viewMatrix());
-			}*/
+			// TODO - Fix the camera
 			this.shader.load("projection_matrix", Matrices.projection(70.0f, 0.1f, 1000.0f));
 			this.shader.load("view_matrix", Matrices.view(new Float3(0, 0, 5), 0, 0));
 			this.renderBatch.forEach((texture, sprites) -> {

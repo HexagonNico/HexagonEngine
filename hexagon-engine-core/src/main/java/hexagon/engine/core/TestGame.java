@@ -1,7 +1,7 @@
 package hexagon.engine.core;
 
 import hexagon.engine.core.ecs.SceneLoader;
-import hexagon.engine.core.systems.SpriteRenderer;
+import hexagon.engine.core.systems.ModelRenderer;
 import hexagon.engine.lwjgl.OpenGL;
 
 public final class TestGame extends Application {
@@ -12,7 +12,7 @@ public final class TestGame extends Application {
 		OpenGL.cullFace(true);
 		OpenGL.depthTest(true);
 		SceneLoader.loadScene("/scenes/test.json", this.gameManager);
-		this.gameManager.addSystem(new SpriteRenderer());
+		this.gameManager.addSystem(new ModelRenderer());
 	}
 	
 	public static void main(String[] args) {

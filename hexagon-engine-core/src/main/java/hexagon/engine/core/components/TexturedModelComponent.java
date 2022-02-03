@@ -1,9 +1,7 @@
 package hexagon.engine.core.components;
 
-import org.json.JSONObject;
-
-import hexagon.engine.core.resources.Model;
 import hexagon.engine.lwjgl.texture.Texture;
+import hexagon.engine.utils.json.JsonObject;
 
 /**
  * A component class that stores a reference to a model resource and a texture.
@@ -14,21 +12,20 @@ import hexagon.engine.lwjgl.texture.Texture;
  * 
  * @author Nico
  */
-public final class TexturedModelComponent {
+public class TexturedModelComponent extends ModelComponent {
 
-	/**Reference to the model resource */
-	public final Model model;
 	/**Reference to the texture */
 	public final Texture texture;
 
 	/**
-	 * Creates component from json object.
+	 * Constructs a textured model component from a {@link JsonObject}.
+	 * Constructor used when loading the component from a json file.
 	 * 
-	 * @param jsonObject Json object with the component's data.
+	 * @param jsonObject JsonObject containing the component's data.
 	 */
-	public TexturedModelComponent(JSONObject jsonObject) {
-		// TODO - Handle missing value
-		this.model = Model.getOrLoad(jsonObject.getString("model"));
-		this.texture = Texture.getOrLoad(jsonObject.getString("texture"));
+	public TexturedModelComponent(JsonObject jsonObject) {
+		super(jsonObject);
+		// TODO - Error texture
+		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElseThrow());
 	}
 }
