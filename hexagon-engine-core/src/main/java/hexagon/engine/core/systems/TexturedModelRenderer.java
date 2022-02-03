@@ -3,6 +3,7 @@ package hexagon.engine.core.systems;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hexagon.engine.core.components.ReflectivityComponent;
 import hexagon.engine.core.components.TexturedModelComponent;
 import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.core.resources.Model;
@@ -64,9 +65,11 @@ public final class TexturedModelRenderer extends GameSystem<TexturedModelCompone
 					this.shader.load("transformation_matrix", component.transformationMatrix());
 					// TODO - Color tint
 					//this.shader.load("color", component.color.r(), component.color.g(), component.color.b());
-					// TODO - Reflectivity component
-					//this.shader.load("reflectivity", 1.0f);
-					//this.shader.load("shine_damper", 5.0f);
+					component.getSiblingComponent(ReflectivityComponent.class).ifPresent(reflectivityComponent -> {
+						this.shader.load("diffuse_light", reflectivityComponent.diffuseLight);
+						this.shader.load("reflectivity", reflectivityComponent.reflectivity);
+						this.shader.load("shine_damper", reflectivityComponent.shineDamper);
+					});
 					DrawCalls.drawElements(texturedModel.model.vertexCount);
 				});
 			});

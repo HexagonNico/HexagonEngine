@@ -5,6 +5,9 @@
 				"position": { "y": -4.0, "z": -10.0 },
 				"model": "/models/dragon.obj",
 				"color": { "r": 0.83, "g": 0.68, "b": 0.21 }
+			},
+			"hexagon.engine.core.components.ReflectivityComponent": {
+				"reflectivity": 1.0
 			}
 		},
 		{
