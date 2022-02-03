@@ -1,7 +1,10 @@
-package hexagon.engine.utils.resources;
+package hexagon.engine.utils;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import hexagon.engine.utils.resources.ResourceLoadingException;
+import hexagon.engine.utils.resources.Resources;
 
 public class TestResources {
 	
