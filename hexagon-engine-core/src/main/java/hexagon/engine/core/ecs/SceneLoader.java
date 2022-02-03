@@ -35,7 +35,7 @@ public final class SceneLoader {
 			entityJson.keySet().forEach(key -> {
 				try {
 					JsonObject componentJson = entityJson.getObject(key).orElse(JsonObject.empty());
-					Object component = Class.forName(key).getConstructor(JsonObject.class).newInstance(componentJson);
+					Object component = Class.forName(key).getConstructor(GameEntity.class, JsonObject.class).newInstance(entity, componentJson);
 					entity.addComponent((Component) component);
 				} catch (InstantiationException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 					Log.error("Class " + key + " cannot be instantiated");

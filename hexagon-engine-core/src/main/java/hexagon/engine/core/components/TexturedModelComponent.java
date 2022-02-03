@@ -1,5 +1,6 @@
 package hexagon.engine.core.components;
 
+import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.lwjgl.texture.Texture;
 import hexagon.engine.utils.json.JsonObject;
 
@@ -22,9 +23,10 @@ public class TexturedModelComponent extends ModelComponent {
 	 * Constructor used when loading the component from a json file.
 	 * 
 	 * @param jsonObject JsonObject containing the component's data.
+	 * @param entity GameEntity holding this component.
 	 */
-	public TexturedModelComponent(JsonObject jsonObject) {
-		super(jsonObject);
+	public TexturedModelComponent(GameEntity entity, JsonObject jsonObject) {
+		super(entity, jsonObject);
 		// TODO - Error texture
 		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElseThrow());
 	}

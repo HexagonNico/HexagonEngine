@@ -2,9 +2,9 @@
 	"entities": [
 		{
 			"hexagon.engine.core.components.ModelComponent": {
-				"position": { "z": -25.0 },
+				"position": { "y": -4.0, "z": -10.0 },
 				"model": "/models/dragon.obj",
-				"color": { "r": 1.0, "g": 0.0, "b": 0.0 }
+				"color": { "r": 0.83, "g": 0.68, "b": 0.21 }
 			}
 		},
 		{

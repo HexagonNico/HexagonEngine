@@ -1,6 +1,7 @@
 package hexagon.engine.core.components;
 
 import hexagon.engine.core.ecs.Component;
+import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.math.matrix.Matrices;
 import hexagon.engine.math.matrix.Matrix4;
 import hexagon.engine.math.vector.Float3;
@@ -25,8 +26,10 @@ public class Transform3D extends Component {
 	 * Constructor used when loading the component from a json file.
 	 * 
 	 * @param jsonObject JsonObject containing the component's data.
+	 * @param entity GameEntity holding this component.
 	 */
-	public Transform3D(JsonObject jsonObject) {
+	public Transform3D(GameEntity entity, JsonObject jsonObject) {
+		super(entity);
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
 		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());
@@ -42,27 +45,6 @@ public class Transform3D extends Component {
 		y = scaleJson.getFloat("y").orElse(1.0f);
 		z = scaleJson.getFloat("z").orElse(1.0f);
 		this.scale = new Float3(x, y, z);
-	}
-
-	/**
-	 * Constructs a default transform
-	 * at position (0, 0, 0), with rotation (0, 0, 0) and scale (1, 1, 1).
-	 */
-	public Transform3D() {
-		this(Float3.ZERO, Float3.ZERO, Float3.ONE);
-	}
-
-	/**
-	 * Constructs a transform from the given values.
-	 * 
-	 * @param position Position in a 3D space.
-	 * @param rotation Rotation around x, y and z axis.
-	 * @param scale Scale on x, y and z axis.
-	 */
-	public Transform3D(Float3 position, Float3 rotation, Float3 scale) {
-		this.position = position;
-		this.rotation = rotation;
-		this.scale = scale;
 	}
 
 	/**

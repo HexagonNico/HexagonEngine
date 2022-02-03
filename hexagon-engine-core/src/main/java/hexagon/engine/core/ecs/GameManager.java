@@ -1,6 +1,7 @@
 package hexagon.engine.core.ecs;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 /**
  * Class that holds all the components that are currently in the scene and all the running systems.
@@ -78,9 +79,12 @@ public final class GameManager {
 	 * 
 	 * @return The requested component.
 	 */
-	public <T> T getComponent(GameEntity entity, Class<T> type) {
-		// TODO - Check for null values
-		return type.cast(this.componentsTable.get(type).get(entity));
+	public <T> Optional<T> getComponent(GameEntity entity, Class<T> type) {
+		if(this.componentsTable.containsKey(type)) {
+			if(this.componentsTable.get(type).containsKey(entity))
+				return Optional.of(type.cast(this.componentsTable.get(type).get(entity)));
+		}
+		return Optional.empty();
 	}
 
 	/**

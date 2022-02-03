@@ -1,5 +1,6 @@
 package hexagon.engine.core.components;
 
+import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.lwjgl.texture.Texture;
 import hexagon.engine.math.color.Color;
 import hexagon.engine.math.vector.Float2;
@@ -26,9 +27,10 @@ public class SpriteComponent extends Transform2D {
 	 * Constructor used when loading the component from a json file.
 	 * 
 	 * @param jsonObject JsonObject containing the component's data.
+	 * @param entity GameEntity holding this component.
 	 */
-	public SpriteComponent(JsonObject jsonObject) {
-		super(jsonObject);
+	public SpriteComponent(GameEntity entity, JsonObject jsonObject) {
+		super(entity, jsonObject);
 		// TODO - Error texture
 		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElseThrow());
 		JsonObject uvJson = jsonObject.getObject("uv").orElse(JsonObject.empty());
@@ -44,17 +46,5 @@ public class SpriteComponent extends Transform2D {
 		}, () -> {
 			this.color = new Color(1.0f, 1.0f, 1.0f);
 		});
-	}
-
-	/**
-	 * Constructs a basic sprite component with a texture.
-	 * 
-	 * @param texture Name of the texture.
-	 */
-	public SpriteComponent(String texture) {
-		this.texture = Texture.getOrLoad(texture);
-		this.uv = Float2.ZERO;
-		this.size = Float2.ONE;
-		this.color = new Color(1.0f, 1.0f, 1.0f);
 	}
 }

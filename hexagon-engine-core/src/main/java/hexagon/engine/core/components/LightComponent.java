@@ -1,5 +1,6 @@
 package hexagon.engine.core.components;
 
+import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.math.color.Color;
 import hexagon.engine.utils.json.JsonObject;
 
@@ -20,9 +21,10 @@ public class LightComponent extends Transform3D {
 	 * Constructor used when loading the component from a json file.
 	 * 
 	 * @param jsonObject JsonObject containing the component's data.
+	 * @param entity GameEntity holding this component.
 	 */
-	public LightComponent(JsonObject jsonObject) {
-		super(jsonObject);
+	public LightComponent(GameEntity entity, JsonObject jsonObject) {
+		super(entity, jsonObject);
 		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {
 			float r = colorJson.getFloat("r").orElse(0.0f);
 			float g = colorJson.getFloat("g").orElse(0.0f);

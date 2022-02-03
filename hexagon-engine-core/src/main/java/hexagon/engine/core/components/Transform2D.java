@@ -1,6 +1,7 @@
 package hexagon.engine.core.components;
 
 import hexagon.engine.core.ecs.Component;
+import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.math.matrix.Matrices;
 import hexagon.engine.math.matrix.Matrix4;
 import hexagon.engine.math.vector.Float2;
@@ -26,8 +27,10 @@ public class Transform2D extends Component {
 	 * Constructor used when loading the component from a json file.
 	 * 
 	 * @param jsonObject JsonObject containing the component's data.
+	 * @param entity GameEntity holding this component.
 	 */
-	public Transform2D(JsonObject jsonObject) {
+	public Transform2D(GameEntity entity, JsonObject jsonObject) {
+		super(entity);
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
 		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());
@@ -40,27 +43,6 @@ public class Transform2D extends Component {
 		x = scaleJson.getFloat("x").orElse(1.0f);
 		y = scaleJson.getFloat("y").orElse(1.0f);
 		this.scale = new Float2(x, y);
-	}
-
-	/**
-	 * Constructs a default transform
-	 * at position (0, 0), with rotation (0, 0) and scale (1, 1).
-	 */
-	public Transform2D() {
-		this(Float2.ZERO, Float2.ZERO, Float2.ONE);
-	}
-
-	/**
-	 * Constructs a transform from the given values.
-	 * 
-	 * @param position Position in a 2D space.
-	 * @param rotation Rotation around x and y axis.
-	 * @param scale Scale on x and y axis.
-	 */
-	public Transform2D(Float2 position, Float2 rotation, Float2 scale) {
-		this.position = position;
-		this.rotation = rotation;
-		this.scale = scale;
 	}
 
 	/**
