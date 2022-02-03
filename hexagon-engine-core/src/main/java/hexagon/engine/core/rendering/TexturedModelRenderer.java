@@ -8,7 +8,6 @@ import hexagon.engine.core.components.TexturedModelComponent;
 import hexagon.engine.core.components.Transform3D;
 import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.core.ecs.GameManager;
-import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.core.resources.Model;
 import hexagon.engine.lwjgl.DrawCalls;
 import hexagon.engine.lwjgl.shader.Shader;
@@ -23,8 +22,10 @@ import hexagon.engine.lwjgl.texture.Texture;
  * 
  * @author Nico
  */
-public final class TexturedModelRenderer extends GameSystem {
+public final class TexturedModelRenderer {
 	
+	// TODO - Something
+
 	/**Shader program used for this renderer */
 	private final ShaderProgram shader;
 	/**Map that stores entities in batches to render them more efficiently */
@@ -36,7 +37,7 @@ public final class TexturedModelRenderer extends GameSystem {
 	 * @param gameManager Reference to the game manager.
 	 */
 	public TexturedModelRenderer(GameManager gameManager) {
-		super(gameManager, TexturedModelComponent.class, Transform3D.class);
+		//super(gameManager, TexturedModelComponent.class, Transform3D.class);
 		this.shader = ShaderProgram.with()
 			.shader(Shader.vertex("/shaders/vertex/model_shader.glsl"))
 			.shader(Shader.fragment("/shaders/fragment/texture_shader.glsl"))
@@ -46,10 +47,8 @@ public final class TexturedModelRenderer extends GameSystem {
 		this.renderBatch = new HashMap<>();
 	}
 	
-	@Override
 	protected void beforeAll() {}
 
-	@Override
 	protected void process(GameEntity entity) {
 		TexturedModelComponent component = entity.getComponent(TexturedModelComponent.class);
 		BatchKey texturedModel = new BatchKey(component.model, component.texture);
@@ -62,7 +61,6 @@ public final class TexturedModelRenderer extends GameSystem {
 		}
 	}
 
-	@Override
 	protected void afterAll() {
 		ShaderProgram.start(this.shader);
 		if(Camera3D.main() != null) {

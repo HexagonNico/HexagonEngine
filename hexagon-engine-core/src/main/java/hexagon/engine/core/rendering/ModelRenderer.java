@@ -8,7 +8,6 @@ import hexagon.engine.core.components.ModelComponent;
 import hexagon.engine.core.components.Transform3D;
 import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.core.ecs.GameManager;
-import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.core.resources.Model;
 import hexagon.engine.lwjgl.DrawCalls;
 import hexagon.engine.lwjgl.shader.Shader;
@@ -23,7 +22,9 @@ import hexagon.engine.math.color.Color;
  * 
  * @author Nico
  */
-public final class ModelRenderer extends GameSystem {
+public final class ModelRenderer {
+
+	// TODO - Fix this
 
 	/**Shader program used for this renderer */
 	private final ShaderProgram shader;
@@ -36,7 +37,7 @@ public final class ModelRenderer extends GameSystem {
 	 * @param gameManager Reference to the game manager.
 	 */
 	public ModelRenderer(GameManager gameManager) {
-		super(gameManager, ModelComponent.class, Transform3D.class);
+		//super(gameManager, ModelComponent.class, Transform3D.class);
 		this.shader = ShaderProgram.with()
 			.shader(Shader.vertex("/shaders/vertex/model_shader.glsl"))
 			.shader(Shader.fragment("/shaders/fragment/light.glsl"))
@@ -47,10 +48,8 @@ public final class ModelRenderer extends GameSystem {
 		this.renderBatch = new HashMap<>();
 	}
 
-	@Override
 	protected void beforeAll() {}
 
-	@Override
 	protected void process(GameEntity entity) {
 		ModelComponent component = entity.getComponent(ModelComponent.class);
 		BatchKey key = new BatchKey(component.model, component.color);
@@ -63,7 +62,6 @@ public final class ModelRenderer extends GameSystem {
 		}
 	}
 
-	@Override
 	protected void afterAll() {
 		ShaderProgram.start(this.shader);
 		this.loadCamera();

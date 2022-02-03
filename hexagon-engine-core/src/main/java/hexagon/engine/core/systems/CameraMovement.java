@@ -2,21 +2,15 @@ package hexagon.engine.core.systems;
 
 import hexagon.engine.core.components.Camera3D;
 import hexagon.engine.core.ecs.GameEntity;
-import hexagon.engine.core.ecs.GameManager;
-import hexagon.engine.core.ecs.GameSystem;
 import hexagon.engine.lwjgl.Keyboard;
 import hexagon.engine.math.vector.Float3;
 
-public final class CameraMovement extends GameSystem {
+public final class CameraMovement {
 
-	public CameraMovement(GameManager gameManager) {
-		super(gameManager, Camera3D.class);
-	}
+	// TODO - Fix this
 
-	@Override
 	protected void beforeAll() {}
 
-	@Override
 	protected void process(GameEntity entity) {
 		Camera3D camera = entity.getComponent(Camera3D.class);
 		// TODO - Camera moves backwards?
@@ -27,6 +21,5 @@ public final class CameraMovement extends GameSystem {
 		camera.yaw += Keyboard.getAxis(Keyboard.Key.RIGHT, Keyboard.Key.LEFT) * 0.1f;
 	}
 
-	@Override
 	protected void afterAll() {}
 }

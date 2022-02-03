@@ -8,6 +8,8 @@ package hexagon.engine.core.ecs;
  */
 public final class GameEntity {
 	
+	// TODO - Id may not be needed
+
 	/**Reference to the game manager */
 	private final GameManager gameManager;
 	/**Entity id */
@@ -33,7 +35,7 @@ public final class GameEntity {
 	 * 
 	 * @param component Component to add.
 	 */
-	public void addComponent(Object component) {
+	public void addComponent(Component component) {
 		this.gameManager.addComponent(this, component);
 	}
 

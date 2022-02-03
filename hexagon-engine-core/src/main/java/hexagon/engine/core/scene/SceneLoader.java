@@ -3,22 +3,9 @@ package hexagon.engine.core.scene;
 import java.util.HashMap;
 import java.util.function.Function;
 
-import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import hexagon.engine.core.components.Camera3D;
-import hexagon.engine.core.components.LightComponent;
-import hexagon.engine.core.components.ModelComponent;
-import hexagon.engine.core.components.SpriteComponent;
-import hexagon.engine.core.components.TexturedModelComponent;
-import hexagon.engine.core.components.Transform2D;
-import hexagon.engine.core.components.Transform3D;
-import hexagon.engine.core.ecs.GameEntity;
 import hexagon.engine.core.ecs.GameManager;
-import hexagon.engine.utils.Log;
-import hexagon.engine.utils.resources.ResourceLoadingException;
-import hexagon.engine.utils.resources.Resources;
 
 /**
  * Utility class used to load a scene to the {@link GameManager}.
@@ -32,13 +19,13 @@ public final class SceneLoader {
 	private static final HashMap<String, Function<JSONObject, Object>> componentsRegistry = new HashMap<>();
 
 	static {
-		registerComponent(SpriteComponent.class, SpriteComponent::new);
+		/*registerComponent(SpriteComponent.class, SpriteComponent::new);
 		registerComponent(Transform2D.class, Transform2D::new);
 		registerComponent(Transform3D.class, Transform3D::new);
 		registerComponent(Camera3D.class, Camera3D::new);
 		registerComponent(ModelComponent.class, ModelComponent::new);
 		registerComponent(TexturedModelComponent.class, TexturedModelComponent::new);
-		registerComponent(LightComponent.class, LightComponent::new);
+		registerComponent(LightComponent.class, LightComponent::new);*/
 	}
 
 	/**
@@ -62,7 +49,8 @@ public final class SceneLoader {
 	 * @param gameManager Reference to the game manager to add entities.
 	 */
 	public static void loadScene(String filePath, GameManager gameManager) {
-		Log.info("Loading scene " + filePath);
+		// TODO - Find a way to solve this
+		/*Log.info("Loading scene " + filePath);
 		try {
 			JSONObject sceneJson = new JSONObject(Resources.readAsString(filePath));
 			JSONArray entitiesArray = sceneJson.getJSONArray("entities");
@@ -81,6 +69,6 @@ public final class SceneLoader {
 			}
 		} catch (JSONException | ResourceLoadingException e) {
 			Log.error("Could not read scene file " + filePath);
-		}
+		}*/
 	}
 }

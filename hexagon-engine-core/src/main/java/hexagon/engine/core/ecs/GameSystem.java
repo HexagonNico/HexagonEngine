@@ -1,58 +1,51 @@
 package hexagon.engine.core.ecs;
 
-import java.util.Arrays;
 import java.util.Collection;
 
 /**
- * A game system runs once every frame
- * and updates all entities that have the right components.
+ * A game system performs a certain task on every component of a certain type each frame.
  * 
  * @author Nico
  */
-public abstract class GameSystem {
-	
-	/**Reference to the game manager */
-	protected final GameManager gameManager;
-	/**All the components that an entity needs for this system */
-	private final Collection<Class<?>> requiredComponents;
+public abstract class GameSystem<T extends Component> {
+
+	/**Type of the component to process */
+	protected final Class<T> componentType;
 
 	/**
-	 * Creates a game system.
+	 * Creates game system.
 	 * 
-	 * @param gameManager Reference to the game manager.
-	 * @param requiredComponents List of all the components an entity needs.
+	 * @param componentType Type of the component to process.
 	 */
-	public GameSystem(GameManager gameManager, Class<?>... requiredComponents) {
-		this.gameManager = gameManager;
-		this.requiredComponents = Arrays.asList(requiredComponents);
+	public GameSystem(Class<T> componentType) {
+		this.componentType = componentType;
 	}
 
 	/**
-	 * Checks if all the required components are in the given collection.
+	 * Runs the system for the given components, called in game manager.
 	 * 
-	 * @param components Collection of all of the components of an entity.
-	 * 
-	 * @return True if the given collection contains all the required components, otherwise false.
+	 * @param components Collection of the components to process.
 	 */
-	public final boolean componentsMatch(Collection<Object> components) {
-		return components.stream().map(component -> component.getClass()).toList().containsAll(this.requiredComponents);
+	public final void run(Collection<Component> components) {
+		this.beforeAll();
+		components.stream().map(this.componentType::cast).forEach(this::process);
+		this.afterAll();
 	}
 
 	/**
-	 * Runs once per frame before any entity is processed.
+	 * Runs once per frame before processing all the components.
 	 */
 	protected abstract void beforeAll();
 
 	/**
-	 * Runs once per every entity that has the required components.
-	 * Applies this system's function.
+	 * Runs once per each component, applies this system's task.
 	 * 
-	 * @param entity The entity that is being processed.
+	 * @param component The component to process.
 	 */
-	protected abstract void process(GameEntity entity);
+	protected abstract void process(T component);
 
 	/**
-	 * Runs once per frame after all entities have been processed.
+	 * Runs once per frame after processing all the components.
 	 */
 	protected abstract void afterAll();
 }
