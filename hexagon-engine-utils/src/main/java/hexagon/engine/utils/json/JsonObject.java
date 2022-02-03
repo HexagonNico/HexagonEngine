@@ -1,6 +1,7 @@
 package hexagon.engine.utils.json;
 
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 
 import org.json.JSONException;
@@ -83,5 +84,9 @@ public final class JsonObject {
 		} catch(JSONException e) {
 			return Optional.empty();
 		}
+	}
+
+	public Set<String> keySet() {
+		return this.wrapped.keySet();
 	}
 }

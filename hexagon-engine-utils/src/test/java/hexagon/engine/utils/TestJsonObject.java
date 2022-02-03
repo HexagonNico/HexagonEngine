@@ -1,5 +1,7 @@
 package hexagon.engine.utils;
 
+import java.util.Set;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -53,5 +55,12 @@ public class TestJsonObject {
 		JsonObject inner = fromFile.getObject("inner").orElse(JsonObject.empty());
 		Assertions.assertEquals("A string", inner.getString("stringValue").orElse(":("));
 		Assertions.assertEquals(42, inner.getInt("numValue").orElse(0));
+	}
+
+	@Test
+	public void testKeys() {
+		Set<String> expected = Set.of("testStr", "testNum", "testFloat", "testBool");
+		Set<String> actual = jsonObject.keySet();
+		Assertions.assertEquals(expected, actual);
 	}
 }
