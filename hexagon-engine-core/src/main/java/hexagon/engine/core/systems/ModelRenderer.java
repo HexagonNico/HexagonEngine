@@ -56,10 +56,11 @@ public final class ModelRenderer extends GameSystem<ModelComponent> {
 		// TODO - Fix the camera
 		this.shader.load("projection_matrix", Matrices.projection(70.0f, 0.1f, 1000.0f));
 		this.shader.load("view_matrix", Matrices.view(new Float3(0, 0, 5), 0, 0));
-		// TODO - Lighting
-		this.shader.load("light_position", 200.0f, 200.0f, 100.0f);
-		this.shader.load("light_color", 1.0f, 1.0f, 1.0f);
-		this.shader.load("light_intensity", 1.0f);
+		LightSystem.forEach(light -> {
+			this.shader.load("light_position", light.position);
+			this.shader.load("light_color", light.color.r(), light.color.g(), light.color.b());
+			this.shader.load("light_intensity", light.intensity);
+		});
 		this.renderBatch.forEach((model, components) -> {
 			model.vertexObject.activate(() -> {
 				components.forEach(component -> {

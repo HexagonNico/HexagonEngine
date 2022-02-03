@@ -1,25 +1,31 @@
 package hexagon.engine.core.systems;
 
 import java.util.HashSet;
+import java.util.function.Consumer;
 
-import hexagon.engine.core.ecs.GameEntity;
-import hexagon.engine.core.ecs.GameManager;
+import hexagon.engine.core.components.LightComponent;
+import hexagon.engine.core.ecs.GameSystem;
 
-public final class LightSystem {
+public final class LightSystem extends GameSystem<LightComponent> {
 
-	// TODO - Fix this
+	private static final HashSet<LightComponent> lights = new HashSet<>();
 
-	public final HashSet<GameEntity> lightEntities;
-
-	public LightSystem(GameManager gameManager) {
-		this.lightEntities = new HashSet<>();
+	public LightSystem() {
+		super(LightComponent.class);
 	}
 
+	@Override
 	protected void beforeAll() {}
 
-	protected void process(GameEntity entity) {
-		this.lightEntities.add(entity);
+	@Override
+	protected void process(LightComponent component) {
+		lights.add(component);
 	}
 
+	@Override
 	protected void afterAll() {}
+
+	public static void forEach(Consumer<LightComponent> consumer) {
+		lights.forEach(consumer);
+	}
 }

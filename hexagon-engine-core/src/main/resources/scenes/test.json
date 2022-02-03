@@ -6,6 +6,11 @@
 				"model": "/models/dragon.obj",
 				"color": { "r": 1.0, "g": 0.0, "b": 0.0 }
 			}
+		},
+		{
+			"hexagon.engine.core.components.LightComponent": {
+				"position": { "x": 200, "y": 200, "z": 100 }
+			}
 		}
 	]
 }
