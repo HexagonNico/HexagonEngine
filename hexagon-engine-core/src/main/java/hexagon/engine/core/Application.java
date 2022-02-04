@@ -1,6 +1,7 @@
 package hexagon.engine.core;
 
 import hexagon.engine.core.ecs.GameManager;
+import hexagon.engine.lwjgl.Log;
 import hexagon.engine.lwjgl.glfw.Engine;
 import hexagon.engine.lwjgl.glfw.Window;
 import hexagon.engine.lwjgl.opengl.OpenGL;
@@ -28,6 +29,7 @@ public abstract class Application {
 				Window.update();
 			}
 		} catch(Exception any) {
+			Log.error("Uncaught exception in main");
 			any.printStackTrace();
 		} finally {
 			OpenGL.cleanUp();
