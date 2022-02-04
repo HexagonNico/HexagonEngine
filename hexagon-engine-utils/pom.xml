@@ -13,17 +13,17 @@
 
 	<name>Hexagon Engine Utils</name>
 
-    <dependencies>
+	<dependencies>
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
 			<version>20211205</version>
 		</dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.4.0</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.4.0</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
 </project>

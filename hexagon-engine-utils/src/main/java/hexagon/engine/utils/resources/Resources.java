@@ -7,8 +7,6 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import hexagon.engine.utils.Log;
-
 /**
  * A utility class to manage the loading of resources.
  * 
@@ -29,10 +27,8 @@ public final class Resources {
 		try(BufferedReader reader = new BufferedReader(new InputStreamReader(Resources.class.getResourceAsStream(filePath)))) {
 			return reader.lines().collect(Collectors.joining("\n"));
 		} catch(NullPointerException e) {
-			Log.error("Could not find file " + filePath);
-			throw new ResourceLoadingException("Exception loading resource " + filePath, e);
+			throw new ResourceLoadingException("Cannot find file " + filePath, e);
 		} catch(IOException e) {
-			Log.error("IO error occurred while reading " + filePath);
 			throw new ResourceLoadingException("Exception loading resource " + filePath, e);
 		}
 	}
@@ -51,8 +47,7 @@ public final class Resources {
 				action.accept(scanner.nextLine());
 			}
 		} catch(NullPointerException e) {
-			Log.error("Could not find file " + filePath);
-			throw new ResourceLoadingException("Exception loading resource " + filePath, e);
+			throw new ResourceLoadingException("Cannot find file " + filePath, e);
 		}
 	}
 }
