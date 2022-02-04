@@ -70,11 +70,6 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>hexagon.engine.utils</groupId>
-			<artifactId>hexagon-engine-utils</artifactId>
-			<version>0.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.l33tlabs.twl</groupId>
 			<artifactId>pngdecoder</artifactId>
 			<version>1.0</version>

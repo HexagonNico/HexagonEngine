@@ -216,6 +216,28 @@ public final class ShaderProgram {
 		}
 
 		/**
+		 * Adds a vertex shader to this program.
+		 * 
+		 * @param name Name of the shader to add.
+		 * 
+		 * @return {@code this}
+		 */
+		public Builder vertexShader(String name) {
+			return this.shader(Shader.vertex(name));
+		}
+
+		/**
+		 * Adds a fragment shader to this program.
+		 * 
+		 * @param name Name of the shader to add.
+		 * 
+		 * @return {@code this}
+		 */
+		public Builder fragmentShader(String name) {
+			return this.shader(Shader.fragment(name));
+		}
+
+		/**
 		 * Adds an attribute to bind.
 		 * This will bind the {@code in} variables in the shader to an attribute list.
 		 * 
