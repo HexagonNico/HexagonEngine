@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
 /**
@@ -68,11 +69,13 @@ public final class ShaderProgram {
 	 * Loads a matrix as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param matrixBuffer Buffer containing the values in the matrix.
+	 * @param values List of values in the matrix.
 	 */
-	public void load(String variableName, FloatBuffer matrixBuffer) {
+	public void load(String variableName, List<Float> values) {
 		int location = this.getUniformLocation(variableName);
-		GL20.glUniformMatrix4fv(location, false, matrixBuffer);
+		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+		values.forEach(buffer::put);
+		GL20.glUniformMatrix4fv(location, false, buffer.flip());
 	}
 
 	/**
