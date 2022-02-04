@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl;
+package hexagon.engine.lwjgl.opengl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 
-import hexagon.engine.utils.Log;
+import hexagon.engine.lwjgl.Log;
 
 /**
  * Utility class used to create OpenGL objects
@@ -91,6 +91,7 @@ public final class OpenGL {
 		int vao = GL30.glGenVertexArrays();
 		Log.info("Creating VAO with ID " + vao);
 		vaos.add(vao);
+		Log.info("Created VAO with id " + vao);
 		return vao;
 	}
 
@@ -108,6 +109,7 @@ public final class OpenGL {
 		int vbo = GL15.glGenBuffers();
 		Log.info("Creating VBO with ID " + vbo);
 		vbos.add(vbo);
+		Log.info("Created VBO with id " + vbo);
 		return vbo;
 	}
 
@@ -125,6 +127,7 @@ public final class OpenGL {
 		int id = GL20.glCreateShader(GL20.GL_VERTEX_SHADER);
 		Log.info("Creating vertex shader with id " + id);
 		shaders.add(id);
+		Log.info("Created vertex shader with id " + id);
 		return id;
 	}
 
@@ -142,6 +145,7 @@ public final class OpenGL {
 		int id = GL20.glCreateShader(GL20.GL_FRAGMENT_SHADER);
 		Log.info("Creating fragment shader with id " + id);
 		shaders.add(id);
+		Log.info("Created fragment shader with id " + id);
 		return id;
 	}
 
@@ -159,6 +163,7 @@ public final class OpenGL {
 		int id = GL20.glCreateProgram();
 		Log.info("Creating shader program with id " + id);
 		shaderPrograms.put(id, new ArrayList<>());
+		Log.info("Created shader program with id " + id);
 		return id;
 	}
 
@@ -193,6 +198,7 @@ public final class OpenGL {
 		int id = GL11.glGenTextures();
 		Log.info("Creating texture with id " + id);
 		textures.add(id);
+		Log.info("Created texture with id " + id);
 		return id;
 	}
 

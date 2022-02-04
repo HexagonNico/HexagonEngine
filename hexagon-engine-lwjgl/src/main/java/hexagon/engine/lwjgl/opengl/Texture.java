@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl.texture;
+package hexagon.engine.lwjgl.opengl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -8,8 +8,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
-import hexagon.engine.lwjgl.OpenGL;
-import hexagon.engine.utils.Log;
 
 /**
  * Class that represents an OpenGL Texture object.
@@ -68,9 +66,8 @@ public final class Texture {
 	 * @return The new texture.
 	 */
 	private static Texture loadTexture(String file) {
-		Log.info("Loading texture " + file);
 		try {
-			// TODO - PNG Decoder
+			// TODO - New PNG Decoder
 			PNGDecoder decoder = new PNGDecoder(Texture.class.getResourceAsStream(file));
 			ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
 			decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);

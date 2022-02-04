@@ -3,7 +3,7 @@ package hexagon.engine.core;
 import hexagon.engine.core.ecs.SceneLoader;
 import hexagon.engine.core.systems.LightSystem;
 import hexagon.engine.core.systems.ModelRenderer;
-import hexagon.engine.lwjgl.OpenGL;
+import hexagon.engine.lwjgl.opengl.OpenGL;
 
 public final class TestGame extends Application {
 

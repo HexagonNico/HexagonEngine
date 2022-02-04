@@ -2,7 +2,6 @@ package hexagon.engine.core.ecs;
 
 import java.lang.reflect.InvocationTargetException;
 
-import hexagon.engine.utils.Log;
 import hexagon.engine.utils.json.JsonArray;
 import hexagon.engine.utils.json.JsonObject;
 
@@ -38,11 +37,11 @@ public final class SceneLoader {
 					Object component = Class.forName(key).getConstructor(GameEntity.class, JsonObject.class).newInstance(entity, componentJson);
 					entity.addComponent((Component) component);
 				} catch (InstantiationException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-					Log.error("Class " + key + " cannot be instantiated");
+					//Log.error("Class " + key + " cannot be instantiated");
 				} catch (NoSuchMethodException e) {
-					Log.error("Cannot instantiate " + key + ": missing jsonObject constructor");
+					//Log.error("Cannot instantiate " + key + ": missing jsonObject constructor");
 				} catch (ClassNotFoundException e) {
-					Log.error("Class " + key + " does not exist");
+					//Log.error("Class " + key + " does not exist");
 				}
 			});
 		});

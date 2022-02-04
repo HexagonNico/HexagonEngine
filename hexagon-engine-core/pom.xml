@@ -19,5 +19,15 @@
 			<artifactId>hexagon-engine-lwjgl</artifactId>
 			<version>0.1</version>
 		</dependency>
+		<dependency>
+			<groupId>hexagon.engine.math</groupId>
+			<artifactId>hexagon-engine-math</artifactId>
+			<version>0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>hexagon.engine.utils</groupId>
+			<artifactId>hexagon-engine-utils</artifactId>
+			<version>0.1</version>
+		</dependency>
 	</dependencies>
 </project>

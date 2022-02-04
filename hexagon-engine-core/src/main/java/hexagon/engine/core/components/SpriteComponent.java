@@ -1,7 +1,7 @@
 package hexagon.engine.core.components;
 
 import hexagon.engine.core.ecs.GameEntity;
-import hexagon.engine.lwjgl.texture.Texture;
+import hexagon.engine.lwjgl.opengl.Texture;
 import hexagon.engine.math.color.Color;
 import hexagon.engine.math.vector.Float2;
 import hexagon.engine.utils.json.JsonObject;

@@ -1,14 +1,16 @@
-package hexagon.engine.lwjgl.shader;
+package hexagon.engine.lwjgl.opengl;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import hexagon.engine.lwjgl.OpenGL;
-import hexagon.engine.utils.Log;
-import hexagon.engine.utils.resources.ResourceLoadingException;
-import hexagon.engine.utils.resources.Resources;
+import hexagon.engine.lwjgl.Log;
 
 /**
  * Class to represent an OpenGL shader.
@@ -87,23 +89,25 @@ public final class Shader {
 	 * @return Instance of the shader.
 	 */
 	private static Shader loadShader(String filePath, int id, HashMap<String, Shader> map) {
-		Log.info("Loading shader " + filePath);
-		try {
-			String shaderCode = Resources.readAsString(filePath);
+		try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+			String shaderCode = reader.lines().collect(Collectors.joining("\n"));
 			GL20.glShaderSource(id, shaderCode);
 			GL20.glCompileShader(id);
 			if(GL20.glGetShaderi(id, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
 				Log.error("Could not compile shader " + filePath);
-				Log.info("Shader compilation info: \n" + GL20.glGetShaderInfoLog(id, 512));
+				Log.info("Shader compilation info: \n" + GL20.glGetShaderInfoLog(id, 1024));
 				throw new RuntimeException("Could not compile shader " + filePath);
 			} else {
 				Shader shader = new Shader(id);
 				map.put(filePath, shader);
 				return shader;
 			}
-		} catch (ResourceLoadingException e) {
-			Log.error("Could not load shader " + filePath);
-			throw new RuntimeException("Could not load shader " + filePath, e);
+		} catch(FileNotFoundException e) {
+			Log.error("Could not find file " + filePath);
+			throw new RuntimeException(e);
+		} catch(IOException e) {
+			Log.error("Could not read file " + filePath);
+			throw new RuntimeException(e);
 		}
 	}
 }

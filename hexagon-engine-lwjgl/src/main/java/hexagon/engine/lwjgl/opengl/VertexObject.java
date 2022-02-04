@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl;
+package hexagon.engine.lwjgl.opengl;
 
 import java.util.HashMap;
 import java.util.Set;

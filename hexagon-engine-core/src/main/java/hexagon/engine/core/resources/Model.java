@@ -2,7 +2,7 @@ package hexagon.engine.core.resources;
 
 import java.util.HashMap;
 
-import hexagon.engine.lwjgl.VertexObject;
+import hexagon.engine.lwjgl.opengl.VertexObject;
 import hexagon.engine.utils.parsers.ObjParser;
 
 /**

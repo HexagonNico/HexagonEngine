@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl;
+package hexagon.engine.lwjgl.opengl;
 
 import org.lwjgl.opengl.GL11;
 
