@@ -75,8 +75,8 @@ public final class Matrices {
 	}
 
 	public static Matrix4 view(Float3 cameraPosition, float pitch, float yaw) {
-		return xRotation((float) Math.toRadians(pitch))
-			.multiply(yRotation((float) Math.toRadians(yaw)))
-			.multiply(translation(cameraPosition.negative()).transposed());
+		return translation(cameraPosition.negative()).transposed()
+			.multiply(xRotation((float) Math.toRadians(pitch)))
+			.multiply(yRotation((float) Math.toRadians(yaw)));
 	}
 }

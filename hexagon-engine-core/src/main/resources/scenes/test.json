@@ -1,20 +1,24 @@
 {
 	"entities": [
 		{
-			"hexagon.engine.core.components.Transform2D": {
-				"position": { "x": -1.0 },
-				"scale": { "x": 4.0, "y": 4.0 }
-			},
-			"hexagon.engine.core.components.SpriteComponent": {
-				"texture": "/textures/test.png"
+			"hexagon.engine.core.components.Camera3D": {
+				"position": { "y": 9.0, "z": 5.0 },
+				"pitch": 30.0
 			}
 		},
 		{
-			"hexagon.engine.core.components.Transform2D": {
-				"scale": { "x": 1.0, "y": 2.0 }
+			"hexagon.engine.core.components.ModelComponent": {
+				"position": { "y": -4.0, "z": -10.0 },
+				"model": "/models/dragon.obj",
+				"color": { "r": 0.83, "g": 0.68, "b": 0.21 }
 			},
-			"hexagon.engine.core.components.SpriteComponent": {
-				"texture": "/textures/windmill.png"
+			"hexagon.engine.core.components.ReflectivityComponent": {
+				"reflectivity": 1.0
+			}
+		},
+		{
+			"hexagon.engine.core.components.LightComponent": {
+				"position": { "x": 200, "y": 200, "z": 100 }
 			}
 		}
 	]

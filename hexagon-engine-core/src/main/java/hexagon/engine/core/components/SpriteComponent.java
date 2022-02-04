@@ -1,36 +1,50 @@
 package hexagon.engine.core.components;
 
-import org.json.JSONObject;
-
-import hexagon.engine.lwjgl.texture.Texture;
+import hexagon.engine.core.ecs.GameEntity;
+import hexagon.engine.lwjgl.opengl.Texture;
+import hexagon.engine.math.color.Color;
 import hexagon.engine.math.vector.Float2;
+import hexagon.engine.utils.json.JsonObject;
 
-public final class SpriteComponent {
+/**
+ * Component used by sprite renderer.
+ * 
+ * @author Nico
+ */
+public class SpriteComponent extends Transform2D {
 
-	public final Texture texture;
+	/**Reference to the texture */
+	public Texture texture;
+	/**Coordinates of top left corner of the sprite in the texture */
 	public Float2 uv;
+	/**Size of the sprite relative to the texture */
 	public Float2 size;
-	// TODO - Color tint
+	/**Color tint of the sprite */
+	public Color color;
 
-	public SpriteComponent(JSONObject jsonObject) {
-		this.texture = Texture.getOrLoad(jsonObject.getString("texture"));
-		JSONObject uvJson = jsonObject.optJSONObject("uv", new JSONObject());
-		JSONObject sizeJson = jsonObject.optJSONObject("uv", new JSONObject());
-		this.uv = new Float2(uvJson.optFloat("x", 0.0f), uvJson.optFloat("y", 0.0f));
-		this.size = new Float2(sizeJson.optFloat("x", 1.0f), sizeJson.optFloat("y", 1.0f));
-	}
-
-	public SpriteComponent(String texture, Float2 uv, Float2 size) {
-		this.texture = Texture.getOrLoad(texture);
-		this.uv = uv;
-		this.size = size;
-	}
-
-	public SpriteComponent(String texture, float uvx, float uvy, float uvw, float uvh) {
-		this(texture, new Float2(uvx, uvy), new Float2(uvw, uvh));
-	}
-
-	public SpriteComponent(String texture) {
-		this(texture, 0.0f, 0.0f, 1.0f, 1.0f);
+	/**
+	 * Constructs a sprite component from a {@link JsonObject}.
+	 * Constructor used when loading the component from a json file.
+	 * 
+	 * @param jsonObject JsonObject containing the component's data.
+	 * @param entity GameEntity holding this component.
+	 */
+	public SpriteComponent(GameEntity entity, JsonObject jsonObject) {
+		super(entity, jsonObject);
+		// TODO - Error texture
+		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElseThrow());
+		JsonObject uvJson = jsonObject.getObject("uv").orElse(JsonObject.empty());
+		JsonObject sizeJson = jsonObject.getObject("size").orElse(JsonObject.empty());
+		this.uv = new Float2(uvJson.getFloat("x").orElse(0.0f), uvJson.getFloat("y").orElse(0.0f));
+		this.size = new Float2(sizeJson.getFloat("x").orElse(1.0f), sizeJson.getFloat("y").orElse(1.0f));
+		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {
+			float r = colorJson.getFloat("r").orElse(0.0f);
+			float g = colorJson.getFloat("g").orElse(0.0f);
+			float b = colorJson.getFloat("b").orElse(0.0f);
+			float a = colorJson.getFloat("a").orElse(1.0f);
+			this.color = new Color(r, g, b, a);
+		}, () -> {
+			this.color = new Color(1.0f, 1.0f, 1.0f);
+		});
 	}
 }

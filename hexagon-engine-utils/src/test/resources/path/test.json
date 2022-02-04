@@ -1,0 +1,6 @@
+{
+	"inner": {
+		"stringValue": "A string",
+		"numValue": 42
+	}
+}

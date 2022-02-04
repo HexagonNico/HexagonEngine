@@ -1,5 +1,7 @@
 package hexagon.engine.core.ecs;
 
+import java.util.Optional;
+
 /**
  * Class that represents an entity in the Entity-Component-System.
  * An entity is anything that can hold components.
@@ -8,6 +10,8 @@ package hexagon.engine.core.ecs;
  */
 public final class GameEntity {
 	
+	// TODO - Id may not be needed
+
 	/**Reference to the game manager */
 	private final GameManager gameManager;
 	/**Entity id */
@@ -33,7 +37,7 @@ public final class GameEntity {
 	 * 
 	 * @param component Component to add.
 	 */
-	public void addComponent(Object component) {
+	public void addComponent(Component component) {
 		this.gameManager.addComponent(this, component);
 	}
 
@@ -45,7 +49,12 @@ public final class GameEntity {
 	 * 
 	 * @return The requested component or {@code null} if this entity does not have a component of that type.
 	 */
-	public <T> T getComponent(Class<T> type) {
+	public <T> Optional<T> getComponent(Class<T> type) {
 		return this.gameManager.getComponent(this, type);
+	}
+
+	@Override
+	public String toString() {
+		return "Entity" + this.id;
 	}
 }

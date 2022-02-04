@@ -1,10 +1,7 @@
 package hexagon.engine.core.ecs;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
-import hexagon.engine.core.scene.SceneLoader;
+import java.util.Optional;
 
 /**
  * Class that holds all the components that are currently in the scene and all the running systems.
@@ -13,108 +10,92 @@ import hexagon.engine.core.scene.SceneLoader;
  */
 public final class GameManager {
 	
-	/**Table of components that uses entities and component's classes as rows and columns of a table */
-	private final HashMap<GameEntity, HashMap<Class<?>, Object>> componentsTable;
-	/**List of all running game systems */
-	private final ArrayList<GameSystem> systems;
+	/**Table that holds all the components of all entities in the scene */
+	private final HashMap<Class<?>, HashMap<GameEntity, Component>> componentsTable;
+	/**Map that holds all the running systems */
+	private final HashMap<Class<?>, GameSystem<?>> systems;
+	/**Number used to give a unique id to all entities */
+	private int nextEntityId;
 
 	/**
-	 * Creates game manager.
+	 * Creates game manager by initializing maps.
 	 */
 	public GameManager() {
 		this.componentsTable = new HashMap<>();
-		this.systems = new ArrayList<>();
+		this.systems = new HashMap<>();
+		this.nextEntityId = 0;
 	}
 
 	/**
-	 * Creates an entity with the first free id.
+	 * Creates a {@link GameEntity}. Use this instead of the {@code GameEntity} constructor.
 	 * 
-	 * @return The newly created game entity.
+	 * @return A newly instantiated game entity.
 	 */
 	public GameEntity createEntity() {
-		GameEntity entity = new GameEntity(this, this.nextId());
-		this.componentsTable.put(entity, new HashMap<>());
-		return entity;
+		return new GameEntity(this, this.nextEntityId++);
 	}
 
 	/**
-	 * Adds a component to an entity.
+	 * Adds a component to an entity by putting in in the right place in the table.
+	 * An entity can only hold one component of each type,
+	 * adding a new component will replace the old one.
 	 * 
-	 * @param entity The entity to add the component to.
+	 * @param entity The entity to which the component should be added.
 	 * @param component The component to add.
 	 */
-	public void addComponent(GameEntity entity, Object component) {
-		this.componentsTable.get(entity).put(component.getClass(), component);
+	public void addComponent(GameEntity entity, Component component) {
+		if(this.componentsTable.containsKey(component.getClass())) {
+			this.componentsTable.get(component.getClass()).put(entity, component);
+		} else {
+			HashMap<GameEntity, Component> componentsMap = new HashMap<>();
+			componentsMap.put(entity, component);
+			this.componentsTable.put(component.getClass(), componentsMap);
+		}
 	}
 
 	/**
-	 * Adds a game system.
+	 * Adds a system so that it will run every frame.
 	 * 
 	 * @param system The system to add.
 	 */
-	public void addSystem(GameSystem system) {
-		this.systems.add(system);
+	public void addSystem(GameSystem<?> system) {
+		this.systems.put(system.getClass(), system);
 	}
 
 	/**
-	 * Loads a scene by deleting all entities in the game manager
-	 * and adding all the entities from the scene file.
-	 * 
-	 * @param sceneFile Path to the scene file from the resources folder starting with {@code /}.
-	 */
-	public void loadScene(String sceneFile) {
-		this.componentsTable.clear();
-		SceneLoader.loadScene(sceneFile, this);
-	}
-
-	/**
+	 * Called every frame.
 	 * Runs all systems.
-	 * Called in main game loop.
 	 */
 	public void update() {
-		this.systems.forEach(system -> {
-			system.beforeAll();
-			this.componentsTable.entrySet().stream()
-				.filter(entry -> system.componentsMatch(entry.getValue().values()))
-				.forEach(entry -> system.process(entry.getKey()));
-			system.afterAll();
-		});
+		this.systems.values().forEach(system -> system.run(this.componentsTable.get(system.componentType).values()));
 	}
 
 	/**
-	 * Gets a component from an entity.
+	 * Gets a component from an entity in the scene.
 	 * 
 	 * @param <T> Type of the component.
-	 * @param entity Entity holding the component.
-	 * @param type Class of the component.
+	 * @param entity The entity that holds the component.
+	 * @param type Type of the component to get, since an entity can only have one component of each type.
 	 * 
 	 * @return The requested component.
 	 */
-	public <T> T getComponent(GameEntity entity, Class<T> type) {
-		return type.cast(this.componentsTable.get(entity).get(type));
+	public <T> Optional<T> getComponent(GameEntity entity, Class<T> type) {
+		if(this.componentsTable.containsKey(type)) {
+			if(this.componentsTable.get(type).containsKey(entity))
+				return Optional.of(type.cast(this.componentsTable.get(type).get(entity)));
+		}
+		return Optional.empty();
 	}
 
 	/**
-	 * Removes an entity from the scene.
+	 * Removes all the components of the given entity from the components table,
+	 * thus removing the entity.
 	 * 
 	 * @param entity The entity to remove.
 	 */
 	public void removeEntity(GameEntity entity) {
-		this.componentsTable.remove(entity);
-	}
-
-	/**
-	 * Gets the next free id to create an entity.
-	 * 
-	 * @return The first unused id.
-	 */
-	private int nextId() {
-		int id = 0;
-		List<Integer> entities = this.componentsTable.keySet().stream()
-			.map(entity -> entity.id)
-			.toList();
-		while(entities.contains(id))
-			id++;
-		return id;
+		this.componentsTable.values().forEach(componentMap -> {
+			componentMap.entrySet().removeIf(pair -> pair.getKey().equals(entity));
+		});
 	}
 }
