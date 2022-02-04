@@ -75,11 +75,6 @@
 			<version>0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>hexagon.engine.math</groupId>
-			<artifactId>hexagon-engine-math</artifactId>
-			<version>0.1</version>
-		</dependency>
-		<dependency>
 			<groupId>org.l33tlabs.twl</groupId>
 			<artifactId>pngdecoder</artifactId>
 			<version>1.0</version>

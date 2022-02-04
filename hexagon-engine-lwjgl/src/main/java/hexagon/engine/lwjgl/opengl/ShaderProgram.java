@@ -5,16 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
-
-import hexagon.engine.math.matrix.Matrix4;
-import hexagon.engine.math.vector.Float2;
-import hexagon.engine.math.vector.Float3;
-import hexagon.engine.math.vector.Float4;
-import hexagon.engine.math.vector.Int2;
-import hexagon.engine.math.vector.Int3;
-import hexagon.engine.math.vector.Int4;
 
 /**
  * Class that represents a shader program.
@@ -77,17 +68,11 @@ public final class ShaderProgram {
 	 * Loads a matrix as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param matrix The matrix to load.
+	 * @param matrixBuffer Buffer containing the values in the matrix.
 	 */
-	public void load(String variableName, Matrix4 matrix) {
+	public void load(String variableName, FloatBuffer matrixBuffer) {
 		int location = this.getUniformLocation(variableName);
-		// TODO - Move to another class
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-		buffer.put(matrix.m00()); buffer.put(matrix.m01()); buffer.put(matrix.m02()); buffer.put(matrix.m03());
-		buffer.put(matrix.m10()); buffer.put(matrix.m11()); buffer.put(matrix.m12()); buffer.put(matrix.m13());
-		buffer.put(matrix.m20()); buffer.put(matrix.m21()); buffer.put(matrix.m22()); buffer.put(matrix.m23());
-		buffer.put(matrix.m30()); buffer.put(matrix.m31()); buffer.put(matrix.m32()); buffer.put(matrix.m33());
-		GL20.glUniformMatrix4fv(location, false, buffer.flip());
+		GL20.glUniformMatrix4fv(location, false, matrixBuffer);
 	}
 
 	/**
@@ -99,16 +84,6 @@ public final class ShaderProgram {
 	public void load(String variableName, float value) {
 		int location = this.getUniformLocation(variableName);
 		GL20.glUniform1f(location, value);
-	}
-
-	/**
-	 * Loads a 2D float vector as a uniform variable.
-	 * 
-	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load.
-	 */
-	public void load(String variableName, Float2 vector) {
-		this.load(variableName, vector.x(), vector.y());
 	}
 
 	/**
@@ -138,32 +113,12 @@ public final class ShaderProgram {
 	 * Loads a 2D int vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load.
-	 */
-	public void load(String variableName, Int2 vector) {
-		this.load(variableName, vector.a(), vector.b());
-	}
-
-	/**
-	 * Loads a 2D int vector as a uniform variable.
-	 * 
-	 * @param variableName Name of the variable in the shader code.
 	 * @param a X coordinate of the vector to load.
 	 * @param b Y coordinate of the vector to load.
 	 */
 	public void load(String variableName, int a, int b) {
 		int location = this.getUniformLocation(variableName);
 		GL20.glUniform2i(location, a, b);
-	}
-
-	/**
-	 * Loads a 3D float vector as a uniform variable.
-	 * 
-	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load.
-	 */
-	public void load(String variableName, Float3 vector) {
-		this.load(variableName, vector.x(), vector.y(), vector.z());
 	}
 
 	/**
@@ -183,16 +138,6 @@ public final class ShaderProgram {
 	 * Loads a 3D int vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load.
-	 */
-	public void load(String variableName, Int3 vector) {
-		this.load(variableName, vector.a(), vector.b(), vector.c());
-	}
-
-	/**
-	 * Loads a 3D int vector as a uniform variable.
-	 * 
-	 * @param variableName Name of the variable in the shader code.
 	 * @param a X coordinate of the vector to load.
 	 * @param b Y coordinate of the vector to load.
 	 * @param c Z coordinate of the vector to load.
@@ -200,16 +145,6 @@ public final class ShaderProgram {
 	public void load(String variableName, int a, int b, int c) {
 		int location = this.getUniformLocation(variableName);
 		GL20.glUniform3i(location, a, b, c);
-	}
-
-	/**
-	 * Loads a 4D float vector as a uniform variable.
-	 * 
-	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load.
-	 */
-	public void load(String variableName, Float4 vector) {
-		this.load(variableName, vector.x(), vector.y(), vector.z(), vector.w());
 	}
 
 	/**
@@ -224,16 +159,6 @@ public final class ShaderProgram {
 	public void load(String variableName, float x, float y, float z, float w) {
 		int location = this.getUniformLocation(variableName);
 		GL20.glUniform4f(location, x, y, z, w);
-	}
-
-	/**
-	 * Loads a 4D int vector as a uniform variable.
-	 * 
-	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load.
-	 */
-	public void load(String variableName, Int4 vector) {
-		this.load(variableName, vector.a(), vector.b(), vector.c(), vector.d());
 	}
 
 	/**
