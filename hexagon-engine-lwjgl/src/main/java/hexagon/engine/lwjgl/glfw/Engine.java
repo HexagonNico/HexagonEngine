@@ -35,7 +35,6 @@ public class Engine {
 		if(!GLFW.glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
-		Log.info("Engine initialized");
 	}
 
 	/**
@@ -72,6 +71,5 @@ public class Engine {
 		Log.info("Terminating");
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).set();
-		Log.info("Engine terminated");
 	}
 }

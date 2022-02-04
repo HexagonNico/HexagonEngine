@@ -23,7 +23,6 @@ public final class Window {
 	 * Creates the window.
 	 */
 	private Window() {
-		Log.info("Creating GLFW window");
 		this.window = GLFW.glfwCreateWindow(800, 450, "Hello!", MemoryUtil.NULL, MemoryUtil.NULL);
 		GLFW.glfwMakeContextCurrent(this.window);
 		GLFW.glfwSetKeyCallback(window, new Keyboard());
@@ -67,6 +66,5 @@ public final class Window {
 		Log.info("Destroying window");
 		Callbacks.glfwFreeCallbacks(instance.window);
 		GLFW.glfwDestroyWindow(instance.window);
-		Log.info("Window destroyed");
 	}
 }
