@@ -1,6 +1,12 @@
 {
 	"entities": [
 		{
+			"hexagon.engine.core.components.Camera3D": {
+				"position": { "y": 9.0, "z": 5.0 },
+				"pitch": 30.0
+			}
+		},
+		{
 			"hexagon.engine.core.components.ModelComponent": {
 				"position": { "y": -4.0, "z": -10.0 },
 				"model": "/models/dragon.obj",

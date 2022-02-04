@@ -3,6 +3,7 @@ package hexagon.engine.core.systems;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import hexagon.engine.core.components.Camera3D;
 import hexagon.engine.core.components.ModelComponent;
 import hexagon.engine.core.components.ReflectivityComponent;
 import hexagon.engine.core.ecs.GameSystem;
@@ -10,8 +11,6 @@ import hexagon.engine.core.resources.Model;
 import hexagon.engine.lwjgl.DrawCalls;
 import hexagon.engine.lwjgl.shader.Shader;
 import hexagon.engine.lwjgl.shader.ShaderProgram;
-import hexagon.engine.math.matrix.Matrices;
-import hexagon.engine.math.vector.Float3;
 
 public final class ModelRenderer extends GameSystem<ModelComponent> {
 
@@ -54,9 +53,10 @@ public final class ModelRenderer extends GameSystem<ModelComponent> {
 	@Override
 	protected void afterAll() {
 		ShaderProgram.start(this.shader);
-		// TODO - Fix the camera
-		this.shader.load("projection_matrix", Matrices.projection(70.0f, 0.1f, 1000.0f));
-		this.shader.load("view_matrix", Matrices.view(new Float3(0, 0, 5), 0, 0));
+		Camera3D.main().ifPresent(camera -> {
+			this.shader.load("projection_matrix", camera.projectionMatrix());
+			this.shader.load("view_matrix", camera.viewMatrix());
+		});
 		LightSystem.forEach(light -> {
 			this.shader.load("light_position", light.position);
 			this.shader.load("light_color", light.color.r(), light.color.g(), light.color.b());
