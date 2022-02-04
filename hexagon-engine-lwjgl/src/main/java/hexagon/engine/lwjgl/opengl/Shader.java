@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
+import hexagon.engine.lwjgl.Log;
+
 /**
  * Class to represent an OpenGL shader.
  * Also used as a utility class to load and store references to shaders.
@@ -92,6 +94,8 @@ public final class Shader {
 			GL20.glShaderSource(id, shaderCode);
 			GL20.glCompileShader(id);
 			if(GL20.glGetShaderi(id, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
+				Log.error("Could not compile shader " + filePath);
+				Log.info("Shader compilation info: \n" + GL20.glGetShaderInfoLog(id, 1024));
 				throw new RuntimeException("Could not compile shader " + filePath);
 			} else {
 				Shader shader = new Shader(id);
@@ -99,8 +103,10 @@ public final class Shader {
 				return shader;
 			}
 		} catch(FileNotFoundException e) {
+			Log.error("Could not find file " + filePath);
 			throw new RuntimeException(e);
 		} catch(IOException e) {
+			Log.error("Could not read file " + filePath);
 			throw new RuntimeException(e);
 		}
 	}

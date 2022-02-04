@@ -4,6 +4,8 @@ import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.system.MemoryUtil;
 
+import hexagon.engine.lwjgl.Log;
+
 /**
  * Window class used to manage the GLFW window.
  * 
@@ -24,6 +26,7 @@ public final class Window {
 		this.window = GLFW.glfwCreateWindow(800, 450, "Hello!", MemoryUtil.NULL, MemoryUtil.NULL);
 		GLFW.glfwMakeContextCurrent(this.window);
 		GLFW.glfwSetKeyCallback(window, new Keyboard());
+		Log.info("Created GLFW window");
 	}
 
 	// TODO - Center the window
@@ -60,6 +63,7 @@ public final class Window {
 	 * Free the window callbacks and destroy the window.
 	 */
 	public static void destroy() {
+		Log.info("Destroying window");
 		Callbacks.glfwFreeCallbacks(instance.window);
 		GLFW.glfwDestroyWindow(instance.window);
 	}

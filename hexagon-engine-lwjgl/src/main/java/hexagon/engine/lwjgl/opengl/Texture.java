@@ -67,7 +67,7 @@ public final class Texture {
 	 */
 	private static Texture loadTexture(String file) {
 		try {
-			// TODO - PNG Decoder
+			// TODO - New PNG Decoder
 			PNGDecoder decoder = new PNGDecoder(Texture.class.getResourceAsStream(file));
 			ByteBuffer buffer = ByteBuffer.allocateDirect(4 * decoder.getWidth() * decoder.getHeight());
 			decoder.decode(buffer, decoder.getWidth() * 4, PNGDecoder.Format.RGBA);
