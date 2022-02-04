@@ -1,9 +1,8 @@
 package hexagon.engine.lwjgl.opengl;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
@@ -89,7 +88,7 @@ public final class Shader {
 	 * @return Instance of the shader.
 	 */
 	private static Shader loadShader(String filePath, int id, HashMap<String, Shader> map) {
-		try(BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+		try(BufferedReader reader = new BufferedReader(new InputStreamReader(Shader.class.getResourceAsStream(filePath)))) {
 			String shaderCode = reader.lines().collect(Collectors.joining("\n"));
 			GL20.glShaderSource(id, shaderCode);
 			GL20.glCompileShader(id);
@@ -102,7 +101,7 @@ public final class Shader {
 				map.put(filePath, shader);
 				return shader;
 			}
-		} catch(FileNotFoundException e) {
+		} catch(NullPointerException e) {
 			Log.error("Could not find file " + filePath);
 			throw new RuntimeException(e);
 		} catch(IOException e) {
