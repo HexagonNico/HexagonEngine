@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl;
+package hexagon.engine.lwjgl.glfw;
 
 import java.util.HashSet;
 

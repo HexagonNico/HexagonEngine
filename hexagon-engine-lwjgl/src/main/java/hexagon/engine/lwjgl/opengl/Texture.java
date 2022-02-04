@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl.texture;
+package hexagon.engine.lwjgl.opengl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -8,7 +8,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
-import hexagon.engine.lwjgl.OpenGL;
 
 /**
  * Class that represents an OpenGL Texture object.

@@ -1,11 +1,10 @@
-package hexagon.engine.lwjgl.shader;
+package hexagon.engine.lwjgl.opengl;
 
 import java.util.HashMap;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import hexagon.engine.lwjgl.OpenGL;
 import hexagon.engine.utils.Log;
 import hexagon.engine.utils.resources.ResourceLoadingException;
 import hexagon.engine.utils.resources.Resources;

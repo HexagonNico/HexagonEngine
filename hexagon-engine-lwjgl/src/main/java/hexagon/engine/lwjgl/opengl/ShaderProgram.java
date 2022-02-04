@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl.shader;
+package hexagon.engine.lwjgl.opengl;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
@@ -8,7 +8,6 @@ import java.util.List;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 
-import hexagon.engine.lwjgl.OpenGL;
 import hexagon.engine.math.matrix.Matrix4;
 import hexagon.engine.math.vector.Float2;
 import hexagon.engine.math.vector.Float3;

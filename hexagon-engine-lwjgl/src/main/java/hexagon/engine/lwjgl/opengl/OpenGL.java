@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl;
+package hexagon.engine.lwjgl.opengl;
 
 import java.util.ArrayList;
 import java.util.HashMap;

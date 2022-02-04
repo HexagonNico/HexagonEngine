@@ -1,4 +1,4 @@
-package hexagon.engine.lwjgl;
+package hexagon.engine.lwjgl.glfw;
 
 import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
