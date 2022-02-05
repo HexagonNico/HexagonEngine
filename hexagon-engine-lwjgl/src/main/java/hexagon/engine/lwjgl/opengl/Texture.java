@@ -8,6 +8,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
+import hexagon.engine.lwjgl.Log;
 
 /**
  * Class that represents an OpenGL Texture object.
@@ -19,6 +20,8 @@ public final class Texture {
 	
 	/**Map that stores all loaded textures */
 	private static final HashMap<String, Texture> textures = new HashMap<>();
+	/**Black and white checkerboard texture */
+	public static final Texture ERROR = errorTexture();
 
 	/**
 	 * Gets or loads a texture.
@@ -82,8 +85,24 @@ public final class Texture {
 			textures.put(file, texture);
 			return texture;
 		} catch (IOException e) {
-			// TODO - Error texture
-			throw new RuntimeException("Could not load texture " + file);
+			Log.error("Could not load texture " + file);
+			return ERROR;
 		}
+	}
+
+	/**
+	 * Creates the error texture.
+	 * 
+	 * @return Error texture object.
+	 */
+	private static Texture errorTexture() {
+		int id = OpenGL.createTexture();
+		float[] pixels = {0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f, 1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f};
+		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
+		GL11.glPixelStorei(GL11.GL_UNPACK_ALIGNMENT, 1);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameterf(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGB, 2, 2, 0, GL11.GL_RGB, GL11.GL_FLOAT, pixels);
+		return new Texture(id);
 	}
 }
