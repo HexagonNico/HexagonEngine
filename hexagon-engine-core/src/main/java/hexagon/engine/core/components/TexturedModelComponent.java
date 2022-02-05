@@ -16,7 +16,7 @@ import hexagon.engine.utils.json.JsonObject;
 public class TexturedModelComponent extends ModelComponent {
 
 	/**Reference to the texture */
-	public final Texture texture;
+	public Texture texture;
 
 	/**
 	 * Constructs a textured model component from a {@link JsonObject}.
@@ -27,7 +27,10 @@ public class TexturedModelComponent extends ModelComponent {
 	 */
 	public TexturedModelComponent(GameEntity entity, JsonObject jsonObject) {
 		super(entity, jsonObject);
-		// TODO - Error texture
-		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElseThrow());
+		jsonObject.getString("texture").ifPresentOrElse(textureKey -> {
+			this.texture = Texture.getOrLoad(textureKey);
+		}, () -> {
+			this.texture = Texture.ERROR;
+		});
 	}
 }

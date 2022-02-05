@@ -1,6 +1,5 @@
 package hexagon.engine.lwjgl.opengl;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 
@@ -84,7 +83,7 @@ public final class Texture {
 			Texture texture = new Texture(id);
 			textures.put(file, texture);
 			return texture;
-		} catch (IOException e) {
+		} catch (Exception e) {
 			Log.error("Could not load texture " + file);
 			return ERROR;
 		}

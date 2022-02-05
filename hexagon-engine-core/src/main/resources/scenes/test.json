@@ -17,6 +17,11 @@
 			}
 		},
 		{
+			"hexagon.engine.core.components.SpriteComponent": {
+				"texture": "/antipog.png"
+			}
+		},
+		{
 			"hexagon.engine.core.components.LightComponent": {
 				"position": { "x": 200, "y": 200, "z": 100 }
 			}
