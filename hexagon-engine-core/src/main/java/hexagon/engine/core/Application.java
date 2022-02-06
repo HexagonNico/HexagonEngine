@@ -4,39 +4,46 @@ import hexagon.engine.core.ecs.GameManager;
 import hexagon.engine.lwjgl.Log;
 import hexagon.engine.lwjgl.glfw.Engine;
 import hexagon.engine.lwjgl.opengl.OpenGL;
+import hexagon.engine.utils.json.JsonObject;
 
 public abstract class Application {
 	
 	private long window;
-	protected GameManager gameManager;
+	protected final GameManager gameManager = new GameManager();
 
 	protected Application() {
 		try {
 			Engine.init();
-			Engine.windowResizable(false);
-			Engine.windowVisible(false);
-			this.window = Engine.createWindow("Hello", 800, 450);
+			JsonObject settingsJson = JsonObject.fromFileOrEmpty("/settings.json");
+			JsonObject windowJson = settingsJson.getObject("window").orElse(JsonObject.empty());
+			Engine.windowVisible(windowJson.getBoolean("visible").orElse(false));
+			Engine.windowResizable(windowJson.getBoolean("resizable").orElse(false));
+			this.window = Engine.createWindow(
+				windowJson.getString("title").orElse("untitled"),
+				windowJson.getInt("width").orElse(300),
+				windowJson.getInt("height").orElse(300)
+			);
 		} catch (Exception any) {
-			Log.error("Uncaught exception in main");
+			Log.error("Error in initialization");
 			any.printStackTrace();
-			Engine.terminate(this.window);
 		}
 	}
 
 	protected abstract void onInit();
 
+	protected abstract void onUpdate();
+
 	protected final void run() {
 		try {
 			Engine.showWindow(this.window);
-			this.gameManager = new GameManager();
 			this.onInit();
 
 			while(Engine.running(this.window)) {
-				OpenGL.clearFrame(0.5f, 0.5f, 1.0f);
-				gameManager.update();
+				this.onUpdate();
+				this.gameManager.update();
 				Engine.update(this.window);
 			}
-		} catch(Exception any) {
+		} catch (Exception any) {
 			Log.error("Uncaught exception in main");
 			any.printStackTrace();
 		} finally {
