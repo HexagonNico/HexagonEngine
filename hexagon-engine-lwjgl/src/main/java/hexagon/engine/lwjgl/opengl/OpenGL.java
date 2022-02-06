@@ -3,6 +3,7 @@ package hexagon.engine.lwjgl.opengl;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
@@ -17,6 +18,10 @@ import hexagon.engine.lwjgl.Log;
  * @author Nico
  */
 public final class OpenGL {
+
+	static {
+		GL.createCapabilities();
+	}
 
 	/**Keeps track of all VAOs to delete them later */
 	private static final ArrayList<Integer> vaos = new ArrayList<>();
@@ -40,6 +45,10 @@ public final class OpenGL {
 	public static void clearFrame(float red, float green, float blue) {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 		GL11.glClearColor(red, green, blue, 1.0f);
+	}
+
+	public static void setViewport(int width, int height) {
+		GL11.glViewport(0, 0, width, height);
 	}
 
 	/**
