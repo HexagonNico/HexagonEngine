@@ -1,75 +1,126 @@
 package hexagon.engine.lwjgl.glfw;
 
-import java.io.PrintStream;
-
+import org.lwjgl.glfw.Callbacks;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
-import org.lwjgl.opengl.GL;
+import org.lwjgl.system.MemoryUtil;
 
 import hexagon.engine.lwjgl.Log;
 
 /**
- * Engine class used to initialize the engine.
+ * Class that wraps GLFW function used in initialization phase and to handle the GLFW window.
  * 
  * @author Nico
  */
-public class Engine {
-	
-	/**
-	 * Setup an error callback.
-	 * 
-	 * @param stream Print stream for errors (e.g. {@code System.err})
-	 */
-	public static void errorCallback(PrintStream stream) {
-		GLFWErrorCallback.createPrint(stream).set();
-	}
+public final class Engine {
 
 	/**
-	 * Initializes GLFW.
-	 * Most GLFW functions won't work before calling this.
+	 * Sets the error callback to {@code System.err} and initializes GLFW.
+	 * Other functions in this class will not work before calling this.
+	 * <p>
+	 * 	This code cannot be put in a static block
+	 * 	or possible exceptions could not be handled.
+	 * </p>
 	 * 
-	 * @throws IllegalStateException If GLFW could not be initialized
+	 * @throws IllegalStateException If the initialization fails.
 	 */
 	public static void init() {
 		Log.info("Initializing");
+		GLFWErrorCallback.createPrint(System.err).set();
 		if(!GLFW.glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
 	}
 
 	/**
-	 * Configures GLFW.
+	 * Sets the "visible" window hint.
 	 * 
-	 * @param visible Whether the window should be visible or stay hidden after creation.
+	 * @param visible If false, the window will stay hidden after creation, if true it will be visible.
+	 */
+	public static void windowVisible(boolean visible) {
+		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, visible ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+	}
+
+	/**
+	 * Sets the "resizable" window hint.
+	 * 
 	 * @param resizable Whether the window should be resizable.
 	 */
-	public static void configure(boolean visible, boolean resizable) {
-		GLFW.glfwDefaultWindowHints();
-		GLFW.glfwWindowHint(GLFW.GLFW_VISIBLE, visible ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+	public static void windowResizable(boolean resizable) {
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, resizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
 	}
 
 	/**
-	 * <p>
-	 * 	This line is critical for LWJGL's interoperation with GLFW's OpenGL context, or any context that is managed externally.
-	 * 	LWJGL detects the context that is current in the current thread, creates the GLCapabilities instance and makes the OpenGL bindings available for use.
-	 * </p>
-	 * Called after the initialization phase before the game loop.
+	 * Creates the GLFW window and returns the window handle.
+	 * 
+	 * @param title Title of the window.
+	 * @param width Width of the window when created.
+	 * @param height Height of the window when created.
+	 * 
+	 * @return The window handle, needed to call other window-related functions.
+	 * 
+	 * @throws RuntimeException If the creation of the window fails.
 	 */
-	public static void createCapabilities() {
-		GL.createCapabilities();
-		Log.info("Created capabilities");
+	public static long createWindow(String title, int width, int height) {
+		Log.info("Creating window");
+		long window = GLFW.glfwCreateWindow(width, height, title, MemoryUtil.NULL, MemoryUtil.NULL);
+		if(window == MemoryUtil.NULL) {
+			throw new RuntimeException("Failed to create the GLFW window");
+		}
+		GLFW.glfwSetKeyCallback(window, new Keyboard());
+		GLFW.glfwSetWindowSizeCallback(window, new WindowSize(width, height));
+		return window;
+	}
+
+	// TODO - Center the window
+
+	/**
+	 * Makes the OpenGL context current to the current thread and makes the window visible.
+	 * 
+	 * @param window The window handle.
+	 */
+	public static void showWindow(long window) {
+		GLFW.glfwMakeContextCurrent(window);
+		// TODO - glfwSwapInterval(1);
+		GLFW.glfwShowWindow(window);
 	}
 
 	/**
-	 * <p>
-	 * 	Terminate GLFW and free the error callback.
-	 * </p>
-	 * Called as last line in the engine.
+	 * Can be used in main game loop to check whether the engine is running.
+	 * 
+	 * @param window The window handle.
+	 * 
+	 * @return True if the engine is running, false if the window should be closed.
 	 */
-	public static void terminate() {
+	public static boolean running(long window) {
+		return !GLFW.glfwWindowShouldClose(window);
+	}
+
+	/**
+	 * Updates the engine every frame.
+	 * Swaps the color buffers and polls for window events.
+	 * 
+	 * @param window The window handle.
+	 */
+	public static void update(long window) {
+		GLFW.glfwSwapBuffers(window);
+		GLFW.glfwPollEvents();
+	}
+
+	/**
+	 * Terminates the engine.
+	 * Frees the callbacks and destroys the window.
+	 * 
+	 * @param window The window handle.
+	 */
+	public static void terminate(long window) {
 		Log.info("Terminating");
+		Callbacks.glfwFreeCallbacks(window);
+		GLFW.glfwDestroyWindow(window);
 		GLFW.glfwTerminate();
 		GLFW.glfwSetErrorCallback(null).set();
 	}
+
+	/**Class should not be instantiated */
+	private Engine() {}
 }
