@@ -17,12 +17,23 @@ all components are stored in a table for quicker and easier access.
 Systems run a specific job on all entities that have the required components,
 they run once per frame and process all entities.
 
-## Planned features
+## TODO list
 
-* All most basic features for a game engine.
-	* Physics, gui, font rendering, lighting...
-* Editor to create scenes and entities.
-* Project manager to create projects (?)
+* Editor program
+* Tilemaps
+* Mesh rendering that renders a set of vertices instead of a model
+* Mipmapping
+* Physics and collision detection
+* GUI
+* Mouse picking
+* Normal mapping
+* Font rendering
+* Particle system
+* Shadow mapping
+* Post processing effects
+* Rendering targets
+* Geometry shaders
+* Audio
 
 ## Usage and contribution
 
