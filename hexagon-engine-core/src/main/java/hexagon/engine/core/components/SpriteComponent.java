@@ -31,8 +31,11 @@ public class SpriteComponent extends Transform2D {
 	 */
 	public SpriteComponent(GameEntity entity, JsonObject jsonObject) {
 		super(entity, jsonObject);
-		// TODO - Error texture
-		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElseThrow());
+		jsonObject.getString("texture").ifPresentOrElse(textureKey -> {
+			this.texture = Texture.getOrLoad(textureKey);
+		}, () -> {
+			this.texture = Texture.ERROR;
+		});
 		JsonObject uvJson = jsonObject.getObject("uv").orElse(JsonObject.empty());
 		JsonObject sizeJson = jsonObject.getObject("size").orElse(JsonObject.empty());
 		this.uv = new Float2(uvJson.getFloat("x").orElse(0.0f), uvJson.getFloat("y").orElse(0.0f));
