@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 
-import hexagon.engine.Log;
+import hexagon.engine.utils.Log;
 
 /**
  * Class that represents an OpenGL Texture object.

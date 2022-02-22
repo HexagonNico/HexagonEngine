@@ -1,4 +1,4 @@
-package hexagon.engine.utils.parsers;
+package hexagon.engine.utils.models;
 
 import java.util.ArrayList;
 

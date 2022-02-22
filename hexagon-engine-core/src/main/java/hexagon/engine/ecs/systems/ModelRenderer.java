@@ -10,7 +10,7 @@ import hexagon.engine.ecs.components.ReflectivityComponent;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
 import hexagon.engine.opengl.ShaderProgram;
-import hexagon.engine.resources.Model;
+import hexagon.engine.utils.models.Model;
 
 public final class ModelRenderer extends GameSystem<ModelComponent> {
 

@@ -1,9 +1,8 @@
-package hexagon.engine.resources;
+package hexagon.engine.utils.models;
 
 import java.util.HashMap;
 
 import hexagon.engine.opengl.VertexObject;
-import hexagon.engine.utils.parsers.ObjParser;
 
 /**
  * Class that represents a 3D model file.

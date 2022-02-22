@@ -1,12 +1,9 @@
-package hexagon.engine.utils;
+package hexagon.engine.utils.json;
 
 import java.util.Set;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import hexagon.engine.utils.json.JsonArray;
-import hexagon.engine.utils.json.JsonObject;
 
 public class TestJsonObject {
 	

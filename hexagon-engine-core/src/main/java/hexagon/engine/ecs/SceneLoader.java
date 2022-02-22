@@ -1,6 +1,6 @@
 package hexagon.engine.ecs;
 
-import hexagon.engine.Log;
+import hexagon.engine.utils.Log;
 import hexagon.engine.utils.json.JsonArray;
 import hexagon.engine.utils.json.JsonObject;
 

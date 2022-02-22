@@ -5,7 +5,7 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.system.MemoryUtil;
 
-import hexagon.engine.Log;
+import hexagon.engine.utils.Log;
 
 /**
  * Class that wraps GLFW function used in initialization phase and to handle the GLFW window.

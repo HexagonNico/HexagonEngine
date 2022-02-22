@@ -2,8 +2,8 @@ package hexagon.engine.ecs.components;
 
 import hexagon.engine.ecs.GameEntity;
 import hexagon.engine.math.color.Color;
-import hexagon.engine.resources.Model;
 import hexagon.engine.utils.json.JsonObject;
+import hexagon.engine.utils.models.Model;
 
 /**
  * A component class that stores a reference to a model resource.

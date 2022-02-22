@@ -3,6 +3,7 @@ package hexagon.engine;
 import hexagon.engine.ecs.GameManager;
 import hexagon.engine.glfw.Engine;
 import hexagon.engine.opengl.OpenGL;
+import hexagon.engine.utils.Log;
 import hexagon.engine.utils.json.JsonObject;
 
 public abstract class Application {

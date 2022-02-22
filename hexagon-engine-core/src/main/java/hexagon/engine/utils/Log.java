@@ -1,4 +1,4 @@
-package hexagon.engine;
+package hexagon.engine.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 
-import hexagon.engine.Log;
+import hexagon.engine.utils.Log;
 
 /**
  * Class to represent an OpenGL shader.
