@@ -1,4 +1,4 @@
-package hexagon.engine.core;
+package hexagon.engine.example;
 
 import hexagon.engine.ecs.SceneLoader;
 import hexagon.engine.ecs.systems.LightSystem;
