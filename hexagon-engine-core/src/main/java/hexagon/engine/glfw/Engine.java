@@ -14,21 +14,17 @@ import hexagon.engine.utils.Log;
  */
 public final class Engine {
 
-	/**
-	 * Sets the error callback to {@code System.err} and initializes GLFW.
-	 * Other functions in this class will not work before calling this.
-	 * <p>
-	 * 	This code cannot be put in a static block
-	 * 	or possible exceptions could not be handled.
-	 * </p>
-	 * 
-	 * @throws IllegalStateException If the initialization fails.
-	 */
-	public static void init() {
+	static {
 		Log.info("Initializing");
+
+		// Sets the error callback to System.err
 		GLFWErrorCallback.createPrint(System.err).set();
+
+		// Initializes GLFW
+		// Other GLFW functions will not work before calling this
 		if(!GLFW.glfwInit()) {
-			throw new IllegalStateException("Unable to initialize GLFW");
+			Log.fatal("Unable to initialize GLFW");
+			System.exit(-1);
 		}
 	}
 

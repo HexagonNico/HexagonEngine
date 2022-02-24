@@ -1,5 +1,6 @@
 package hexagon.engine.utils;
 
+import java.io.PrintStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -19,16 +20,17 @@ public final class Log {
 	 * @param message The message to print.
 	 */
 	public static void info(String message) {
-		System.out.println("[" + getTime() + "] [HexagonEngine] [" + getCaller() + "] [Info]: " + message);
+		print(System.out, "Info", message);
 	}
 
 	/**
 	 * Prints a warning message to the console.
+	 * Used for non serious errors.
 	 * 
 	 * @param message The message to print.
 	 */
 	public static void warning(String message) {
-		System.out.println("[" + getTime() + "] [HexagonEngine] [" + getCaller() + "] [Warning]: " + message);
+		print(System.out, "Warning", message);
 	}
 
 	/**
@@ -37,7 +39,28 @@ public final class Log {
 	 * @param message The message to print.
 	 */
 	public static void error(String message) {
-		System.err.println("[" + getTime() + "] [HexagonEngine] [" + getCaller() + "] [Error]: " + message);
+		print(System.err, "Error", message);
+	}
+
+	/**
+	 * Prints a fatal error to the console.
+	 * Used for errors that inevitably cause the program to stop.
+	 * 
+	 * @param message The message to print.
+	 */
+	public static void fatal(String message) {
+		print(System.err, "Fatal", message);
+	}
+	
+	/**
+	 * Prints a message to the console, avoids duplicate code.
+	 * 
+	 * @param stream Print stream, {@code System.out} or {@code System.err}
+	 * @param level Level of severity, changes the beginning of the message
+	 * @param message The message to print
+	 */
+	private static void print(PrintStream stream, String level, String message) {
+		stream.println("[" + getTime() + "] [HexagonEngine] [" + getCaller() + "] [" + level + "]: " + message);
 	}
 
 	/**
