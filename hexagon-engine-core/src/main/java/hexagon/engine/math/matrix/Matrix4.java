@@ -4,8 +4,14 @@ import java.util.List;
 
 import hexagon.engine.math.vector.Float4;
 
+/**
+ * Record that represents a 4x4 float matrix
+ * 
+ * @author Nico
+ */
 public record Matrix4(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) implements Matrix<Matrix4, Float4> {
 
+	/**Identity matrix */
 	public static final Matrix4 IDENTITY = new Matrix4(
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
