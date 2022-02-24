@@ -70,7 +70,7 @@ public final class Log {
 	 */
 	private static String getCaller() {
 		try {
-			return Class.forName(Thread.currentThread().getStackTrace()[3].getClassName()).getSimpleName();
+			return Class.forName(Thread.currentThread().getStackTrace()[4].getClassName()).getSimpleName();
 		} catch (ClassNotFoundException e) {
 			return "Unknown caller";
 		}
