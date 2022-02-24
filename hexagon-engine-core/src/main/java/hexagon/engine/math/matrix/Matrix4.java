@@ -1,7 +1,5 @@
 package hexagon.engine.math.matrix;
 
-import java.util.List;
-
 import hexagon.engine.math.vector.Float4;
 
 /**
@@ -135,14 +133,5 @@ public record Matrix4(float m00, float m01, float m02, float m03, float m10, flo
 			}
 			return result;
 		}
-	}
-
-	public List<Float> asList() {
-		return List.of(
-			this.m00(), this.m01(), this.m02(), this.m03(),
-			this.m10(), this.m11(), this.m12(), this.m13(),
-			this.m20(), this.m21(), this.m22(), this.m23(),
-			this.m30(), this.m31(), this.m32(), this.m33()
-		);
 	}
 }
