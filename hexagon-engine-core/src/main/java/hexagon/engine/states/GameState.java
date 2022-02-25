@@ -1,5 +1,6 @@
 package hexagon.engine.states;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Optional;
 
@@ -36,10 +37,13 @@ public abstract class GameState {
 
 	/**
 	 * Creates a game state.
+	 * 
+	 * @param systems List of all the systems in this state
 	 */
-	public GameState() {
+	public GameState(GameSystem<?>... systems) {
 		this.componentsTable = new HashMap<>();
 		this.systems = new HashMap<>();
+		Arrays.stream(systems).forEach(system -> this.systems.put(system.getClass(), system));
 	}
 
 	/**
