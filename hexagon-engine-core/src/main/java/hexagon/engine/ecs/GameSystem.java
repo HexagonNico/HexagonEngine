@@ -10,7 +10,7 @@ import java.util.Collection;
 public abstract class GameSystem<T extends Component> {
 
 	/**Type of the component to process */
-	protected final Class<T> componentType;
+	public final Class<T> componentType;
 
 	/**
 	 * Creates game system.

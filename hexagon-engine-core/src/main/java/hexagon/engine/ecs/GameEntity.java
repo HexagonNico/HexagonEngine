@@ -2,6 +2,8 @@ package hexagon.engine.ecs;
 
 import java.util.Optional;
 
+import hexagon.engine.states.GameState;
+
 /**
  * Class that represents an entity in the Entity-Component-System.
  * An entity is anything that can hold components.
@@ -9,48 +11,37 @@ import java.util.Optional;
  * @author Nico
  */
 public final class GameEntity {
-	
-	// TODO - Id may not be needed
 
-	/**Entity id */
-	public final int id;
+	/**The game state the entity is in */
+	private final GameState state;
 
 	/**
 	 * Creates a game entity.
-	 * <p>
-	 * 	In general, this constructor should not be used.
-	 * 	Entities should be created with {@link GameManager#createEntity()} instead.
-	 * </p>
 	 * 
-	 * @param id Entity id.
+	 * @param state The game state the entity is in
 	 */
-	protected GameEntity(int id) {
-		this.id = id;
+	public GameEntity(GameState state) {
+		this.state = state;
 	}
 
 	/**
 	 * Adds a component to this entity.
 	 * 
-	 * @param component Component to add.
+	 * @param component The component to add.
 	 */
 	public void addComponent(Component component) {
-		GameManager.addComponent(this, component);
+		this.state.addComponent(this, component);
 	}
 
 	/**
-	 * Gets a component from this entity.
+	 * Gets one of the entity's components
 	 * 
-	 * @param <T> Type of the component.
-	 * @param type Class of the component to get.
+	 * @param <T> Type of the component
+	 * @param type The component's class as in {@code Component.class}
 	 * 
-	 * @return The requested component or {@code null} if this entity does not have a component of that type.
+	 * @return An {@link Optional} containing the requested component or an empty {@link Optional} if the entity does not have such component
 	 */
 	public <T> Optional<T> getComponent(Class<T> type) {
-		return GameManager.getComponent(this, type);
-	}
-
-	@Override
-	public String toString() {
-		return "Entity" + this.id;
+		return this.state.getComponent(this, type);
 	}
 }
