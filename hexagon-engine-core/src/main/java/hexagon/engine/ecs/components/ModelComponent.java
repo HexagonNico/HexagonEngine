@@ -17,19 +17,17 @@ import hexagon.engine.utils.models.Model;
 public class ModelComponent extends Transform3D {
 	
 	/**Reference to the model resource */
-	public final Model model;
+	public Model model;
 	/**Color tint of the model */
 	public Color color;
 
-	/**
-	 * Constructs a model component from a {@link JsonObject}.
-	 * Constructor used when loading the component from a json file.
-	 * 
-	 * @param jsonObject JsonObject containing the component's data.
-	 * @param entity GameEntity holding this component.
-	 */
-	public ModelComponent(GameEntity entity, JsonObject jsonObject) {
-		super(entity, jsonObject);
+	public ModelComponent(GameEntity entity) {
+		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
+		super.init(jsonObject);
 		// TODO - Error model
 		this.model = Model.getOrLoad(jsonObject.getString("model").orElseThrow());
 		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {

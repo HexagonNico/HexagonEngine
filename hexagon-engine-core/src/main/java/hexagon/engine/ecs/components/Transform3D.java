@@ -21,15 +21,12 @@ public class Transform3D extends Component {
 	/**Scale on x, y and z axis */
 	public Float3 scale;
 
-	/**
-	 * Constructs a transform component from a {@link JsonObject}.
-	 * Constructor used when loading the component from a json file.
-	 * 
-	 * @param jsonObject JsonObject containing the component's data.
-	 * @param entity GameEntity holding this component.
-	 */
-	public Transform3D(GameEntity entity, JsonObject jsonObject) {
+	public Transform3D(GameEntity entity) {
 		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
 		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());

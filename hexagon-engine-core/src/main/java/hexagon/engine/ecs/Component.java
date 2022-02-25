@@ -2,6 +2,8 @@ package hexagon.engine.ecs;
 
 import java.util.Optional;
 
+import hexagon.engine.utils.json.JsonObject;
+
 /**
  * Base component class. All components inherit from this class.
  * 
@@ -20,6 +22,8 @@ public abstract class Component {
 	public Component(GameEntity entity) {
 		this.entity = entity;
 	}
+
+	protected abstract void init(JsonObject jsonObject);
 
 	/**
 	 * Gets another component from the same entity holding this one.

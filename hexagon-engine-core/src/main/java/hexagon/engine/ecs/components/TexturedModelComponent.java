@@ -18,15 +18,13 @@ public class TexturedModelComponent extends ModelComponent {
 	/**Reference to the texture */
 	public Texture texture;
 
-	/**
-	 * Constructs a textured model component from a {@link JsonObject}.
-	 * Constructor used when loading the component from a json file.
-	 * 
-	 * @param jsonObject JsonObject containing the component's data.
-	 * @param entity GameEntity holding this component.
-	 */
-	public TexturedModelComponent(GameEntity entity, JsonObject jsonObject) {
-		super(entity, jsonObject);
+	public TexturedModelComponent(GameEntity entity) {
+		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
+		super.init(jsonObject);
 		jsonObject.getString("texture").ifPresentOrElse(textureKey -> {
 			this.texture = Texture.getOrLoad(textureKey);
 		}, () -> {

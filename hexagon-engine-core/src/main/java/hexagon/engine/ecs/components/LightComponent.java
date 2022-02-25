@@ -16,15 +16,13 @@ public class LightComponent extends Transform3D {
 	/**Light intensity */
 	public float intensity;
 
-	/**
-	 * Constructs a light component from a {@link JsonObject}.
-	 * Constructor used when loading the component from a json file.
-	 * 
-	 * @param jsonObject JsonObject containing the component's data.
-	 * @param entity GameEntity holding this component.
-	 */
-	public LightComponent(GameEntity entity, JsonObject jsonObject) {
-		super(entity, jsonObject);
+	public LightComponent(GameEntity entity) {
+		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
+		super.init(jsonObject);
 		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {
 			float r = colorJson.getFloat("r").orElse(0.0f);
 			float g = colorJson.getFloat("g").orElse(0.0f);

@@ -25,8 +25,12 @@ public class Camera3D extends Component {
 	public float nearPlane;
 	public float farPlane;
 
-	public Camera3D(GameEntity entity, JsonObject jsonObject) {
+	public Camera3D(GameEntity entity) {
 		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		float x = positionJson.getFloat("x").orElse(0.0f);
 		float y = positionJson.getFloat("y").orElse(0.0f);
