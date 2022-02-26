@@ -23,6 +23,10 @@ public abstract class Component {
 		this.entity = entity;
 	}
 
+	/**
+	 * TODO - Documentation
+	 * @param jsonObject
+	 */
 	protected abstract void init(JsonObject jsonObject);
 
 	/**
@@ -34,7 +38,7 @@ public abstract class Component {
 	 * @return An optional containing the requested component
 	 * 		or an empty optional if this entity does not have said component.
 	 */
-	public <T> Optional<T> getSiblingComponent(Class<T> type) {
+	public final <T> Optional<T> getSiblingComponent(Class<T> type) {
 		return this.entity.getComponent(type);
 	}
 }

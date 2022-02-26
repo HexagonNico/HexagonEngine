@@ -12,11 +12,11 @@ import hexagon.engine.utils.json.JsonObject;
 public class ReflectivityComponent extends Component {
 	
 	/**Minimum brightness value */
-	public float diffuseLight;
+	public float diffuseLight = 0.2f;
 	/**Reflectivity for specular lighting */
-	public float reflectivity;
+	public float reflectivity = 0.0f;
 	/**Specular lighting strength */
-	public float shineDamper;
+	public float shineDamper = 10.0f;
 
 	public ReflectivityComponent(GameEntity entity) {
 		super(entity);

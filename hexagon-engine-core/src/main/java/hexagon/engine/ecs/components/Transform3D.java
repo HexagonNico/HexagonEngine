@@ -15,11 +15,11 @@ import hexagon.engine.utils.json.JsonObject;
 public class Transform3D extends Component {
 	
 	/**Position in a 3D space */
-	public Float3 position;
+	public Float3 position = Float3.ZERO;
 	/**Rotation around x, y and z axis */
-	public Float3 rotation;
+	public Float3 rotation = Float3.ZERO;
 	/**Scale on x, y and z axis */
-	public Float3 scale;
+	public Float3 scale = Float3.ONE;
 
 	public Transform3D(GameEntity entity) {
 		super(entity);

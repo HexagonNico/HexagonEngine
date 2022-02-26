@@ -1,6 +1,7 @@
 package hexagon.engine.ecs;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 import hexagon.engine.states.GameState;
 
@@ -25,12 +26,17 @@ public final class GameEntity {
 	}
 
 	/**
-	 * Adds a component to this entity.
+	 * Adds a component to this entity by adding it to the current state.
 	 * 
-	 * @param component The component to add.
+	 * @param <T> Type of the component to add
+	 * @param constructor The component's constructor passed as a method reference as in {@code Component::new}
+	 * 
+	 * @return The instantiated component
 	 */
-	public void addComponent(Component component) {
+	public <T extends Component> T addComponent(Function<GameEntity, T> constructor) {
+		T component = constructor.apply(this);
 		this.state.addComponent(this, component);
+		return component;
 	}
 
 	/**

@@ -12,9 +12,9 @@ import hexagon.engine.utils.json.JsonObject;
 public class LightComponent extends Transform3D {
 	
 	/**Color of the light */
-	public Color color;
+	public Color color = new Color(1.0f, 1.0f, 1.0f);
 	/**Light intensity */
-	public float intensity;
+	public float intensity = 1.0f;
 
 	public LightComponent(GameEntity entity) {
 		super(entity);

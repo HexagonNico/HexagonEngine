@@ -14,13 +14,13 @@ import hexagon.engine.utils.json.JsonObject;
 public class SpriteComponent extends Transform2D {
 
 	/**Reference to the texture */
-	public Texture texture;
+	public Texture texture = Texture.ERROR;
 	/**Coordinates of top left corner of the sprite in the texture */
-	public Float2 uv;
+	public Float2 uv = Float2.ZERO;
 	/**Size of the sprite relative to the texture */
-	public Float2 size;
+	public Float2 size = Float2.ONE;
 	/**Color tint of the sprite */
-	public Color color;
+	public Color color = new Color(1.0f, 1.0f, 1.0f);
 
 	public SpriteComponent(GameEntity entity) {
 		super(entity);

@@ -16,11 +16,11 @@ import hexagon.engine.utils.json.JsonObject;
 public class Transform2D extends Component {
 	
 	/**Position in a 2D space */
-	public Float2 position;
+	public Float2 position = Float2.ZERO;
 	/**Rotation around x and y axis */
-	public Float2 rotation;
+	public Float2 rotation = Float2.ZERO;
 	/**Scale on x and y axis */
-	public Float2 scale;
+	public Float2 scale = Float2.ONE;
 
 	public Transform2D(GameEntity entity) {
 		super(entity);

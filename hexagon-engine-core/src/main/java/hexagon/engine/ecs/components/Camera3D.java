@@ -17,13 +17,13 @@ public class Camera3D extends Component {
 		return Optional.ofNullable(main);
 	}
 
-	public Float3 position;
-	public float pitch;
-	public float yaw;
+	public Float3 position = Float3.ZERO;
+	public float pitch = 0.0f;
+	public float yaw = 0.0f;
 
-	public float fov;
-	public float nearPlane;
-	public float farPlane;
+	public float fov = 70.0f;
+	public float nearPlane = 0.1f;
+	public float farPlane = 100.0f;
 
 	public Camera3D(GameEntity entity) {
 		super(entity);
