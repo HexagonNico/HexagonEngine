@@ -7,6 +7,7 @@ import hexagon.engine.ecs.GameSystem;
 import hexagon.engine.ecs.components.Camera3D;
 import hexagon.engine.ecs.components.ReflectivityComponent;
 import hexagon.engine.ecs.components.TexturedModelComponent;
+import hexagon.engine.ecs.components.Transform3D;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
 import hexagon.engine.opengl.ShaderProgram;
@@ -54,7 +55,9 @@ public final class TexturedModelRenderer extends GameSystem<TexturedModelCompone
 			this.shader.load("view_matrix", camera.viewMatrix());
 		});
 		LightSystem.forEach(light -> {
-			this.shader.load("light_position", light.position.x(), light.position.y(), light.position.y());
+			light.getSiblingComponent(Transform3D.class).ifPresent(transform -> {
+				this.shader.load("light_position", transform.position3D());
+			});
 			this.shader.load("light_color", light.color.r(), light.color.g(), light.color.b());
 			this.shader.load("light_intensity", light.intensity);
 		});
@@ -62,9 +65,10 @@ public final class TexturedModelRenderer extends GameSystem<TexturedModelCompone
 			texturedModel.texture.bind();
 			texturedModel.model.vertexObject.activate(() -> {
 				components.forEach(component -> {
-					this.shader.load("transformation_matrix", component.transformationMatrix());
-					// TODO - Color tint
-					//this.shader.load("color", component.color.r(), component.color.g(), component.color.b());
+					component.getSiblingComponent(Transform3D.class).ifPresent(transform -> {
+						this.shader.load("transformation_matrix", transform.matrix());
+					});
+					this.shader.load("color", component.color.r(), component.color.g(), component.color.b());
 					component.getSiblingComponent(ReflectivityComponent.class).ifPresent(reflectivityComponent -> {
 						this.shader.load("diffuse_light", reflectivityComponent.diffuseLight);
 						this.shader.load("reflectivity", reflectivityComponent.reflectivity);

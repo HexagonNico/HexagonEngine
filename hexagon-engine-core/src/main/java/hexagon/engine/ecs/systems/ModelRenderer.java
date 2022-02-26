@@ -7,6 +7,7 @@ import hexagon.engine.ecs.GameSystem;
 import hexagon.engine.ecs.components.Camera3D;
 import hexagon.engine.ecs.components.ModelComponent;
 import hexagon.engine.ecs.components.ReflectivityComponent;
+import hexagon.engine.ecs.components.Transform3D;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
 import hexagon.engine.opengl.ShaderProgram;
@@ -58,14 +59,18 @@ public final class ModelRenderer extends GameSystem<ModelComponent> {
 			this.shader.load("view_matrix", camera.viewMatrix());
 		});
 		LightSystem.forEach(light -> {
-			this.shader.load("light_position", light.position.x(), light.position.y(), light.position.z());
+			light.getSiblingComponent(Transform3D.class).ifPresent(transform -> {
+				this.shader.load("light_position", transform.position3D());
+			});
 			this.shader.load("light_color", light.color.r(), light.color.g(), light.color.b());
 			this.shader.load("light_intensity", light.intensity);
 		});
 		this.renderBatch.forEach((model, components) -> {
 			model.vertexObject.activate(() -> {
 				components.forEach(component -> {
-					this.shader.load("transformation_matrix", component.transformationMatrix());
+					component.getSiblingComponent(Transform3D.class).ifPresent(transform -> {
+						this.shader.load("transformation_matrix", transform.matrix());
+					});
 					this.shader.load("color", component.color.r(), component.color.g(), component.color.b());
 					component.getSiblingComponent(ReflectivityComponent.class).ifPresent(reflectivityComponent -> {
 						this.shader.load("diffuse_light", reflectivityComponent.diffuseLight);

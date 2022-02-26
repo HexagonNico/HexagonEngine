@@ -1,5 +1,6 @@
 package hexagon.engine.ecs.components;
 
+import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
 import hexagon.engine.math.color.Color;
 import hexagon.engine.math.vector.Float2;
@@ -11,7 +12,7 @@ import hexagon.engine.utils.json.JsonObject;
  * 
  * @author Nico
  */
-public class SpriteComponent extends Transform2D {
+public class SpriteComponent extends Component {
 
 	/**Reference to the texture */
 	public Texture texture = Texture.ERROR;
@@ -28,7 +29,6 @@ public class SpriteComponent extends Transform2D {
 
 	@Override
 	protected void init(JsonObject jsonObject) {
-		super.init(jsonObject);
 		jsonObject.getString("texture").ifPresentOrElse(textureKey -> {
 			this.texture = Texture.getOrLoad(textureKey);
 		}, () -> {

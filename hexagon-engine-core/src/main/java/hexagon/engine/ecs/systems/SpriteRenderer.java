@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import hexagon.engine.ecs.GameSystem;
 import hexagon.engine.ecs.components.SpriteComponent;
+import hexagon.engine.ecs.components.Transform2D;
 import hexagon.engine.math.matrix.Matrices;
 import hexagon.engine.math.vector.Float3;
 import hexagon.engine.opengl.DrawCalls;
@@ -61,7 +62,9 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 			this.renderBatch.forEach((texture, sprites) -> {
 				texture.bind();
 				sprites.forEach(sprite -> {
-					this.shader.load("transformation_matrix", sprite.transformationMatrix());
+					sprite.getSiblingComponent(Transform2D.class).ifPresent(transform -> {
+						this.shader.load("transformation_matrix", transform.matrix());
+					});
 					this.shader.load("uv", sprite.uv.x(), sprite.uv.y());
 					this.shader.load("size", sprite.size.x(), sprite.size.y());
 					DrawCalls.drawElements(6);
