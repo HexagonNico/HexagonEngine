@@ -1,14 +1,10 @@
 package hexagon.engine.example;
 
-import hexagon.engine.ecs.GameManager;
-import hexagon.engine.ecs.SceneLoader;
-import hexagon.engine.ecs.systems.LightSystem;
-import hexagon.engine.ecs.systems.ModelRenderer;
-import hexagon.engine.ecs.systems.SpriteRenderer;
+import hexagon.engine.Application;
 import hexagon.engine.glfw.Engine;
 import hexagon.engine.glfw.WindowSize;
 import hexagon.engine.opengl.OpenGL;
-import hexagon.engine.Application;
+import hexagon.engine.states.GameManager;
 
 public final class TestGame extends Application {
 
@@ -17,10 +13,7 @@ public final class TestGame extends Application {
 		OpenGL.alphaBlending(true);
 		OpenGL.cullFace(true);
 		OpenGL.depthTest(true);
-		SceneLoader.loadScene("/scenes/test.json");
-		GameManager.addSystem(new SpriteRenderer());
-		GameManager.addSystem(new ModelRenderer());
-		GameManager.addSystem(new LightSystem());
+		GameManager.changeState(new TestState());
 	}
 
 	@Override
