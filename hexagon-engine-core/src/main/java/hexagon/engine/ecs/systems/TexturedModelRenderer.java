@@ -50,8 +50,8 @@ public final class TexturedModelRenderer extends GameSystem<TexturedModelCompone
 	protected void afterAll() {
 		ShaderProgram.start(this.shader);
 		Camera3D.main().ifPresent(camera -> {
-			this.shader.load("projection_matrix", camera.projectionMatrix().asList());
-			this.shader.load("view_matrix", camera.viewMatrix().asList());
+			this.shader.load("projection_matrix", camera.projectionMatrix());
+			this.shader.load("view_matrix", camera.viewMatrix());
 		});
 		LightSystem.forEach(light -> {
 			this.shader.load("light_position", light.position.x(), light.position.y(), light.position.y());
@@ -62,7 +62,7 @@ public final class TexturedModelRenderer extends GameSystem<TexturedModelCompone
 			texturedModel.texture.bind();
 			texturedModel.model.vertexObject.activate(() -> {
 				components.forEach(component -> {
-					this.shader.load("transformation_matrix", component.transformationMatrix().asList());
+					this.shader.load("transformation_matrix", component.transformationMatrix());
 					// TODO - Color tint
 					//this.shader.load("color", component.color.r(), component.color.g(), component.color.b());
 					component.getSiblingComponent(ReflectivityComponent.class).ifPresent(reflectivityComponent -> {

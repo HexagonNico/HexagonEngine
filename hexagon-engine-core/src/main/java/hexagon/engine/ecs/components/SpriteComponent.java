@@ -14,23 +14,21 @@ import hexagon.engine.utils.json.JsonObject;
 public class SpriteComponent extends Transform2D {
 
 	/**Reference to the texture */
-	public Texture texture;
+	public Texture texture = Texture.ERROR;
 	/**Coordinates of top left corner of the sprite in the texture */
-	public Float2 uv;
+	public Float2 uv = Float2.ZERO;
 	/**Size of the sprite relative to the texture */
-	public Float2 size;
+	public Float2 size = Float2.ONE;
 	/**Color tint of the sprite */
-	public Color color;
+	public Color color = new Color(1.0f, 1.0f, 1.0f);
 
-	/**
-	 * Constructs a sprite component from a {@link JsonObject}.
-	 * Constructor used when loading the component from a json file.
-	 * 
-	 * @param jsonObject JsonObject containing the component's data.
-	 * @param entity GameEntity holding this component.
-	 */
-	public SpriteComponent(GameEntity entity, JsonObject jsonObject) {
-		super(entity, jsonObject);
+	public SpriteComponent(GameEntity entity) {
+		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
+		super.init(jsonObject);
 		jsonObject.getString("texture").ifPresentOrElse(textureKey -> {
 			this.texture = Texture.getOrLoad(textureKey);
 		}, () -> {

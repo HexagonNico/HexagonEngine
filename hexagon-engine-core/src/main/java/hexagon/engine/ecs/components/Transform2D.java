@@ -16,21 +16,18 @@ import hexagon.engine.utils.json.JsonObject;
 public class Transform2D extends Component {
 	
 	/**Position in a 2D space */
-	public Float2 position;
+	public Float2 position = Float2.ZERO;
 	/**Rotation around x and y axis */
-	public Float2 rotation;
+	public Float2 rotation = Float2.ZERO;
 	/**Scale on x and y axis */
-	public Float2 scale;
+	public Float2 scale = Float2.ONE;
 
-	/**
-	 * Constructs a transform component from a {@link JsonObject}.
-	 * Constructor used when loading the component from a json file.
-	 * 
-	 * @param jsonObject JsonObject containing the component's data.
-	 * @param entity GameEntity holding this component.
-	 */
-	public Transform2D(GameEntity entity, JsonObject jsonObject) {
+	public Transform2D(GameEntity entity) {
 		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
 		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());

@@ -1,8 +1,8 @@
 package hexagon.engine;
 
-import hexagon.engine.ecs.GameManager;
 import hexagon.engine.glfw.Engine;
 import hexagon.engine.opengl.OpenGL;
+import hexagon.engine.states.GameManager;
 import hexagon.engine.utils.Log;
 
 /**

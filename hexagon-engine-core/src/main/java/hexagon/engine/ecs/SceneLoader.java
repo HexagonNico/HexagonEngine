@@ -1,9 +1,5 @@
 package hexagon.engine.ecs;
 
-import hexagon.engine.utils.Log;
-import hexagon.engine.utils.json.JsonArray;
-import hexagon.engine.utils.json.JsonObject;
-
 /**
  * Utility class used to load a scene file in the game manager.
  * A scene is nothing but a collection of entities with their components.
@@ -28,7 +24,7 @@ public final class SceneLoader {
 	 * @param gameManager Game manager needed to create entities.
 	 */
 	public static void loadScene(String filePath) {
-		JsonObject sceneJson = JsonObject.fromFileOrEmpty(filePath);
+		/*JsonObject sceneJson = JsonObject.fromFileOrEmpty(filePath);
 		JsonArray entitiesArray = sceneJson.getArray("entities").orElse(JsonArray.empty());
 		entitiesArray.forEachObject(entityJson -> {
 			GameEntity entity = GameManager.createEntity();
@@ -45,6 +41,6 @@ public final class SceneLoader {
 					Log.error("Component of class " + key + " cannot be instantiated");
 				}
 			});
-		});
+		});*/
 	}
 }

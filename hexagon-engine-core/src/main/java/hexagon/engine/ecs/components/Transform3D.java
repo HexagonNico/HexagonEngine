@@ -15,21 +15,18 @@ import hexagon.engine.utils.json.JsonObject;
 public class Transform3D extends Component {
 	
 	/**Position in a 3D space */
-	public Float3 position;
+	public Float3 position = Float3.ZERO;
 	/**Rotation around x, y and z axis */
-	public Float3 rotation;
+	public Float3 rotation = Float3.ZERO;
 	/**Scale on x, y and z axis */
-	public Float3 scale;
+	public Float3 scale = Float3.ONE;
 
-	/**
-	 * Constructs a transform component from a {@link JsonObject}.
-	 * Constructor used when loading the component from a json file.
-	 * 
-	 * @param jsonObject JsonObject containing the component's data.
-	 * @param entity GameEntity holding this component.
-	 */
-	public Transform3D(GameEntity entity, JsonObject jsonObject) {
+	public Transform3D(GameEntity entity) {
 		super(entity);
+	}
+
+	@Override
+	protected void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
 		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());

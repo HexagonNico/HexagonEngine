@@ -2,6 +2,8 @@ package hexagon.engine.ecs;
 
 import java.util.Optional;
 
+import hexagon.engine.utils.json.JsonObject;
+
 /**
  * Base component class. All components inherit from this class.
  * 
@@ -22,6 +24,12 @@ public abstract class Component {
 	}
 
 	/**
+	 * TODO - Documentation
+	 * @param jsonObject
+	 */
+	protected abstract void init(JsonObject jsonObject);
+
+	/**
 	 * Gets another component from the same entity holding this one.
 	 * 
 	 * @param <T> Type of the component.
@@ -30,7 +38,7 @@ public abstract class Component {
 	 * @return An optional containing the requested component
 	 * 		or an empty optional if this entity does not have said component.
 	 */
-	public <T> Optional<T> getSiblingComponent(Class<T> type) {
+	public final <T> Optional<T> getSiblingComponent(Class<T> type) {
 		return this.entity.getComponent(type);
 	}
 }

@@ -1,11 +1,15 @@
 package hexagon.engine.math.matrix;
 
-import java.util.List;
-
 import hexagon.engine.math.vector.Float4;
 
+/**
+ * Record that represents a 4x4 float matrix
+ * 
+ * @author Nico
+ */
 public record Matrix4(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23, float m30, float m31, float m32, float m33) implements Matrix<Matrix4, Float4> {
 
+	/**Identity matrix */
 	public static final Matrix4 IDENTITY = new Matrix4(
 		1.0f, 0.0f, 0.0f, 0.0f,
 		0.0f, 1.0f, 0.0f, 0.0f,
@@ -129,14 +133,5 @@ public record Matrix4(float m00, float m01, float m02, float m03, float m10, flo
 			}
 			return result;
 		}
-	}
-
-	public List<Float> asList() {
-		return List.of(
-			this.m00(), this.m01(), this.m02(), this.m03(),
-			this.m10(), this.m11(), this.m12(), this.m13(),
-			this.m20(), this.m21(), this.m22(), this.m23(),
-			this.m30(), this.m31(), this.m32(), this.m33()
-		);
 	}
 }
