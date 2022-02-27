@@ -17,6 +17,8 @@ import hexagon.engine.utils.models.Model;
  */
 public class ModelComponent extends Component {
 	
+	// TODO - I don't like how models are stored in memory
+
 	/**Reference to the model resource */
 	public Model model;
 	/**Color tint of the model */

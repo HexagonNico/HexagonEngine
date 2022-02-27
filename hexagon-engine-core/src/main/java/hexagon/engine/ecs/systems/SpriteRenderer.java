@@ -6,7 +6,7 @@ import java.util.HashMap;
 import hexagon.engine.ecs.GameSystem;
 import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.SpriteComponent;
-import hexagon.engine.ecs.components.Transform2D;
+import hexagon.engine.ecs.components.Transform;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
 import hexagon.engine.opengl.ShaderProgram;
@@ -38,16 +38,18 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 	}
 
 	@Override
-	protected void beforeAll() {}
+	protected void beforeAll() {
+		this.renderBatch.clear();
+	}
 
 	@Override
 	protected void process(SpriteComponent sprite) {
-		if(this.renderBatch.containsKey(sprite.texture)) {
-			this.renderBatch.get(sprite.texture).add(sprite);
+		if(this.renderBatch.containsKey(sprite.getTexture())) {
+			this.renderBatch.get(sprite.getTexture()).add(sprite);
 		} else {
 			ArrayList<SpriteComponent> batch = new ArrayList<>();
 			batch.add(sprite);
-			this.renderBatch.put(sprite.texture, batch);
+			this.renderBatch.put(sprite.getTexture(), batch);
 		}
 	}
 
@@ -62,16 +64,15 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 			this.renderBatch.forEach((texture, sprites) -> {
 				texture.bind();
 				sprites.forEach(sprite -> {
-					sprite.getSiblingComponent(Transform2D.class).ifPresent(transform -> {
+					sprite.getSiblingComponent(Transform.class).ifPresent(transform -> {
 						this.shader.load("transformation_matrix", transform.matrix());
 					});
-					this.shader.load("uv", sprite.uv.x(), sprite.uv.y());
-					this.shader.load("size", sprite.size.x(), sprite.size.y());
+					this.shader.load("uv", sprite.getUv());
+					this.shader.load("size", sprite.getSpriteSize());
 					DrawCalls.drawElements(6);
 				});
 			});
 			ShaderProgram.stop();
 		});
-		this.renderBatch.clear();
 	}
 }

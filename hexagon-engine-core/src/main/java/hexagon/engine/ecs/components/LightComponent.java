@@ -1,20 +1,14 @@
 package hexagon.engine.ecs.components;
 
+import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
 import hexagon.engine.math.color.Color;
 import hexagon.engine.utils.json.JsonObject;
 
-/**
- * A component that represents a light source in a 3D space.
- * 
- * @author Nico
- */
-public class LightComponent extends Transform3D {
+public class LightComponent extends Component {
 	
-	/**Color of the light */
-	public Color color = new Color(1.0f, 1.0f, 1.0f);
-	/**Light intensity */
-	public float intensity = 1.0f;
+	private Color color = new Color(1.0f, 1.0f, 1.0f);
+	private float intensity = 1.0f;
 
 	public LightComponent(GameEntity entity) {
 		super(entity);
@@ -22,16 +16,45 @@ public class LightComponent extends Transform3D {
 
 	@Override
 	protected void init(JsonObject jsonObject) {
-		super.init(jsonObject);
-		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {
-			float r = colorJson.getFloat("r").orElse(0.0f);
-			float g = colorJson.getFloat("g").orElse(0.0f);
-			float b = colorJson.getFloat("b").orElse(0.0f);
-			float a = colorJson.getFloat("a").orElse(1.0f);
+		jsonObject.getObject("color").ifPresent(colorJson -> {
+			float r = colorJson.getFloat("r").orElse(this.color.r());
+			float g = colorJson.getFloat("g").orElse(this.color.g());
+			float b = colorJson.getFloat("b").orElse(this.color.b());
+			float a = colorJson.getFloat("a").orElse(this.color.a());
 			this.color = new Color(r, g, b, a);
-		}, () -> {
-			this.color = new Color(1.0f, 1.0f, 1.0f);
 		});
-		this.intensity = jsonObject.getFloat("intensity").orElse(1.0f);
+		this.intensity = jsonObject.getFloat("intensity").orElse(this.intensity);
+	}
+
+	public final Color getColor() {
+		return this.color;
+	}
+
+	public final void setColor(Color color) {
+		if(color != null) this.color = color;
+	}
+
+	public final void setColor(float r, float g, float b) {
+		this.setColor(new Color(r, g, b));
+	}
+
+	public final void setColor(float r, float g, float b, float a) {
+		this.setColor(new Color(r, g, b, a));
+	}
+
+	public final void setColor(int r, int g, int b) {
+		this.setColor(new Color(r, g, b));
+	}
+
+	public final void setColor(int r, int g, int b, int a) {
+		this.setColor(new Color(r, g, b, a));
+	}
+
+	public final float getIntensity() {
+		return this.intensity;
+	}
+
+	public final void setIntensity(float intensity) {
+		this.intensity = Math.max(intensity, 0.0f);
 	}
 }
