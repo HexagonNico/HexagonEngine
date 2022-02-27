@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import hexagon.engine.ecs.GameSystem;
-import hexagon.engine.ecs.components.Camera3D;
+import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.ReflectivityComponent;
 import hexagon.engine.ecs.components.TexturedModelComponent;
 import hexagon.engine.ecs.components.Transform3D;
@@ -50,7 +50,7 @@ public final class TexturedModelRenderer extends GameSystem<TexturedModelCompone
 	@Override
 	protected void afterAll() {
 		ShaderProgram.start(this.shader);
-		Camera3D.main().ifPresent(camera -> {
+		Camera.main().ifPresent(camera -> {
 			this.shader.load("projection_matrix", camera.projectionMatrix());
 			this.shader.load("view_matrix", camera.viewMatrix());
 		});
