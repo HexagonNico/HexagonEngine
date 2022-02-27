@@ -1,5 +1,6 @@
 package hexagon.engine.ecs.components;
 
+import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
 import hexagon.engine.math.color.Color;
 import hexagon.engine.utils.json.JsonObject;
@@ -14,7 +15,7 @@ import hexagon.engine.utils.models.Model;
  * 
  * @author Nico
  */
-public class ModelComponent extends Transform3D {
+public class ModelComponent extends Component {
 	
 	/**Reference to the model resource */
 	public Model model;
@@ -27,7 +28,6 @@ public class ModelComponent extends Transform3D {
 
 	@Override
 	protected void init(JsonObject jsonObject) {
-		super.init(jsonObject);
 		// TODO - Error model
 		this.model = Model.getOrLoad(jsonObject.getString("model").orElseThrow());
 		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {

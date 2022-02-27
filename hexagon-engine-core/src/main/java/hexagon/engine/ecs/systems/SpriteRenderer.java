@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import hexagon.engine.ecs.GameSystem;
+import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.SpriteComponent;
-import hexagon.engine.math.matrix.Matrices;
-import hexagon.engine.math.vector.Float3;
+import hexagon.engine.ecs.components.Transform2D;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
 import hexagon.engine.opengl.ShaderProgram;
@@ -55,13 +55,16 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 	protected void afterAll() {
 		this.model.activate(() -> {
 			ShaderProgram.start(this.shader);
-			// TODO - 2D camera
-			this.shader.load("projection_matrix", Matrices.projection(70.0f, 0.1f, 1000.0f));
-			this.shader.load("view_matrix", Matrices.view(new Float3(0, 0, 5), 0, 0));
+			Camera.main().ifPresent(camera -> {
+				this.shader.load("projection_matrix", camera.projectionMatrix());
+				this.shader.load("view_matrix", camera.viewMatrix());
+			});
 			this.renderBatch.forEach((texture, sprites) -> {
 				texture.bind();
 				sprites.forEach(sprite -> {
-					this.shader.load("transformation_matrix", sprite.transformationMatrix());
+					sprite.getSiblingComponent(Transform2D.class).ifPresent(transform -> {
+						this.shader.load("transformation_matrix", transform.matrix());
+					});
 					this.shader.load("uv", sprite.uv.x(), sprite.uv.y());
 					this.shader.load("size", sprite.size.x(), sprite.size.y());
 					DrawCalls.drawElements(6);
