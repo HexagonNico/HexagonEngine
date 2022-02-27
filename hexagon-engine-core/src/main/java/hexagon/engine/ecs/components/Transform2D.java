@@ -51,8 +51,8 @@ public class Transform2D extends Component {
 	public Matrix4 matrix() {
 		return Matrices.transformation(
 			new Float3(this.px, this.py, 0.0f),
-			new Float3(this.px, this.py, 0.0f),
-			new Float3(this.px, this.py, 1.0f)
+			new Float3(this.rx, this.ry, 0.0f),
+			new Float3(this.sx, this.sy, 1.0f)
 		);
 	}
 
