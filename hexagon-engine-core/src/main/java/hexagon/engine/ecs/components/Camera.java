@@ -17,13 +17,13 @@ public class Camera extends Component {
 		return Optional.ofNullable(main);
 	}
 
-	public Float3 position = Float3.ZERO;
-	public float pitch = 0.0f;
-	public float yaw = 0.0f;
+	private Float3 position = Float3.ZERO;
+	private float pitch = 0.0f;
+	private float yaw = 0.0f;
 
-	public float fov = 70.0f;
-	public float nearPlane = 0.1f;
-	public float farPlane = 1000.0f;
+	private float fov = 70.0f;
+	private float nearPlane = 0.1f;
+	private float farPlane = 1000.0f;
 
 	public Camera(GameEntity entity) {
 		super(entity);
@@ -32,7 +32,7 @@ public class Camera extends Component {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		float x = positionJson.getFloat("x").orElse(this.position.x());
 		float y = positionJson.getFloat("y").orElse(this.position.y());
@@ -45,15 +45,34 @@ public class Camera extends Component {
 		this.farPlane = jsonObject.getFloat("farPlane").orElse(this.farPlane);
 	}
 
-	public Matrix4 projectionMatrix() {
+	public final Matrix4 projectionMatrix() {
 		return Matrices.projection(this.fov, this.nearPlane, this.farPlane);
 	}
 
-	public Matrix4 viewMatrix() {
+	public final Matrix4 viewMatrix() {
 		return Matrices.view(this.position, this.pitch, this.yaw);
 	}
 
-	public void setMain() {
+	public final void setMain() {
 		main = this;
+	}
+
+	public final Float3 getPosition() {
+		return this.position;
+	}
+
+	public final void setPosition(Float3 position) {
+		if(position != null) this.position = position;
+	}
+
+	public final void setRotation(float pitch, float yaw) {
+		this.pitch = pitch;
+		this.yaw = yaw;
+	}
+
+	public final void setProjection(float fov, float nearPlane, float farPlane) {
+		this.fov = fov;
+		this.nearPlane = nearPlane;
+		this.farPlane = farPlane;
 	}
 }

@@ -17,6 +17,8 @@ import hexagon.engine.utils.models.Model;
  */
 public class ModelComponent extends Component {
 	
+	// TODO - I don't like how models are stored in memory
+
 	/**Reference to the model resource */
 	public Model model;
 	/**Color tint of the model */
@@ -27,7 +29,7 @@ public class ModelComponent extends Component {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		// TODO - Error model
 		this.model = Model.getOrLoad(jsonObject.getString("model").orElseThrow());
 		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {

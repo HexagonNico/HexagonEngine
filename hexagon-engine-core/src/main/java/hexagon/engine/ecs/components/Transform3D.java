@@ -7,101 +7,96 @@ import hexagon.engine.math.vector.Float3;
 import hexagon.engine.utils.json.JsonObject;
 
 /**
- * Component that holds a 3D transformation.
+ * Component that holds geometric transformations, i. e., position, rotation and scale, in a 3D space.
  * 
  * @author Nico
  */
-public class Transform3D extends Transform2D {
-	
-	protected float pz = 0.0f;
-	protected float rz = 0.0f;
-	protected float sz = 1.0f;
+public final class Transform3D extends Transform<Float3> {
 
+	/**
+	 * Creates a transform component.
+	 * 
+	 * @param entity The entity that holds this component.
+	 */
 	public Transform3D(GameEntity entity) {
-		super(entity);
+		super(entity, Float3.ZERO, Float3.ZERO, Float3.ONE);
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
-		super.init(jsonObject);
+	public void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
 		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());
-		this.pz = positionJson.getFloat("z").orElse(0.0f);
-		this.rz = rotationJson.getFloat("z").orElse(0.0f);
-		this.sz = scaleJson.getFloat("z").orElse(1.0f);
+		this.setPosition(positionJson.getFloat("x").orElse(0.0f), positionJson.getFloat("y").orElse(0.0f), positionJson.getFloat("z").orElse(0.0f));
+		this.setRotation(rotationJson.getFloat("x").orElse(0.0f), rotationJson.getFloat("y").orElse(0.0f), rotationJson.getFloat("z").orElse(0.0f));
+		this.setScale(scaleJson.getFloat("x").orElse(1.0f), scaleJson.getFloat("y").orElse(1.0f), scaleJson.getFloat("z").orElse(1.0f));
 	}
-
-	// TODO - Static method for default matrix
 
 	@Override
 	public Matrix4 matrix() {
-		return Matrices.transformation(this.position3D(), this.rotation3D(), this.scale3D());
+		return Matrices.transformation(this.position(), this.rotation(), this.scale());
 	}
 
-	public Float3 position3D() {
-		return new Float3(super.px, super.py, this.pz);
-	}
-
-	public Float3 rotation3D() {
-		return new Float3(super.rx, super.ry, this.rz);
-	}
-
-	public Float3 scale3D() {
-		return new Float3(super.sx, super.sy, this.sz);
-	}
-
+	/**
+	 * Sets this objects position.
+	 * This method always sets a position relative to the parent's position.
+	 * If the value passed is null, the value is not set.
+	 * 
+	 * @param x Position X coordinate
+	 * @param y Position Y coordinate
+	 * @param z Position Z coordinate
+	 */
 	public void setPosition(float x, float y, float z) {
-		super.setPosition(x, y);
-		this.pz = z;
+		super.setPosition(new Float3(x, y, z));
 	}
 
+	/**
+	 * Sets this objects rotation.
+	 * This method always sets a rotation relative to the parent's rotation.
+	 * If the value passed is null, the value is not set.
+	 * 
+	 * @param x Rotation around X axis
+	 * @param y Rotation around Y axis
+	 * @param z Rotation around Z axis
+	 */
 	public void setRotation(float x, float y, float z) {
-		super.setRotation(x, y);
-		this.rz = z;
+		super.setRotation(new Float3(x, y, z));
 	}
 
+	/**
+	 * Sets this objects scale.
+	 * This method always sets a scale relative to the parent's scale.
+	 * If the value passed is null, the value is not set.
+	 * 
+	 * @param x Scale on X axis
+	 * @param y Scale on Y axis
+	 * @param z Scale on Z axis
+	 */
 	public void setScale(float x, float y, float z) {
-		super.setScale(x, y);
-		this.sz = z;
+		super.setScale(new Float3(x, y, z));
 	}
 
-	public void setPosition(Float3 vector) {
-		this.setPosition(vector.x(), vector.y(), vector.z());
-	}
-
-	public void setRotation(Float3 vector) {
-		this.setRotation(vector.x(), vector.y(), vector.z());
-	}
-
-	public void setScale(Float3 vector) {
-		this.setScale(vector.x(), vector.y(), vector.z());
-	}
-
+	/**
+	 * Applies a translation.
+	 * Changes this object's position by adding the given vector.
+	 * 
+	 * @param x Translation on X axis
+	 * @param y Translation on Y axis
+	 * @param z Translation on Z axis
+	 */
 	public void translate(float x, float y, float z) {
-		super.translate(x, y);
-		this.pz += z;
+		super.setPosition(super.localPosition().plus(x, y, z));
 	}
 
+	/**
+	 * Applies a rotation.
+	 * Changes this object's rotation by adding the given vector.
+	 * 
+	 * @param x Rotation around X axis
+	 * @param y Rotation around Y axis
+	 * @param z Rotation around Z axis
+	 */
 	public void rotate(float x, float y, float z) {
-		super.rotate(x, y);
-		this.rz += z;
-	}
-
-	public void rescale(float x, float y, float z) {
-		super.rescale(x, y);
-		this.sz *= z;
-	}
-
-	public void translate(Float3 vector) {
-		this.translate(vector.x(), vector.y(), vector.z());
-	}
-
-	public void rotate(Float3 vector) {
-		this.rotate(vector.x(), vector.y(), vector.z());
-	}
-
-	public void rescale(Float3 vector) {
-		this.rescale(vector.x(), vector.y(), vector.z());
+		super.setRotation(super.localRotation().plus(x, y, z));
 	}
 }

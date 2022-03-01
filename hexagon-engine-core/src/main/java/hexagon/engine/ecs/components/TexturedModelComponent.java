@@ -23,7 +23,7 @@ public class TexturedModelComponent extends ModelComponent {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		super.init(jsonObject);
 		jsonObject.getString("texture").ifPresentOrElse(textureKey -> {
 			this.texture = Texture.getOrLoad(textureKey);
