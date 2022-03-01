@@ -7,7 +7,6 @@ import hexagon.engine.ecs.GameSystem;
 import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.ModelComponent;
 import hexagon.engine.ecs.components.ReflectivityComponent;
-import hexagon.engine.ecs.components.Transform;
 import hexagon.engine.ecs.components.Transform3D;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
@@ -71,7 +70,7 @@ public final class ModelRenderer extends GameSystem<ModelComponent> {
 		this.renderBatch.forEach((model, components) -> {
 			model.vertexObject.activate(() -> {
 				components.forEach(component -> {
-					component.getSiblingComponent(Transform.class).ifPresent(transform -> {
+					component.getSiblingComponent(Transform3D.class).ifPresent(transform -> {
 						this.shader.load("transformation_matrix", transform.matrix());
 					});
 					this.shader.load("color", component.color.r(), component.color.g(), component.color.b());

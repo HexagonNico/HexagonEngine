@@ -1,0 +1,50 @@
+{
+	"entities": [
+		{
+			"hexagon.engine.Camera": {
+				"position": {
+					"z": 5.0
+				}
+			}
+		},
+		{
+			"hexagon.engine.Transform3D": {
+				"position": {
+					"y": -4.0,
+					"z": -10.0
+				}
+			},
+			"hexagon.engine.ModelComponent": {
+				"model": "/models/dragon.obj",
+				"color": {
+					"r": 0.83,
+					"g": 0.68,
+					"b": 0.21
+				}
+			},
+			"hexagon.engine.ReflectivityComponent": {
+				"reflectivity": 1.0
+			}
+		},
+		{
+			"hexagon.engine.Transform2D": {
+
+			},
+			"hexagon.engine.SpriteComponent": {
+				"texture": "/textures/windmill.png"
+			}
+		},
+		{
+			"hexagon.engine.Transform3D": {
+				"position": {
+					"x": 200.0,
+					"y": 200.0,
+					"z": 100.0
+				}
+			},
+			"hexagon.engine.LightComponent": {
+				
+			}
+		}
+	]
+}
