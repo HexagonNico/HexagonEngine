@@ -7,8 +7,18 @@ import hexagon.engine.math.vector.Float2;
 import hexagon.engine.math.vector.Float3;
 import hexagon.engine.utils.json.JsonObject;
 
+/**
+ * Component that holds geometric transformations, i. e., position, rotation and scale, in a 2D space.
+ * 
+ * @author Nico
+ */
 public final class Transform2D extends Transform<Float2> {
 
+	/**
+	 * Creates a transform component.
+	 * 
+	 * @param entity The entity that holds this component.
+	 */
 	public Transform2D(GameEntity entity) {
 		super(entity, Float2.ZERO, Float2.ZERO, Float2.ONE);
 	}
@@ -32,31 +42,61 @@ public final class Transform2D extends Transform<Float2> {
 		);
 	}
 
+	/**
+	 * Sets this objects position.
+	 * This method always sets a position relative to the parent's position.
+	 * If the value passed is null, the value is not set.
+	 * 
+	 * @param x Position X coordinate
+	 * @param y Position Y coordinate
+	 */
 	public void setPosition(float x, float y) {
 		super.setPosition(new Float2(x, y));
 	}
 
+	/**
+	 * Sets this objects rotation.
+	 * This method always sets a rotation relative to the parent's rotation.
+	 * If the value passed is null, the value is not set.
+	 * 
+	 * @param x Rotation around X axis
+	 * @param y Rotation around Y axis
+	 */
 	public void setRotation(float x, float y) {
 		super.setRotation(new Float2(x, y));
 	}
 
+	/**
+	 * Sets this objects scale.
+	 * This method always sets a scale relative to the parent's scale.
+	 * If the value passed is null, the value is not set.
+	 * 
+	 * @param x Scale on X axis
+	 * @param y Scale on Y axis
+	 */
 	public void setScale(float x, float y) {
 		super.setScale(new Float2(x, y));
 	}
 
+	/**
+	 * Applies a translation.
+	 * Changes this object's position by adding the given vector.
+	 * 
+	 * @param x Translation on X axis
+	 * @param y Translation on Y axis
+	 */
 	public void translate(float x, float y) {
-		super.setPosition(super.localPosition().plus(x, y));
+		super.translate(new Float2(x, y));
 	}
 
+	/**
+	 * Applies a rotation.
+	 * Changes this object's rotation by adding the given vector.
+	 * 
+	 * @param x Rotation around X axis
+	 * @param y Rotation around Y axis
+	 */
 	public void rotate(float x, float y) {
-		super.setRotation(super.localRotation().plus(x, y));
-	}
-
-	public void translate(Float2 vector) {
-		this.translate(vector.x(), vector.y());
-	}
-
-	public void rotate(Float2 vector) {
-		this.rotate(vector.x(), vector.y());
+		super.rotate(new Float2(x, y));
 	}
 }

@@ -7,13 +7,27 @@ import hexagon.engine.math.vector.Float2;
 import hexagon.engine.opengl.Texture;
 import hexagon.engine.utils.json.JsonObject;
 
+/**
+ * Component that represents a sprite that can be rendered.
+ * 
+ * @author Nico
+ */
 public class SpriteComponent extends Component {
 
+	/**Sprite's texture */
 	private Texture texture = Texture.ERROR;
+	/**Top left corner of the sprite in the texture */
 	private Float2 uv = Float2.ZERO;
+	/**Size of the sprite in the texture */
 	private Float2 size = Float2.ONE;
+	/**Sprite color tint */
 	private Color color = new Color(1.0f, 1.0f, 1.0f);
 
+	/**
+	 * Creates a sprite component.
+	 * 
+	 * @param entity The entity that holds this component
+	 */
 	public SpriteComponent(GameEntity entity) {
 		super(entity);
 	}
@@ -36,40 +50,89 @@ public class SpriteComponent extends Component {
 		});
 	}
 
+	/**
+	 * Gets the texture used by this sprite.
+	 * If the texture is null, this returns {@link Texture#ERROR}.
+	 * 
+	 * @return This sprite's texture
+	 */
 	public final Texture getTexture() {
-		return texture;
+		return this.texture != null ? this.texture : Texture.ERROR;
 	}
 
+	/**
+	 * Sets the texture used by this sprite.
+	 * If that texture cannot be found or the value passed is null,
+	 * the texture is set to {@link Texture#ERROR}.
+	 * 
+	 * @param texture Path to the texture file, from the resources folder, starting with {@code /}
+	 */
 	public final void setTexture(String texture) {
 		if(texture != null) this.texture = Texture.getOrLoad(texture);
+		else this.texture = Texture.ERROR;
 	}
 
+	/**
+	 * Gets the sprite's uv, the coordinates of the top left corner of the sprite
+	 * from the top left corner of the texture file.
+	 * 
+	 * @return A {@link Float2} containing the sprite's uv coordinates
+	 */
 	public final Float2 getUv() {
-		return uv;
+		return this.uv;
 	}
 
+	/**
+	 * Sets this sprite's uv, the coordinates of the top left corner of the sprite
+	 * from the top left corner of the texture file.
+	 * 
+	 * @param uv A {@link Float2} containing the sprite's uv coordinates
+	 */
 	public final void setUv(Float2 uv) {
 		if(uv != null) this.uv = uv;
 	}
 
+	/**
+	 * Sets this sprite's uv, the coordinates of the top left corner of the sprite
+	 * from the top left corner of the texture file.
+	 * 
+	 * @param u U coordinate
+	 * @param v V coordinate
+	 */
 	public final void setUv(float u, float v) {
 		this.setUv(new Float2(u, v));
 	}
 
+	/**
+	 * Gets the size of this sprite in the texture file.
+	 * 
+	 * @return A {@link Float2} containing the sprite's size
+	 */
 	public final Float2 getSpriteSize() {
-		return size;
+		return this.size;
 	}
 
+	/**
+	 * Sets this sprite's size in the texture file.
+	 * 
+	 * @param size A {@link Float2} containing the sprite's size
+	 */
 	public final void setSpriteSize(Float2 size) {
 		if(size != null) this.size = size;
 	}
 
+	/**
+	 * Sets this sprite's size in the texture file.
+	 * 
+	 * @param w Sprite width
+	 * @param h Sprite height
+	 */
 	public final void setSpriteSize(float w, float h) {
 		this.setSpriteSize(new Float2(w, h));
 	}
 
 	public final Color getColor() {
-		return color;
+		return this.color;
 	}
 
 	public final void setColor(Color color) {
