@@ -27,7 +27,7 @@ public abstract class Component {
 	 * TODO - Documentation
 	 * @param jsonObject
 	 */
-	protected abstract void init(JsonObject jsonObject);
+	public abstract void init(JsonObject jsonObject);
 
 	/**
 	 * Gets another component from the same entity holding this one.

@@ -24,7 +24,7 @@ public final class Transform2D extends Transform<Float2> {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
 		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());

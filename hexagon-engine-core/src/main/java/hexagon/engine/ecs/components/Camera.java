@@ -32,7 +32,7 @@ public class Camera extends Component {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
 		float x = positionJson.getFloat("x").orElse(this.position.x());
 		float y = positionJson.getFloat("y").orElse(this.position.y());

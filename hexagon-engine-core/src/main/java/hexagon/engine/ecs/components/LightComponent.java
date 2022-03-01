@@ -15,7 +15,7 @@ public class LightComponent extends Component {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		jsonObject.getObject("color").ifPresent(colorJson -> {
 			float r = colorJson.getFloat("r").orElse(this.color.r());
 			float g = colorJson.getFloat("g").orElse(this.color.g());

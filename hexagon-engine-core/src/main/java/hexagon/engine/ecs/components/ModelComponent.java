@@ -29,7 +29,7 @@ public class ModelComponent extends Component {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		// TODO - Error model
 		this.model = Model.getOrLoad(jsonObject.getString("model").orElseThrow());
 		jsonObject.getObject("color").ifPresentOrElse(colorJson -> {

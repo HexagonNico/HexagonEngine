@@ -16,7 +16,7 @@ public class ReflectivityComponent extends Component {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		this.diffuseLight = jsonObject.getFloat("diffuseLight").orElse(this.diffuseLight);
 		this.reflectivity = jsonObject.getFloat("reflectivity").orElse(this.reflectivity);
 		this.shineDamper = jsonObject.getFloat("shineDamper").orElse(this.shineDamper);

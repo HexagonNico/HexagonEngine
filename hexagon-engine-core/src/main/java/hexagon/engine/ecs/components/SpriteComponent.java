@@ -33,7 +33,7 @@ public class SpriteComponent extends Component {
 	}
 
 	@Override
-	protected void init(JsonObject jsonObject) {
+	public void init(JsonObject jsonObject) {
 		jsonObject.getString("texture").ifPresent(textureKey -> {
 			this.texture = Texture.getOrLoad(textureKey);
 		});
