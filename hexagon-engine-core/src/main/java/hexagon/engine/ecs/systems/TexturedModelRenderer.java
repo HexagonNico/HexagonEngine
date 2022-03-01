@@ -8,6 +8,7 @@ import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.ReflectivityComponent;
 import hexagon.engine.ecs.components.TexturedModelComponent;
 import hexagon.engine.ecs.components.Transform;
+import hexagon.engine.ecs.components.Transform2D;
 import hexagon.engine.ecs.components.Transform3D;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
@@ -68,9 +69,13 @@ public final class TexturedModelRenderer extends GameSystem<TexturedModelCompone
 			texturedModel.texture.bind();
 			texturedModel.model.vertexObject.activate(() -> {
 				components.forEach(component -> {
-					component.getSiblingComponent(Transform.class).ifPresent(transform -> {
+					component.getSiblingComponent(Transform3D.class).ifPresentOrElse(transform -> {
 						this.shader.load("transformation_matrix", transform.matrix());
-					});
+					}, () -> component.getSiblingComponent(Transform2D.class).ifPresentOrElse(transform -> {
+						this.shader.load("transformation_matrix", transform.matrix());
+					}, () -> {
+						this.shader.load("transformation_matrix", Transform.originMatrix());
+					}));
 					this.shader.load("color", component.color.r(), component.color.g(), component.color.b());
 					component.getSiblingComponent(ReflectivityComponent.class).ifPresent(reflectivityComponent -> {
 						this.shader.load("diffuse_light", reflectivityComponent.getDiffuse());
