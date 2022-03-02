@@ -2,7 +2,9 @@ package hexagon.engine.ecs.components;
 
 import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
+import hexagon.engine.math.matrix.Matrices;
 import hexagon.engine.math.matrix.Matrix4;
+import hexagon.engine.math.vector.Float3;
 import hexagon.engine.math.vector.FloatVector;
 
 /**
@@ -36,6 +38,10 @@ public abstract sealed class Transform<V extends FloatVector<V, ?>> extends Comp
 		this.position = position;
 		this.rotation = rotation;
 		this.scale = scale;
+	}
+
+	public static Matrix4 originMatrix() {
+		return Matrices.transformation(Float3.ZERO, Float3.ZERO, Float3.ONE);
 	}
 
 	/**

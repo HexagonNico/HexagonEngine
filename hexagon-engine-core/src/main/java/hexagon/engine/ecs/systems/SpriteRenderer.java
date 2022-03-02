@@ -6,7 +6,9 @@ import java.util.HashMap;
 import hexagon.engine.ecs.GameSystem;
 import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.SpriteComponent;
+import hexagon.engine.ecs.components.Transform;
 import hexagon.engine.ecs.components.Transform2D;
+import hexagon.engine.ecs.components.Transform3D;
 import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.Shader;
 import hexagon.engine.opengl.ShaderProgram;
@@ -64,9 +66,13 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 			this.renderBatch.forEach((texture, sprites) -> {
 				texture.bind();
 				sprites.forEach(sprite -> {
-					sprite.getSiblingComponent(Transform2D.class).ifPresent(transform -> {
+					sprite.getSiblingComponent(Transform2D.class).ifPresentOrElse(transform -> {
 						this.shader.load("transformation_matrix", transform.matrix());
-					});
+					}, () -> sprite.getSiblingComponent(Transform3D.class).ifPresentOrElse(transform -> {
+						this.shader.load("transformation_matrix", transform.matrix());
+					}, () -> {
+						this.shader.load("transformation_matrix", Transform.originMatrix());
+					}));
 					this.shader.load("uv", sprite.getUv());
 					this.shader.load("size", sprite.getSpriteSize());
 					DrawCalls.drawElements(6);
