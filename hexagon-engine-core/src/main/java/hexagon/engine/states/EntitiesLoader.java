@@ -1,5 +1,6 @@
 package hexagon.engine.states;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Function;
 
@@ -35,13 +36,15 @@ public final class EntitiesLoader {
 	public static void loadEntities(GameState state, String entitiesFile) {
 		JsonObject jsonObject = JsonObject.fromFileOrEmpty(entitiesFile);
 		JsonArray entitiesJsonArray = jsonObject.getArray("entities").orElse(JsonArray.empty());
+		ArrayList<GameEntity> loadedEntities = new ArrayList<>();
 		entitiesJsonArray.forEachObject(entityJson -> {
 			GameEntity entity = state.createEntity();
+			loadedEntities.add(entity);
 			entityJson.keySet().forEach(key -> {
 				if(componentsRegistry.containsKey(key)) {
 					JsonObject componentJson = entityJson.getObject(key).orElse(JsonObject.empty());
 					Component component = entity.addComponent(componentsRegistry.get(key));
-					component.init(componentJson);
+					component.init(loadedEntities, componentJson);
 				} else {
 					Log.error("Component " + key + " is not in registry");
 				}

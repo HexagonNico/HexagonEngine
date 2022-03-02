@@ -1,5 +1,7 @@
 package hexagon.engine.ecs.components;
 
+import java.util.List;
+
 import hexagon.engine.ecs.GameEntity;
 import hexagon.engine.math.matrix.Matrices;
 import hexagon.engine.math.matrix.Matrix4;
@@ -31,6 +33,16 @@ public final class Transform2D extends Transform<Float2> {
 		this.setPosition(positionJson.getFloat("x").orElse(0.0f), positionJson.getFloat("y").orElse(0.0f));
 		this.setRotation(rotationJson.getFloat("x").orElse(0.0f), rotationJson.getFloat("y").orElse(0.0f));
 		this.setScale(scaleJson.getFloat("x").orElse(1.0f), scaleJson.getFloat("y").orElse(1.0f));
+	}
+
+	@Override
+	public void init(List<GameEntity> loadedEntities, JsonObject jsonObject) {
+		super.init(loadedEntities, jsonObject);
+		jsonObject.getInt("parent").ifPresent(parentId -> {
+			loadedEntities.get(parentId).getComponent(Transform2D.class).ifPresent(transform -> {
+				this.setParent(transform);
+			});
+		});
 	}
 
 	@Override

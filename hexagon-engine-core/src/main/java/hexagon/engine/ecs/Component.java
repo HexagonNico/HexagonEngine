@@ -1,5 +1,6 @@
 package hexagon.engine.ecs;
 
+import java.util.List;
 import java.util.Optional;
 
 import hexagon.engine.utils.json.JsonObject;
@@ -24,10 +25,24 @@ public abstract class Component {
 	}
 
 	/**
-	 * TODO - Documentation
-	 * @param jsonObject
+	 * Initializes this component with the data from an entity bundle file.
+	 * Called when loading entities.
+	 * 
+	 * @param jsonObject JSON object containing the component's data.
 	 */
 	public abstract void init(JsonObject jsonObject);
+
+	/**
+	 * Initializes this component with the data from an entity bundle file.
+	 * Called when loading entities.
+	 * Can be used for components that need to reference other entities.
+	 * 
+	 * @param loadedEntities List containing all the entities that are being loaded
+	 * @param jsonObject JSON object containing the component's data.
+	 */
+	public void init(List<GameEntity> loadedEntities, JsonObject jsonObject) {
+		this.init(jsonObject);
+	}
 
 	/**
 	 * Gets another component from the same entity holding this one.
