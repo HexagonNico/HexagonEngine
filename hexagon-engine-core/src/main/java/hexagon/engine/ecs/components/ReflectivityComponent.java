@@ -17,13 +17,13 @@ public class ReflectivityComponent extends Component {
 
 	@Override
 	public void init(JsonObject jsonObject) {
-		this.diffuseLight = jsonObject.getFloat("diffuseLight").orElse(this.diffuseLight);
-		this.reflectivity = jsonObject.getFloat("reflectivity").orElse(this.reflectivity);
-		this.shineDamper = jsonObject.getFloat("shineDamper").orElse(this.shineDamper);
+		this.diffuseLight = jsonObject.getFloat("diffuseLight", this.diffuseLight);
+		this.reflectivity = jsonObject.getFloat("reflectivity", this.reflectivity);
+		this.shineDamper = jsonObject.getFloat("shineDamper", this.shineDamper);
 	}
 
 	public final float getDiffuse() {
-		return diffuseLight;
+		return this.diffuseLight;
 	}
 
 	public final void setDiffuse(float diffuseLight) {
@@ -31,7 +31,7 @@ public class ReflectivityComponent extends Component {
 	}
 
 	public final float getReflectivity() {
-		return reflectivity;
+		return this.reflectivity;
 	}
 
 	public final void setReflectivity(float reflectivity) {
@@ -39,7 +39,7 @@ public class ReflectivityComponent extends Component {
 	}
 
 	public float getShineDamper() {
-		return shineDamper;
+		return this.shineDamper;
 	}
 
 	public void setShineDamper(float shineDamper) {

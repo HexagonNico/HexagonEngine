@@ -15,6 +15,8 @@ import hexagon.engine.utils.resources.Resources;
 
 public final class JsonArray {
 	
+	// TODO - Needs unit tests
+
 	public static JsonArray fromString(String jsonString) {
 		return new JsonArray(jsonString);
 	}
@@ -150,6 +152,4 @@ public final class JsonArray {
 	public Stream<JsonArray> streamArrays() {
 		return this.stream(this::getArray);
 	}
-
-	// TODO - Test Json arrays
 }

@@ -22,14 +22,22 @@ public final class PerspectiveCamera extends Camera {
 
 	@Override
 	public void init(JsonObject jsonObject) {
-		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
-		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
-		this.position = new Float3(positionJson.getFloat("x").orElse(this.position.x()), positionJson.getFloat("y").orElse(this.position.y()), positionJson.getFloat("z").orElse(this.position.z()));
-		this.rotation = new Float3(rotationJson.getFloat("pitch").orElse(this.rotation.x()), rotationJson.getFloat("yaw").orElse(this.rotation.y()), rotationJson.getFloat("roll").orElse(this.rotation.z()));
-		this.fov = jsonObject.getFloat("fov").orElse(this.fov);
-		this.zNear = jsonObject.getFloat("zNear").orElse(this.zNear);
-		this.zFar = jsonObject.getFloat("zFar").orElse(this.zFar);
-		if(jsonObject.getBoolean("main").orElse(false)) this.setMain();
+		jsonObject.getObject("position").ifPresent(positionJson -> {
+			float x = positionJson.getFloat("x", this.position.x());
+			float y = positionJson.getFloat("y", this.position.y());
+			float z = positionJson.getFloat("z", this.position.z());
+			this.position = new Float3(x, y, z);
+		});
+		jsonObject.getObject("rotation").ifPresent(rotationJson -> {
+			float pitch = rotationJson.getFloat("pitch", this.position.x());
+			float yaw = rotationJson.getFloat("yaw", this.position.y());
+			float roll = rotationJson.getFloat("roll", this.position.z());
+			this.position = new Float3(pitch, yaw, roll);
+		});
+		this.fov = jsonObject.getFloat("fov", this.fov);
+		this.zNear = jsonObject.getFloat("zNear", this.zNear);
+		this.zFar = jsonObject.getFloat("zFar", this.zFar);
+		jsonObject.ifBoolean("main", () -> this.setMain());
 	}
 
 	@Override

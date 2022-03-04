@@ -21,11 +21,14 @@ public final class OrthographicCamera extends Camera {
 
 	@Override
 	public void init(JsonObject jsonObject) {
-		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
-		this.position = new Float2(positionJson.getFloat("x").orElse(this.position.x()), positionJson.getFloat("y").orElse(this.position.y()));
-		this.nearPlane = jsonObject.getFloat("nearPlane").orElse(this.nearPlane);
-		this.farPlane = jsonObject.getFloat("farPlane").orElse(this.farPlane);
-		if(jsonObject.getBoolean("main").orElse(false)) this.setMain();
+		jsonObject.getObject("position").ifPresent(positionJson -> {
+			float x = positionJson.getFloat("x", this.position.x());
+			float y = positionJson.getFloat("y", this.position.y());
+			this.position = new Float2(x, y);
+		});
+		this.nearPlane = jsonObject.getFloat("nearPlane", this.nearPlane);
+		this.farPlane = jsonObject.getFloat("farPlane", this.farPlane);
+		jsonObject.ifBoolean("main", () -> this.setMain());
 	}
 
 	@Override

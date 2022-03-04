@@ -17,13 +17,13 @@ public class LightComponent extends Component {
 	@Override
 	public void init(JsonObject jsonObject) {
 		jsonObject.getObject("color").ifPresent(colorJson -> {
-			float r = colorJson.getFloat("r").orElse(this.color.r());
-			float g = colorJson.getFloat("g").orElse(this.color.g());
-			float b = colorJson.getFloat("b").orElse(this.color.b());
-			float a = colorJson.getFloat("a").orElse(this.color.a());
+			float r = colorJson.getFloat("r", this.color.r());
+			float g = colorJson.getFloat("g", this.color.g());
+			float b = colorJson.getFloat("b", this.color.b());
+			float a = colorJson.getFloat("a", this.color.a());
 			this.color = new Color(r, g, b, a);
 		});
-		this.intensity = jsonObject.getFloat("intensity").orElse(this.intensity);
+		this.intensity = jsonObject.getFloat("intensity", this.intensity);
 	}
 
 	public final Color getColor() {
