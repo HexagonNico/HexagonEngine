@@ -1,20 +1,24 @@
 package hexagon.engine.ecs.components;
 
 import java.util.List;
+import java.util.Optional;
 
+import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
 import hexagon.engine.math.matrix.Matrices;
 import hexagon.engine.math.matrix.Matrix4;
 import hexagon.engine.math.vector.Float2;
-import hexagon.engine.math.vector.Float3;
 import hexagon.engine.utils.json.JsonObject;
 
-/**
- * Component that holds geometric transformations, i. e., position, rotation and scale, in a 2D space.
- * 
- * @author Nico
- */
-public final class Transform2D extends Transform<Float2> {
+public final class Transform2D extends Component {
+
+	private Transform2D parent = null;
+
+	// TODO - Rotation may need more than one axis
+
+	private Float2 position = Float2.ZERO;
+	private float rotation = 0.0f;
+	private Float2 scale = Float2.ONE;
 
 	/**
 	 * Creates a transform component.
@@ -22,17 +26,22 @@ public final class Transform2D extends Transform<Float2> {
 	 * @param entity The entity that holds this component.
 	 */
 	public Transform2D(GameEntity entity) {
-		super(entity, Float2.ZERO, Float2.ZERO, Float2.ONE);
+		super(entity);
 	}
 
 	@Override
 	public void init(JsonObject jsonObject) {
-		JsonObject positionJson = jsonObject.getObject("position").orElse(JsonObject.empty());
-		JsonObject rotationJson = jsonObject.getObject("rotation").orElse(JsonObject.empty());
-		JsonObject scaleJson = jsonObject.getObject("scale").orElse(JsonObject.empty());
-		this.setPosition(positionJson.getFloat("x").orElse(0.0f), positionJson.getFloat("y").orElse(0.0f));
-		this.setRotation(rotationJson.getFloat("x").orElse(0.0f), rotationJson.getFloat("y").orElse(0.0f));
-		this.setScale(scaleJson.getFloat("x").orElse(1.0f), scaleJson.getFloat("y").orElse(1.0f));
+		jsonObject.getObject("position").ifPresent(positionJson -> {
+			float x = positionJson.getFloat("x", this.position.x());
+			float y = positionJson.getFloat("y", this.position.y());
+			this.position = new Float2(x, y);
+		});
+		this.rotation = jsonObject.getFloat("rotation", this.rotation);
+		jsonObject.getObject("scale").ifPresent(scaleJson -> {
+			float x = scaleJson.getFloat("x", this.scale.x());
+			float y = scaleJson.getFloat("y", this.scale.y());
+			this.scale = new Float2(x, y);
+		});
 	}
 
 	@Override
@@ -45,14 +54,61 @@ public final class Transform2D extends Transform<Float2> {
 		});
 	}
 
-	@Override
+	/**
+	 * Computes the transformation matrix with all the values from this transform.
+	 * Can be used in rendering.
+	 * 
+	 * @return The computed matrix
+	 */
 	public Matrix4 matrix() {
-		Matrix4 transformation = Matrices.transformation(
-			new Float3(super.position().x(), super.position().y(), 0.0f),
-			new Float3(super.rotation().x(), super.rotation().y(), 0.0f),
-			new Float3(super.scale().x(), super.scale().y(), 1.0f)
-		);
-		return super.parent != null ? transformation.multiply(super.parent.matrix()) : transformation;
+		Matrix4 transformation = Matrices.transformation(this.position, this.rotation, this.scale);
+		return this.parent != null ? transformation.multiply(this.parent.matrix()) : transformation;
+	}
+
+	/**
+	 * Sets this transform's parent.
+	 * All the transformations of a transform depend from its parent (if it has one).
+	 * Set the parent to null to make the transform not have a parent.
+	 * 
+	 * @param parent The transform's parent (or null to remove the parent).
+	 */
+	public final void setParent(Transform2D parent) {
+		// TODO - Keep world position when setting a parent to null
+		this.parent = parent;
+	}
+
+	public final Optional<Transform2D> getParent() {
+		return Optional.ofNullable(this.parent);
+	}
+
+	/**
+	 * Gets the transform's position.
+	 * Position is relative to the parent if this transform has one, global otherwise.
+	 * 
+	 * @return Position of the transform
+	 */
+	public final Float2 position() {
+		return this.position;
+	}
+
+	/**
+	 * Gets the transform's rotation.
+	 * Rotation is relative to the parent if this transform has one, global otherwise.
+	 * 
+	 * @return Rotation of the transform
+	 */
+	public final float rotation() {
+		return this.rotation;
+	}
+
+	/**
+	 * Gets the transform's scale.
+	 * Scale is relative to the parent if this transform has one, global otherwise.
+	 * 
+	 * @return Scale of the transform
+	 */
+	public final Float2 scale() {
+		return this.scale;
 	}
 
 	/**
@@ -60,23 +116,31 @@ public final class Transform2D extends Transform<Float2> {
 	 * This method always sets a position relative to the parent's position.
 	 * If the value passed is null, the value is not set.
 	 * 
+	 * @param position Position value
+	 */
+	public final void setPosition(Float2 position) {
+		if(position != null) this.position = position;
+	}
+
+	/**
+	 * Sets this objects position.
+	 * This method always sets a position relative to the parent's position.
+	 * 
 	 * @param x Position X coordinate
 	 * @param y Position Y coordinate
 	 */
-	public void setPosition(float x, float y) {
-		super.setPosition(new Float2(x, y));
+	public final void setPosition(float x, float y) {
+		this.setPosition(new Float2(x, y));
 	}
 
 	/**
 	 * Sets this objects rotation.
 	 * This method always sets a rotation relative to the parent's rotation.
-	 * If the value passed is null, the value is not set.
 	 * 
-	 * @param x Rotation around X axis
-	 * @param y Rotation around Y axis
+	 * @param rotation Rotation value
 	 */
-	public void setRotation(float x, float y) {
-		super.setRotation(new Float2(x, y));
+	public final void setRotation(float rotation) {
+		this.rotation = rotation;
 	}
 
 	/**
@@ -84,11 +148,32 @@ public final class Transform2D extends Transform<Float2> {
 	 * This method always sets a scale relative to the parent's scale.
 	 * If the value passed is null, the value is not set.
 	 * 
+	 * @param scale Scale value
+	 */
+	public final void setScale(Float2 scale) {
+		if(scale != null) this.scale = scale;
+	}
+
+	/**
+	 * Sets this objects scale.
+	 * This method always sets a scale relative to the parent's scale.
+	 * 
 	 * @param x Scale on X axis
 	 * @param y Scale on Y axis
 	 */
-	public void setScale(float x, float y) {
-		super.setScale(new Float2(x, y));
+	public final void setScale(float x, float y) {
+		this.setScale(new Float2(x, y));
+	}
+
+	/**
+	 * Applies a translation.
+	 * Changes this object's position by adding the given vector.
+	 * The value is not changed if the given value is null.
+	 * 
+	 * @param translation Vector translation
+	 */
+	public final void translate(Float2 translation) {
+		if(translation != null) this.position = this.position.plus(translation);
 	}
 
 	/**
@@ -98,18 +183,17 @@ public final class Transform2D extends Transform<Float2> {
 	 * @param x Translation on X axis
 	 * @param y Translation on Y axis
 	 */
-	public void translate(float x, float y) {
-		super.translate(new Float2(x, y));
+	public final void translate(float x, float y) {
+		this.position = this.position.plus(x, y);
 	}
 
 	/**
 	 * Applies a rotation.
 	 * Changes this object's rotation by adding the given vector.
 	 * 
-	 * @param x Rotation around X axis
-	 * @param y Rotation around Y axis
+	 * @param rotation Vector rotation
 	 */
-	public void rotate(float x, float y) {
-		super.rotate(new Float2(x, y));
+	public final void rotate(float rotation) {
+		this.rotation += rotation;
 	}
 }

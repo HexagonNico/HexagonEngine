@@ -1,5 +1,6 @@
 package hexagon.engine.math.matrix;
 
+import hexagon.engine.math.vector.Float2;
 import hexagon.engine.math.vector.Float3;
 
 /**
@@ -20,8 +21,14 @@ public final class Matrices {
 	 */
 	public static Matrix4 transformation(Float3 translation, Float3 rotation, Float3 scale) {
 		return scaling(scale)
-			.multiply(rotation(rotation))
-			.multiply(translation(translation).transposed());
+				.multiply(rotation(rotation))
+				.multiply(translation(translation).transposed());
+	}
+
+	public static Matrix4 transformation(Float2 translation, float rotation, Float2 scale) {
+		return scaling(scale)
+				.multiply(zRotation((float) Math.toRadians(rotation)))
+				.multiply(translation(translation).transposed());
 	}
 
 	/**
@@ -36,6 +43,22 @@ public final class Matrices {
 			1.0f, 0.0f, 0.0f, translation.x(),
 			0.0f, 1.0f, 0.0f, translation.y(),
 			0.0f, 0.0f, 1.0f, translation.z(),
+			0.0f, 0.0f, 0.0f, 1.0f
+		);
+	}
+
+	/**
+	 * Creates a translation matrix.
+	 * 
+	 * @param translation Translation vector
+	 * 
+	 * @return The translation matrix
+	 */
+	public static Matrix4 translation(Float2 translation) {
+		return new Matrix4(
+			1.0f, 0.0f, 0.0f, translation.x(),
+			0.0f, 1.0f, 0.0f, translation.y(),
+			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
 		);
 	}
@@ -113,6 +136,22 @@ public final class Matrices {
 			scale.x(), 0.0f, 0.0f, 0.0f,
 			0.0f, scale.y(), 0.0f, 0.0f,
 			0.0f, 0.0f, scale.z(), 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+		);
+	}
+
+	/**
+	 * Creates a scaling matrix.
+	 * 
+	 * @param scale Scale vector
+	 * 
+	 * @return The scaling matrix
+	 */
+	public static Matrix4 scaling(Float2 scale) {
+		return new Matrix4(
+			scale.x(), 0.0f, 0.0f, 0.0f,
+			0.0f, scale.y(), 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
 			0.0f, 0.0f, 0.0f, 1.0f
 		);
 	}
