@@ -117,8 +117,6 @@ public final class Matrices {
 		);
 	}
 
-	// TODO - Orthographic projection?
-
 	/**
 	 * Creates a perspective projection matrix.
 	 * 
@@ -128,9 +126,9 @@ public final class Matrices {
 	 * 
 	 * @return The projection matrix
 	 */
-	public static Matrix4 projection(float fov, float near, float far) {
+	public static Matrix4 perspectiveProjection(float fov, float near, float far, float aspectRatio) {
 		float m00 = 1.0f / (float) Math.tan(Math.toRadians(fov / 2.0f));
-		float m11 = m00 * ((float) 800 / (float) 450); // TODO - Aspect ratio
+		float m11 = m00 * aspectRatio;
 		float m22 = -(far + near) / (far - near);
 		float m32 = -(2 * far * near) / (far - near);
 		return new Matrix4(
@@ -138,6 +136,21 @@ public final class Matrices {
 			0.0f, m11, 0.0f, 0.0f,
 			0.0f, 0.0f, m22, -1.0f,
 			0.0f, 0.0f, m32, 0.0f
+		);
+	}
+
+	public static Matrix4 orthographicProjection(float left, float right, float top, float bottom, float far, float near) {
+		float m00 = 2.0f / (right - left);
+		float m11 = 2.0f / (top - bottom);
+		float m22 = -2.0f / (far - near);
+		float m03 = -(right + left) / (right - left);
+		float m13 = -(top + bottom) / (top - bottom);
+		float m23 = -(far + near) / (far - near);
+		return new Matrix4(
+			m00, 0.0f, 0.0f, m03,
+			0.0f, m11, 0.0f, m13,
+			0.0f, 0.0f, m22, m23,
+			0.0f, 0.0f, 0.0f, 1.0f
 		);
 	}
 
@@ -152,8 +165,17 @@ public final class Matrices {
 	 */
 	public static Matrix4 view(Float3 cameraPosition, float pitch, float yaw) {
 		return translation(cameraPosition.negative()).transposed()
-			.multiply(xRotation((float) Math.toRadians(pitch)))
-			.multiply(yRotation((float) Math.toRadians(yaw)));
+				.multiply(xRotation((float) Math.toRadians(pitch)))
+				.multiply(yRotation((float) Math.toRadians(yaw)));
+	}
+
+	public static Matrix4 view(Float3 cameraPosition, Float3 cameraRotation) {
+		return translation(cameraPosition.negative()).transposed()
+				.multiply(rotation(cameraRotation));
+	}
+
+	public static Matrix4 view(Float3 cameraPosition) {
+		return translation(cameraPosition.negative()).transposed();
 	}
 
 	/**Class should not be instantiated */

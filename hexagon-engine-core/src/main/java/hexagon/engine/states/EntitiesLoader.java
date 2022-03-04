@@ -6,9 +6,10 @@ import java.util.function.Function;
 
 import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
-import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.LightComponent;
 import hexagon.engine.ecs.components.ModelComponent;
+import hexagon.engine.ecs.components.OrthographicCamera;
+import hexagon.engine.ecs.components.PerspectiveCamera;
 import hexagon.engine.ecs.components.ReflectivityComponent;
 import hexagon.engine.ecs.components.SpriteComponent;
 import hexagon.engine.ecs.components.TexturedModelComponent;
@@ -33,10 +34,12 @@ public final class EntitiesLoader {
 	private static final HashMap<String, Function<GameEntity, ? extends Component>> componentsRegistry = new HashMap<>();
 
 	static {
+		// TODO - This can be removed if I replace entity#addComponent with state#addComponent in the method below
 		registerComponent("hexagon.engine.Transform2D", Transform2D::new);
 		registerComponent("hexagon.engine.Transform3D", Transform3D::new);
 		registerComponent("hexagon.engine.SpriteComponent", SpriteComponent::new);
-		registerComponent("hexagon.engine.Camera", Camera::new);
+		registerComponent("hexagon.engine.OrthographicCamera", OrthographicCamera::new);
+		registerComponent("hexagon.engine.PerspectiveCamera", PerspectiveCamera::new);
 		registerComponent("hexagon.engine.ModelComponent", ModelComponent::new);
 		registerComponent("hexagon.engine.TexturedModelComponent", TexturedModelComponent::new);
 		registerComponent("hexagon.engine.LightComponent", LightComponent::new);
