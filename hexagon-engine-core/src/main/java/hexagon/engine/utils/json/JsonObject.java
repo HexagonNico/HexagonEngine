@@ -46,6 +46,8 @@ public final class JsonObject {
 		this(new JSONObject());
 	}
 
+	// TODO - Methods without optionals
+
 	public Optional<Integer> getInt(String key) {
 		return this.get(key, this.wrapped::getInt);
 	}

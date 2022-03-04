@@ -1,0 +1,17 @@
+{
+	"entities": [
+		{
+			"hexagon.engine.OrthographicCamera": {
+
+			}
+		},
+		{
+			"hexagon.engine.Transform2D": {
+				
+			},
+			"hexagon.engine.SpriteComponent": {
+				"texture": "/textures/windmill.png"
+			}
+		}
+	]
+}

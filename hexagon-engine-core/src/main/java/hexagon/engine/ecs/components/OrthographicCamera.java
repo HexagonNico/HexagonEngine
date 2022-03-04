@@ -11,6 +11,7 @@ import hexagon.engine.utils.json.JsonObject;
 public final class OrthographicCamera extends Camera {
 
 	private Float2 position = Float2.ZERO;
+	// TODO - Check what these guys do
 	private float nearPlane = 0.1f;
 	private float farPlane = 100.0f;
 
@@ -29,16 +30,21 @@ public final class OrthographicCamera extends Camera {
 
 	@Override
 	public Matrix4 projectionMatrix() {
+		// TODO - Orthographic size
 		return Matrices.orthographicProjection(
 				-WindowSize.width() / 2.0f, WindowSize.width() / 2.0f,
-				WindowSize.height() / 2.0f, WindowSize.height() / 2.0f,
+				WindowSize.height() / 2.0f, -WindowSize.height() / 2.0f,
 				this.farPlane, this.nearPlane
-		);
+		).multiply(Matrices.scaling(new Float3(100.0f, 100.0f, 1.0f)));
 	}
 
 	@Override
 	public Matrix4 viewMatrix() {
-		return Matrices.view(new Float3(this.position.x(), this.position.y(), 10.0f));
+		return Matrices.view(new Float3(this.position.x(), this.position.y(), 0.0f));
+	}
+
+	public Float2 getPosition() {
+		return this.position;
 	}
 
 	public void setPosition(Float2 position) {

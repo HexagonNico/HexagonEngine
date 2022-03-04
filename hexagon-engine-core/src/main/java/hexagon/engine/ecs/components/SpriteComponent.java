@@ -14,6 +14,8 @@ import hexagon.engine.utils.json.JsonObject;
  */
 public class SpriteComponent extends Component {
 
+	// TODO - Reintroduce components hierarchy
+
 	/**Sprite's texture */
 	private Texture texture = Texture.ERROR;
 	/**Top left corner of the sprite in the texture */
