@@ -29,10 +29,10 @@ public final class PerspectiveCamera extends Camera {
 			this.position = new Float3(x, y, z);
 		});
 		jsonObject.getObject("rotation").ifPresent(rotationJson -> {
-			float pitch = rotationJson.getFloat("pitch", this.position.x());
-			float yaw = rotationJson.getFloat("yaw", this.position.y());
-			float roll = rotationJson.getFloat("roll", this.position.z());
-			this.position = new Float3(pitch, yaw, roll);
+			float pitch = rotationJson.getFloat("pitch", this.rotation.x());
+			float yaw = rotationJson.getFloat("yaw", this.rotation.y());
+			float roll = rotationJson.getFloat("roll", this.rotation.z());
+			this.rotation = new Float3(pitch, yaw, roll);
 		});
 		this.fov = jsonObject.getFloat("fov", this.fov);
 		this.zNear = jsonObject.getFloat("zNear", this.zNear);

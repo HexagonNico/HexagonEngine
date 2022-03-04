@@ -1,20 +1,9 @@
 package hexagon.engine.states;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.function.Function;
 
 import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
-import hexagon.engine.ecs.components.LightComponent;
-import hexagon.engine.ecs.components.ModelComponent;
-import hexagon.engine.ecs.components.OrthographicCamera;
-import hexagon.engine.ecs.components.PerspectiveCamera;
-import hexagon.engine.ecs.components.ReflectivityComponent;
-import hexagon.engine.ecs.components.SpriteComponent;
-import hexagon.engine.ecs.components.TexturedModelComponent;
-import hexagon.engine.ecs.components.Transform2D;
-import hexagon.engine.ecs.components.Transform3D;
 import hexagon.engine.utils.Log;
 import hexagon.engine.utils.json.JsonArray;
 import hexagon.engine.utils.json.JsonObject;
@@ -29,23 +18,7 @@ import hexagon.engine.utils.json.JsonObject;
  * @author Nico
  */
 public final class EntitiesLoader {
-
-	/**Registry containing all components that can be instantiated */
-	private static final HashMap<String, Function<GameEntity, ? extends Component>> componentsRegistry = new HashMap<>();
-
-	static {
-		// TODO - This can be removed if I replace entity#addComponent with state#addComponent in the method below
-		registerComponent("hexagon.engine.Transform2D", Transform2D::new);
-		registerComponent("hexagon.engine.Transform3D", Transform3D::new);
-		registerComponent("hexagon.engine.SpriteComponent", SpriteComponent::new);
-		registerComponent("hexagon.engine.OrthographicCamera", OrthographicCamera::new);
-		registerComponent("hexagon.engine.PerspectiveCamera", PerspectiveCamera::new);
-		registerComponent("hexagon.engine.ModelComponent", ModelComponent::new);
-		registerComponent("hexagon.engine.TexturedModelComponent", TexturedModelComponent::new);
-		registerComponent("hexagon.engine.LightComponent", LightComponent::new);
-		registerComponent("hexagon.engine.ReflectivityComponent", ReflectivityComponent::new);
-	}
-
+	
 	/**
 	 * Loads an entities file by adding all the entities the given state.
 	 * 
@@ -74,12 +47,19 @@ public final class EntitiesLoader {
 			GameEntity entity = state.createEntity();
 			loadedEntities.add(entity);
 			entityJson.keySet().forEach(key -> {
-				if(componentsRegistry.containsKey(key)) {
-					JsonObject componentJson = entityJson.getObject(key).orElse(JsonObject.empty());
-					Component component = entity.addComponent(componentsRegistry.get(key));
+				try {
+					JsonObject componentJson = entityJson.getObjectOrEmpty(key);
+					Component component = (Component) Class.forName(key).getConstructor(GameEntity.class).newInstance(entity);
 					component.init(loadedEntities, componentJson);
-				} else {
-					Log.error("Component " + key + " is not in registry");
+					state.addComponent(entity, component);
+				} catch (NoSuchMethodException e) {
+					Log.error("Cannot instantiate component " + key + ": missing constructor");
+				} catch (ClassNotFoundException e) {
+					Log.error("Class " + key + " does not exist");
+				} catch (ClassCastException e) {
+					Log.error("Class " + key + " is not a component");
+				} catch (Exception e) {
+					Log.error("Cannot instantiate class " + key + ": " + e.getMessage());
 				}
 			});
 		});
@@ -87,21 +67,6 @@ public final class EntitiesLoader {
 			return loadedEntities.get(rootEntity);
 		} else {
 			return null;
-		}
-	}
-
-	/**
-	 * Registers a component.
-	 * Only registered components can be loaded from entities files.
-	 * 
-	 * @param key Key to be used in the json files to create this component
-	 * @param constructor The component's constructor passed as a method reference
-	 */
-	public static void registerComponent(String key, Function<GameEntity, ? extends Component> constructor) {
-		if(!componentsRegistry.containsKey(key)) {
-			componentsRegistry.put(key, constructor);
-		} else {
-			Log.error("Registry already contains component with key " + key);
 		}
 	}
 

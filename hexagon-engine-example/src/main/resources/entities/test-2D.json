@@ -1,15 +1,15 @@
 {
 	"entities": [
 		{
-			"hexagon.engine.OrthographicCamera": {
+			"hexagon.engine.ecs.components.OrthographicCamera": {
 
 			}
 		},
 		{
-			"hexagon.engine.Transform2D": {
+			"hexagon.engine.ecs.components.Transform2D": {
 				
 			},
-			"hexagon.engine.SpriteComponent": {
+			"hexagon.engine.ecs.components.SpriteComponent": {
 				"texture": "/textures/windmill.png"
 			}
 		}
