@@ -1,0 +1,68 @@
+{
+	"entities": [
+		{
+			"hexagon.engine.Camera": {
+				"position": {
+					"y": 10.0,
+					"z": 5.0
+				},
+				"pitch": 30.0
+			}
+		},
+		{
+			"hexagon.engine.Transform3D": {
+				"position": {
+					"y": -4.0,
+					"z": -10.0
+				}
+			},
+			"hexagon.engine.ModelComponent": {
+				"model": "/models/dragon.obj",
+				"color": {
+					"r": 0.83,
+					"g": 0.68,
+					"b": 0.21
+				}
+			},
+			"hexagon.engine.ReflectivityComponent": {
+				"reflectivity": 1.0
+			}
+		},
+		{
+			"hexagon.engine.Transform3D": {
+				"position": {
+					"x": 5
+				},
+				"scale": {
+					"x": 0.1,
+					"y": 0.1,
+					"z": 0.1
+				},
+				"parent": 1
+			},
+			"hexagon.engine.ModelComponent": {
+				"model": "/models/dragon.obj",
+				"color": {
+					"r": 1.0,
+					"g": 0.0,
+					"b": 1.0
+				}
+			},
+			"hexagon.engine.ReflectivityComponent": {
+				"reflectivity": 1.0
+			}
+		},
+		{
+			"hexagon.engine.Transform3D": {
+				"position": {
+					"x": 200.0,
+					"y": 200.0,
+					"z": 100.0
+				}
+			},
+			"hexagon.engine.LightComponent": {
+				
+			}
+		}
+	]
+}

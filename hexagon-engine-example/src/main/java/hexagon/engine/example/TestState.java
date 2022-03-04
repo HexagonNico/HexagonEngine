@@ -1,20 +1,23 @@
 package hexagon.engine.example;
 
+import hexagon.engine.ecs.GameEntity;
+import hexagon.engine.ecs.components.Transform3D;
 import hexagon.engine.ecs.systems.LightSystem;
 import hexagon.engine.ecs.systems.ModelRenderer;
-import hexagon.engine.ecs.systems.SpriteRenderer;
 import hexagon.engine.states.EntitiesLoader;
 import hexagon.engine.states.GameState;
 
 public final class TestState extends GameState {
 
+	private GameEntity dragonEntity;
+
 	public TestState() {
-		super(new SpriteRenderer(), new ModelRenderer(), new LightSystem());
+		super(new ModelRenderer(), new LightSystem());
 	}
 
 	@Override
 	public void onStart() {
-		EntitiesLoader.loadEntities(this, "/entities/test-scene.json");
+		dragonEntity = EntitiesLoader.loadEntities(this, "/entities/dragon-orbit.json", 1);
 		/*
 		GameEntity cameraEntity = new GameEntity(this);
 		Camera cameraComponent = cameraEntity.addComponent(Camera::new);
@@ -43,7 +46,9 @@ public final class TestState extends GameState {
 
 	@Override
 	public void onUpdate() {
-		
+		this.dragonEntity.getComponent(Transform3D.class).ifPresent(transform -> {
+			transform.rotate(0.0f, 0.1f, 0.0f);
+		});
 	}
 
 	@Override

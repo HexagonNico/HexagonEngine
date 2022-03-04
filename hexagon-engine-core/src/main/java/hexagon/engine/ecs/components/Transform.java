@@ -16,7 +16,7 @@ import hexagon.engine.math.vector.FloatVector;
 public abstract sealed class Transform<V extends FloatVector<V, ?>> extends Component permits Transform2D, Transform3D {
 	
 	/**The transform's parent */
-	private Transform<V> parent;
+	protected Transform<V> parent;
 
 	/**Position in space */
 	private V position;
@@ -111,7 +111,8 @@ public abstract sealed class Transform<V extends FloatVector<V, ?>> extends Comp
 	 */
 	public final V scale() {
 		// TODO - Fix this: should be multiplicative, not additive
-		return this.parent != null ? this.parent.scale().plus(this.scale) : this.localScale();
+		//return this.parent != null ? this.parent.scale().plus(this.scale) : this.localScale();
+		return this.scale;
 	}
 
 	/**
