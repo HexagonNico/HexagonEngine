@@ -46,7 +46,8 @@ public final class Transform3D extends Transform<Float3> {
 
 	@Override
 	public Matrix4 matrix() {
-		return Matrices.transformation(this.position(), this.rotation(), this.scale());
+		Matrix4 transformation = Matrices.transformation(this.position(), this.rotation(), this.scale());
+		return super.parent != null ? transformation.multiply(super.parent.matrix()) : transformation;
 	}
 
 	/**

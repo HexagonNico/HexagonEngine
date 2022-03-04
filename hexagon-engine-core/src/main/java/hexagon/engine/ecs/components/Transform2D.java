@@ -47,11 +47,12 @@ public final class Transform2D extends Transform<Float2> {
 
 	@Override
 	public Matrix4 matrix() {
-		return Matrices.transformation(
+		Matrix4 transformation = Matrices.transformation(
 			new Float3(super.position().x(), super.position().y(), 0.0f),
 			new Float3(super.rotation().x(), super.rotation().y(), 0.0f),
 			new Float3(super.scale().x(), super.scale().y(), 1.0f)
 		);
+		return super.parent != null ? transformation.multiply(super.parent.matrix()) : transformation;
 	}
 
 	/**
