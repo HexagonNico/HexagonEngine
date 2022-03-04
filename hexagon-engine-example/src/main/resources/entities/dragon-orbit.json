@@ -1,12 +1,14 @@
 {
 	"entities": [
 		{
-			"hexagon.engine.Camera": {
+			"hexagon.engine.PerspectiveCamera": {
 				"position": {
 					"y": 10.0,
 					"z": 5.0
 				},
-				"pitch": 30.0
+				"rotation": {
+					"pitch": 30.0
+				}
 			}
 		},
 		{
