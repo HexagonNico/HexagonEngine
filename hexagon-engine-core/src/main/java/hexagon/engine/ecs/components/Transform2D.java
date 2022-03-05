@@ -10,7 +10,7 @@ import hexagon.engine.math.matrix.Matrix4;
 import hexagon.engine.math.vector.Float2;
 import hexagon.engine.utils.json.JsonObject;
 
-public final class Transform2D extends Component {
+public class Transform2D extends Component {
 
 	private Transform2D parent = null;
 
@@ -60,9 +60,9 @@ public final class Transform2D extends Component {
 	 * 
 	 * @return The computed matrix
 	 */
-	public Matrix4 matrix() {
+	public final Matrix4 transformationMatrix() {
 		Matrix4 transformation = Matrices.transformation(this.position, this.rotation, this.scale);
-		return this.parent != null ? transformation.multiply(this.parent.matrix()) : transformation;
+		return this.parent != null ? transformation.multiply(this.parent.transformationMatrix()) : transformation;
 	}
 
 	/**

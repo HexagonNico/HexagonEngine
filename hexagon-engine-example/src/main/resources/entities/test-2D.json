@@ -6,9 +6,6 @@
 			}
 		},
 		{
-			"hexagon.engine.ecs.components.Transform2D": {
-				
-			},
 			"hexagon.engine.ecs.components.SpriteComponent": {
 				"texture": "/textures/windmill.png"
 			}

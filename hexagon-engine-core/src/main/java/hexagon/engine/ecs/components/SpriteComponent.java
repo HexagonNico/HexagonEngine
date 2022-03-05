@@ -1,20 +1,12 @@
 package hexagon.engine.ecs.components;
 
-import hexagon.engine.ecs.Component;
 import hexagon.engine.ecs.GameEntity;
 import hexagon.engine.math.color.Color;
 import hexagon.engine.math.vector.Float2;
 import hexagon.engine.opengl.Texture;
 import hexagon.engine.utils.json.JsonObject;
 
-/**
- * Component that represents a sprite that can be rendered.
- * 
- * @author Nico
- */
-public class SpriteComponent extends Component {
-
-	// TODO - Reintroduce components hierarchy
+public class SpriteComponent extends Transform2D {
 
 	/**Sprite's texture */
 	private Texture texture = Texture.ERROR;
@@ -36,13 +28,20 @@ public class SpriteComponent extends Component {
 
 	@Override
 	public void init(JsonObject jsonObject) {
+		super.init(jsonObject);
 		jsonObject.getString("texture").ifPresent(textureKey -> {
 			this.texture = Texture.getOrLoad(textureKey);
 		});
-		JsonObject uvJson = jsonObject.getObject("uv").orElse(JsonObject.empty());
-		JsonObject sizeJson = jsonObject.getObject("size").orElse(JsonObject.empty());
-		this.uv = new Float2(uvJson.getFloat("x").orElse(this.uv.x()), uvJson.getFloat("y").orElse(this.uv.y()));
-		this.size = new Float2(sizeJson.getFloat("x").orElse(this.size.x()), sizeJson.getFloat("y").orElse(this.size.y()));
+		jsonObject.getObject("uv").ifPresent(uvJson -> {
+			float x = uvJson.getFloat("x", this.uv.x());
+			float y = uvJson.getFloat("y", this.uv.y());
+			this.uv = new Float2(x, y);
+		});
+		jsonObject.getObject("size").ifPresent(sizeJson -> {
+			float w = sizeJson.getFloat("w", this.size.x());
+			float h = sizeJson.getFloat("h", this.size.y());
+			this.size = new Float2(w, h);
+		});
 		jsonObject.getObject("color").ifPresent(colorJson -> {
 			float r = colorJson.getFloat("r").orElse(this.color.r());
 			float g = colorJson.getFloat("g").orElse(this.color.g());
