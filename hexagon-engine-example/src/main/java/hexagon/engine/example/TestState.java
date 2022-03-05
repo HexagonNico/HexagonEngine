@@ -1,5 +1,7 @@
 package hexagon.engine.example;
 
+import hexagon.engine.ecs.systems.LightSystem;
+import hexagon.engine.ecs.systems.ModelRenderer;
 import hexagon.engine.ecs.systems.SpriteRenderer;
 import hexagon.engine.states.EntitiesLoader;
 import hexagon.engine.states.GameState;
@@ -9,7 +11,7 @@ public final class TestState extends GameState {
 	//private GameEntity dragonEntity;
 
 	public TestState() {
-		super(new SpriteRenderer()/*, new ModelRenderer(), new LightSystem()*/);
+		super(new SpriteRenderer(), new ModelRenderer(), new LightSystem());
 	}
 
 	@Override

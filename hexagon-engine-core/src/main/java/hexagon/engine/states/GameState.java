@@ -109,7 +109,9 @@ public abstract class GameState {
 	 * Called in {@link GameManager#update()}
 	 */
 	public final void runSystems() {
-		this.systems.values().forEach(system -> system.run(this.componentsTable.get(system.componentType).values()));
+		this.systems.values().stream()
+				.filter(system -> this.componentsTable.containsKey(system.componentType))
+				.forEach(system -> system.run(this.componentsTable.get(system.componentType).values()));
 	}
 
 	/**
