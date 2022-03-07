@@ -6,8 +6,8 @@ import java.util.function.Function;
 
 import org.json.JSONObject;
 
-import hexagon.engine.utils.resources.ResourceLoadingException;
-import hexagon.engine.utils.resources.Resources;
+import hexagon.engine.resources.ResourceLoadingException;
+import hexagon.engine.resources.Resources;
 
 /**
  * Class that represents a Json object.
@@ -41,7 +41,7 @@ public final class JsonObject {
 	 * 		i. e., an IO error occurs or the file does not exist
 	 */
 	public static JsonObject fromFile(String file) throws ResourceLoadingException {
-		return fromString(Resources.readAsString(file));
+		return fromString(Resources.readString(file));
 	}
 
 	/**

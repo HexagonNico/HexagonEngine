@@ -10,8 +10,8 @@ import java.util.stream.Stream;
 import org.json.JSONArray;
 import org.json.JSONException;
 
-import hexagon.engine.utils.resources.ResourceLoadingException;
-import hexagon.engine.utils.resources.Resources;
+import hexagon.engine.resources.ResourceLoadingException;
+import hexagon.engine.resources.Resources;
 
 public final class JsonArray {
 	
@@ -22,7 +22,7 @@ public final class JsonArray {
 	}
 
 	public static JsonArray fromFile(String file) throws ResourceLoadingException {
-		return fromString(Resources.readAsString(file));
+		return fromString(Resources.readString(file));
 	}
 
 	public static JsonArray fromFileOrEmpty(String file) {
