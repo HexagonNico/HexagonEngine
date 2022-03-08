@@ -89,6 +89,11 @@ public final class VertexObject {
 			this.attributes.put(list, new FloatAttribArray(list, data, size));
 			return this;
 		}
+		
+		public Builder attribute(int list, int[] data, int size) {
+			this.attributes.put(list, new IntAttribArray(list, data, size));
+			return this;
+		}
 
 		/**
 		 * Adds an index buffer.
@@ -153,6 +158,30 @@ public final class VertexObject {
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
 			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, BufferUtils.createFloatBuffer(this.data.length).put(this.data).flip(), GL15.GL_STATIC_DRAW);
 			GL20.glVertexAttribPointer(this.list, this.size, GL11.GL_FLOAT, false, 0, 0);
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
+		}
+	}
+
+	// TODO - Documentation
+
+	private static class IntAttribArray implements Attribute {
+
+		private final int list;
+		private final int[] data;
+		private final int size;
+
+		private IntAttribArray(int list, int[] data, int size) {
+			this.list = list;
+			this.data = data;
+			this.size = size;
+		}
+
+		@Override
+		public void storeData() {
+			int vbo = OpenGL.createVBO();
+			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
+			GL15.glBufferData(GL15.GL_ARRAY_BUFFER, BufferUtils.createIntBuffer(this.data.length).put(this.data).flip(), GL15.GL_STATIC_DRAW);
+			GL20.glVertexAttribPointer(this.list, this.size, GL11.GL_INT, false, 0, 0);
 			GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 		}
 	}
