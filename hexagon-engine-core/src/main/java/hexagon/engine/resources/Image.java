@@ -1,6 +1,7 @@
 package hexagon.engine.resources;
 
 import java.nio.ByteBuffer;
+import java.awt.image.BufferedImage;
 
 /**
  * A class that represents an image resource. Used to load {@link hexagon.engine.opengl.Texture}s.
@@ -14,24 +15,10 @@ import java.nio.ByteBuffer;
  */
 public final class Image {
 	
-	/**Image width */
-	private final int width;
-	/**Image height */
-	private final int height;
-	/**Image pixels */
-	private final int[] argb;
+	private final BufferedImage wrappedImage;
 
-	/**
-	 * Creates an image.
-	 * 
-	 * @param width Image width
-	 * @param height Image height
-	 * @param argb Image pixels
-	 */
-	protected Image(int width, int height, int[] argb) {
-		this.width = width;
-		this.height = height;
-		this.argb = argb;
+	protected Image(BufferedImage wrappedImage) {
+		this.wrappedImage = wrappedImage;
 	}
 
 	/**
@@ -40,7 +27,7 @@ public final class Image {
 	 * @return The width of this image in pixels
 	 */
 	public int width() {
-		return this.width;
+		return this.wrappedImage.getWidth();
 	}
 
 	/**
@@ -49,22 +36,20 @@ public final class Image {
 	 * @return The height of this image in pixels
 	 */
 	public int height() {
-		return this.height;
+		return this.wrappedImage.getHeight();
 	}
 
-	/**
-	 * Adds this image's pixels to the byte buffer.
-	 * 
-	 * @param buffer Buffer to hold the pixels
-	 * 
-	 * @return The same buffer
-	 */
 	public ByteBuffer toBuffer(ByteBuffer buffer) {
-		for(int i = 0; i < this.argb.length; i++) {
-			buffer.put((byte) ((this.argb[i] >> 16) & 0xff));
-			buffer.put((byte) ((this.argb[i] >> 8) & 0xff));
-			buffer.put((byte) ((this.argb[i]) & 0xff));
-			buffer.put((byte) ((this.argb[i] >> 24) & 0xff));
+		return this.toBuffer(buffer, 0, 0, this.width(), this.height());
+	}
+
+	public ByteBuffer toBuffer(ByteBuffer buffer, int x, int y, int w, int h) {
+		int[] argb = this.wrappedImage.getRGB(x, y, w, h, null, 0, w);
+		for(int i = 0; i < argb.length; i++) {
+			buffer.put((byte) ((argb[i] >> 16) & 0xff));
+			buffer.put((byte) ((argb[i] >> 8) & 0xff));
+			buffer.put((byte) ((argb[i]) & 0xff));
+			buffer.put((byte) ((argb[i] >> 24) & 0xff));
 		}
 		return buffer;
 	}
