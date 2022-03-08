@@ -1,0 +1,48 @@
+{
+	"size": {
+		"width": 16,
+		"height": 16
+	},
+	"layers": [
+		{
+			"image": "/textures/tileset1.png",
+			"x": 0,
+			"y": 0
+		},
+		{
+			"image": "/textures/tileset1.png",
+			"x": 16,
+			"y": 0
+		},
+		{
+			"image": "/textures/tileset1.png",
+			"x": 0,
+			"y": 16
+		},
+		{
+			"image": "/textures/tileset1.png",
+			"x": 16,
+			"y": 16
+		},
+		{
+			"image": "/textures/tileset2.png",
+			"x": 0,
+			"y": 0
+		},
+		{
+			"image": "/textures/tileset2.png",
+			"x": 16,
+			"y": 0
+		},
+		{
+			"image": "/textures/tileset2.png",
+			"x": 0,
+			"y": 16
+		},
+		{
+			"image": "/textures/tileset2.png",
+			"x": 16,
+			"y": 16
+		}
+	]
+}
