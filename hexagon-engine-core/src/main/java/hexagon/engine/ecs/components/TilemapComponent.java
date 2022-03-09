@@ -34,21 +34,25 @@ public class TilemapComponent extends Transform2D {
 		int[] tiles = new int[tilesCount];
 		int[] indices = new int[this.tilemapWidth() * this.tilemapHeight() * 6];
 		int indexPointer = 0;
-		this.meshVertices = vertices.length;
-		for(int x = 0; x < this.tilemapWidth() - 1; x++) {
-			for(int y = 0; y < this.tilemapHeight() - 1; y++) {
-				int tileIndex = x * this.tilemapWidth() + y;
+		for(int y = 0; y < this.tilemapHeight() + 1; y++) {
+			for(int x = 0; x < this.tilemapWidth() + 1; x++) {
+				int tileIndex = y * (this.tilemapHeight() + 1) + x;
 				vertices[tileIndex * 2] = (float) x;
 				vertices[tileIndex * 2 + 1] = (float) y;
 				tiles[tileIndex] = tilesJson.getInt(tileIndex).orElse(0);
-				indices[indexPointer++] = x * this.tilemapWidth() + y;
-				indices[indexPointer++] = (x + 1) * this.tilemapWidth() + y;
-				indices[indexPointer++] = (x + 1) * this.tilemapWidth() + y + 1;
-				indices[indexPointer++] = x * this.tilemapWidth() + y;
-				indices[indexPointer++] = (x + 1) * this.tilemapWidth() + y + 1;
-				indices[indexPointer++] = (x + 1) * this.tilemapWidth() + y;
 			}
 		}
+		for(int y = 0; y < this.tilemapHeight(); y++) {
+			for(int x = 0; x < this.tilemapWidth(); x++) {
+				indices[indexPointer++] = /*topLeft*/ (y + 1) * (this.tilemapHeight() + 1) + x;
+				indices[indexPointer++] = /*bottomLeft*/ y * (this.tilemapHeight() + 1) + x;
+				indices[indexPointer++] = /*bottomRight*/ y * (this.tilemapHeight() + 1) + x + 1;
+				indices[indexPointer++] = /*topLeft*/ (y + 1) * (this.tilemapHeight() + 1) + x;
+				indices[indexPointer++] = /*bottomRight*/ y * (this.tilemapHeight() + 1) + x + 1;
+				indices[indexPointer++] = /*topRight*/ (y + 1) * (this.tilemapHeight() + 1) + x + 1;
+			}
+		}
+		this.meshVertices = indices.length;
 		this.mesh = VertexObject.with()
 				.attribute(0, vertices, 2)
 				.attribute(1, tiles, 1)

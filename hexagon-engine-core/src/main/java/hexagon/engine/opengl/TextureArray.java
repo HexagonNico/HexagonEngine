@@ -11,6 +11,7 @@ import org.lwjgl.opengl.GL30;
 import hexagon.engine.resources.Image;
 import hexagon.engine.resources.ResourceLoadingException;
 import hexagon.engine.resources.Resources;
+import hexagon.engine.utils.Log;
 import hexagon.engine.utils.json.JsonArray;
 import hexagon.engine.utils.json.JsonObject;
 
@@ -81,6 +82,7 @@ public final class TextureArray {
 			GL11.glTexParameteri(GL30.GL_TEXTURE_2D_ARRAY, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
 			return new TextureArray(id);
 		} catch (ResourceLoadingException e) {
+			Log.error("Error loading texture array " + file);
 			// TODO - Error texture array
 			return null;
 		}

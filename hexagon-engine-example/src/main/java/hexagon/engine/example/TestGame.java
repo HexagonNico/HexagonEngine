@@ -13,7 +13,7 @@ public final class TestGame extends Application {
 		OpenGL.alphaBlending(true);
 		OpenGL.cullFace(true);
 		OpenGL.depthTest(true);
-		GameManager.changeState(new TestState());
+		GameManager.changeState(new TilemapTest());
 	}
 
 	@Override
