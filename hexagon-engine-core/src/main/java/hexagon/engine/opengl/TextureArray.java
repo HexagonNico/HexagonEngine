@@ -65,7 +65,7 @@ public final class TextureArray {
 						}
 					}
 					int x = layerJson.getInt("x", 0);
-					int y = layerJson.getInt("x", 0);
+					int y = layerJson.getInt("y", 0);
 					image.toBuffer(buffer, x, y, width, height);
 				});
 			});

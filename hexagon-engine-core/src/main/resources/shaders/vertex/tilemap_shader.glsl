@@ -1,7 +1,7 @@
 #version 400 core
 
 in vec2 vertex;
-in int tile;
+in float tile;
 
 out vec3 texture_coords;
 

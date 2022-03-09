@@ -20,6 +20,8 @@ public class TilemapComponent extends Transform2D {
 		super(entity);
 	}
 
+	// TODO - This needs to be cleaned up
+
 	@Override
 	public void init(JsonObject jsonObject) {
 		super.init(jsonObject);
@@ -29,34 +31,37 @@ public class TilemapComponent extends Transform2D {
 			this.size = new Int2(width, height);
 		});
 		JsonArray tilesJson = jsonObject.getArrayOrEmpty("tiles");
-		int tilesCount = (this.tilemapWidth() + 1) * (this.tilemapHeight() + 1);
-		float[] vertices = new float[tilesCount * 2];
-		int[] tiles = new int[tilesCount];
-		int[] indices = new int[this.tilemapWidth() * this.tilemapHeight() * 6];
-		int indexPointer = 0;
-		for(int y = 0; y < this.tilemapHeight() + 1; y++) {
-			for(int x = 0; x < this.tilemapWidth() + 1; x++) {
-				int tileIndex = y * (this.tilemapHeight() + 1) + x;
-				vertices[tileIndex * 2] = (float) x;
-				vertices[tileIndex * 2 + 1] = (float) y;
-				tiles[tileIndex] = tilesJson.getInt(tileIndex).orElse(0);
-			}
-		}
+		this.meshVertices = this.tilemapWidth() * this.tilemapHeight() * 6 * 2;
+		float[] vertices = new float[this.tilemapWidth() * this.tilemapHeight() * 6 * 2];
+		float[] tiles = new float[this.tilemapWidth() * this.tilemapHeight() * 6];
+		int vertexPointer = 0, vertexTilePointer = 0, mapTilePointer = 0;
+		// TODO - Tilemap origin (?)
 		for(int y = 0; y < this.tilemapHeight(); y++) {
 			for(int x = 0; x < this.tilemapWidth(); x++) {
-				indices[indexPointer++] = /*topLeft*/ (y + 1) * (this.tilemapHeight() + 1) + x;
-				indices[indexPointer++] = /*bottomLeft*/ y * (this.tilemapHeight() + 1) + x;
-				indices[indexPointer++] = /*bottomRight*/ y * (this.tilemapHeight() + 1) + x + 1;
-				indices[indexPointer++] = /*topLeft*/ (y + 1) * (this.tilemapHeight() + 1) + x;
-				indices[indexPointer++] = /*bottomRight*/ y * (this.tilemapHeight() + 1) + x + 1;
-				indices[indexPointer++] = /*topRight*/ (y + 1) * (this.tilemapHeight() + 1) + x + 1;
+				int tile = tilesJson.getInt(mapTilePointer++).orElse(0);
+				tiles[vertexTilePointer++] = tile; // Top left
+				vertices[vertexPointer++] = x;
+				vertices[vertexPointer++] = y + 1;
+				tiles[vertexTilePointer++] = tile; // Bottom left
+				vertices[vertexPointer++] = x;
+				vertices[vertexPointer++] = y;
+				tiles[vertexTilePointer++] = tile; // Bottom right
+				vertices[vertexPointer++] = x + 1;
+				vertices[vertexPointer++] = y;
+				tiles[vertexTilePointer++] = tile; // Bottom right
+				vertices[vertexPointer++] = x + 1;
+				vertices[vertexPointer++] = y;
+				tiles[vertexTilePointer++] = tile; // Top right
+				vertices[vertexPointer++] = x + 1;
+				vertices[vertexPointer++] = y + 1;
+				tiles[vertexTilePointer++] = tile; // Top left
+				vertices[vertexPointer++] = x;
+				vertices[vertexPointer++] = y + 1;
 			}
 		}
-		this.meshVertices = indices.length;
 		this.mesh = VertexObject.with()
 				.attribute(0, vertices, 2)
 				.attribute(1, tiles, 1)
-				.indices(indices)
 				.create();
 		jsonObject.getString("tileset").ifPresent(tilesetKey -> {
 			this.tileset = TextureArray.getOrLoad(tilesetKey);

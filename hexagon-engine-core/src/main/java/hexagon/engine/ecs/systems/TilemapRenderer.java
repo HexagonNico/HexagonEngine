@@ -54,7 +54,7 @@ public final class TilemapRenderer extends GameSystem<TilemapComponent> {
 			tilemaps.forEach(tilemap -> {
 				tilemap.getTilemapMesh().activate(() -> {
 					this.shader.load("transformation_matrix", tilemap.transformationMatrix());
-					DrawCalls.drawElements(tilemap.getMeshVertices());
+					DrawCalls.drawTriangles(0, tilemap.getMeshVertices());
 				});
 			});
 		});
