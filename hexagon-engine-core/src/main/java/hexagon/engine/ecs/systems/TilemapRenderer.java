@@ -10,11 +10,21 @@ import hexagon.engine.opengl.DrawCalls;
 import hexagon.engine.opengl.ShaderProgram;
 import hexagon.engine.opengl.TextureArray;
 
+/**
+ * A {@link GameSystem} that processes all {@link TilemapComponent}s in the scene and renders them.
+ * 
+ * @author Nico
+ */
 public final class TilemapRenderer extends GameSystem<TilemapComponent> {
 	
+	/**Shader program used for this renderer */
 	private final ShaderProgram shader;
+	/**Map that stores tilemaps in batches to render them more efficiently */
 	private final HashMap<TextureArray, ArrayList<TilemapComponent>> renderBatch;
 
+	/**
+	 * Creates tilemap renderer
+	 */
 	public TilemapRenderer() {
 		super(TilemapComponent.class);
 		this.shader = ShaderProgram.with()
@@ -28,11 +38,13 @@ public final class TilemapRenderer extends GameSystem<TilemapComponent> {
 
 	@Override
 	protected void beforeAll() {
+		// Clear batch from previous frame
 		this.renderBatch.clear();
 	}
 
 	@Override
 	protected void process(TilemapComponent tilemap) {
+		// Add tilemap component to the batch
 		if(this.renderBatch.containsKey(tilemap.getTileset())) {
 			this.renderBatch.get(tilemap.getTileset()).add(tilemap);
 		} else {
@@ -44,6 +56,7 @@ public final class TilemapRenderer extends GameSystem<TilemapComponent> {
 
 	@Override
 	protected void afterAll() {
+		// Render all components in the batch
 		ShaderProgram.start(this.shader);
 		Camera.main().ifPresent(camera -> {
 			this.shader.load("projection_matrix", camera.projectionMatrix());
@@ -52,13 +65,12 @@ public final class TilemapRenderer extends GameSystem<TilemapComponent> {
 		this.renderBatch.forEach((tileset, tilemaps) -> {
 			tileset.bind();
 			tilemaps.forEach(tilemap -> {
-				tilemap.getTilemapMesh().activate(() -> {
+				tilemap.renderMesh(() -> {
 					this.shader.load("transformation_matrix", tilemap.transformationMatrix());
-					DrawCalls.drawTriangles(0, tilemap.getMeshVertices());
+					DrawCalls.drawTriangles(0, tilemap.tilemapWidth() * tilemap.tilemapHeight() * 6);
 				});
 			});
 		});
 		ShaderProgram.stop();
 	}
-	
 }

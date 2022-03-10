@@ -53,7 +53,7 @@ public final class Texture {
 	}
 
 	/**
-	 * Binds this texture using.
+	 * Binds this texture.
 	 * Textures need to be bound before they can be used.
 	 */
 	public void bind() {

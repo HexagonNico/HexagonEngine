@@ -15,27 +15,67 @@ import hexagon.engine.utils.Log;
 import hexagon.engine.utils.json.JsonArray;
 import hexagon.engine.utils.json.JsonObject;
 
+/**
+ * Class that represents an OpenGL Array Texture object.
+ * <p>
+ * 	An array texture is a texture that contains an array of images of the same size.
+ * </p>
+ * Also used as a utility class to store and get references to loaded texture arrays.
+ * 
+ * @author Nico
+ */
 public final class TextureArray {
 
+	/**Map that stores all loaded array textures */
 	private static final HashMap<String, TextureArray> textures = new HashMap<>();
+	/**Black and white checkerboard texture */
+	public static final TextureArray ERROR = errorTextureArray();
 
+	/**
+	 * Gets or loads an array texture.
+	 * <p>
+	 * 	If the texture is not yet loaded, loads it and returns the texture object.
+	 * 	If it is already loaded, returns the same instance.
+	 * </p>
+	 * 
+	 * @param textureFile Path to the array texture file, from the resources folder starting with {@code /}.
+	 * 
+	 * @return The requested array texture object.
+	 */
 	public static TextureArray getOrLoad(String textureFile) {
 		TextureArray texture = textures.get(textureFile);
 		return texture != null ? texture : loadTextureArray(textureFile);
 	}
 
+	/**Texture id */
 	public final int id;
 
+	/**
+	 * Creates a texture array.
+	 * 
+	 * @param id Texture id.
+	 */
 	private TextureArray(int id) {
 		this.id = id;
 	}
 	
+	/**
+	 * Binds this texture.
+	 * Textures need to be bound before they can be used.
+	 */
 	public void bind() {
 		// TODO - Texture unit
 		GL13.glActiveTexture(GL13.GL_TEXTURE0);
 		GL11.glBindTexture(GL30.GL_TEXTURE_2D_ARRAY, this.id);
 	}
 
+	/**
+	 * Loads an array texture.
+	 * 
+	 * @param file Path to array texture file.
+	 * 
+	 * @return The new array texture.
+	 */
 	private static TextureArray loadTextureArray(String file) {
 		try {
 			// Load json file
@@ -83,8 +123,25 @@ public final class TextureArray {
 			return new TextureArray(id);
 		} catch (ResourceLoadingException e) {
 			Log.error("Error loading texture array " + file);
-			// TODO - Error texture array
-			return null;
+			return ERROR;
 		}
+	}
+
+	/**
+	 * Creates the error texture.
+	 * 
+	 * @return Error texture object.
+	 */
+	private static TextureArray errorTextureArray() {
+		int id = OpenGL.createTexture();
+		float[] pixels = {0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f, 1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f, 0.0f,0.0f,0.0f, 0.0f,0.0f,0.0f, 1.0f,1.0f,1.0f};
+		GL11.glBindTexture(GL30.GL_TEXTURE_2D_ARRAY, id);
+		// glTexStorage3D(GL_TEXTURE_2D_ARRAY, mipLevelCount, GL_RGBA8, width, height, layerCount); ?
+		GL12.glTexImage3D(GL30.GL_TEXTURE_2D_ARRAY, 0, GL11.GL_RGBA, 2, 2, 2, 0, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
+		GL11.glTexParameteri(GL30.GL_TEXTURE_2D_ARRAY, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL30.GL_TEXTURE_2D_ARRAY, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+		GL11.glTexParameteri(GL30.GL_TEXTURE_2D_ARRAY, GL11.GL_TEXTURE_WRAP_S, GL12.GL_CLAMP_TO_EDGE);
+		GL11.glTexParameteri(GL30.GL_TEXTURE_2D_ARRAY, GL11.GL_TEXTURE_WRAP_T, GL12.GL_CLAMP_TO_EDGE);
+		return new TextureArray(id);
 	}
 }
