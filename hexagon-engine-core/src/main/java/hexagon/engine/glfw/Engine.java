@@ -14,6 +14,8 @@ import hexagon.engine.utils.Log;
  */
 public final class Engine {
 
+	// TODO - Window handle should be here
+
 	static {
 		Log.info("Initializing");
 
@@ -65,6 +67,8 @@ public final class Engine {
 		}
 		GLFW.glfwSetKeyCallback(window, new Keyboard());
 		GLFW.glfwSetWindowSizeCallback(window, new WindowSize(width, height));
+		GLFW.glfwSetMouseButtonCallback(window, new Mouse.ButtonCallback());
+		GLFW.glfwSetCursorPosCallback(window, new Mouse.CursorCallback());
 		return window;
 	}
 

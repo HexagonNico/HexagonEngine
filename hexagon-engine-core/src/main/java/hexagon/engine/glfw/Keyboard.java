@@ -15,6 +15,8 @@ public final class Keyboard implements GLFWKeyCallbackI {
 	/**Holds the currently pressed keys */
 	private static final HashSet<Integer> pressedKeys = new HashSet<>();
 
+	// TODO - Event system
+
 	@Override
 	public void invoke(long window, int key, int scancode, int action, int mods) {
 		if(action == GLFW.GLFW_PRESS) {
