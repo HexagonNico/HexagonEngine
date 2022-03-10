@@ -1,4 +1,4 @@
-package hexagon.engine.utils.resources;
+package hexagon.engine.resources;
 
 /**
  * Exception thrown when a resource cannot be loaded.

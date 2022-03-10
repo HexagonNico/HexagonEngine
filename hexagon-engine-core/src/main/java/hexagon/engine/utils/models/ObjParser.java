@@ -2,11 +2,13 @@ package hexagon.engine.utils.models;
 
 import java.util.ArrayList;
 
-import hexagon.engine.utils.resources.ResourceLoadingException;
-import hexagon.engine.utils.resources.Resources;
+import hexagon.engine.resources.ResourceLoadingException;
+import hexagon.engine.resources.Resources;
 
 public class ObjParser {
 	
+	// TODO - Move somewhere else
+
 	public static final Data parse(String filePath) {
 		ArrayList<VertexData> verticesData = new ArrayList<>();
 		ArrayList<VertexData> normalsData = new ArrayList<>();

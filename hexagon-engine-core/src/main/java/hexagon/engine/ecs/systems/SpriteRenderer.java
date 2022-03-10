@@ -7,7 +7,6 @@ import hexagon.engine.ecs.GameSystem;
 import hexagon.engine.ecs.components.Camera;
 import hexagon.engine.ecs.components.SpriteComponent;
 import hexagon.engine.opengl.DrawCalls;
-import hexagon.engine.opengl.Shader;
 import hexagon.engine.opengl.ShaderProgram;
 import hexagon.engine.opengl.Texture;
 import hexagon.engine.opengl.VertexObject;
@@ -28,8 +27,8 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 			.indices(new int[] {0,1,3, 3,1,2})
 			.create();
 		this.shader = ShaderProgram.with()
-			.shader(Shader.vertex("/shaders/vertex/sprite_shader.glsl"))
-			.shader(Shader.fragment("/shaders/fragment/texture_shader.glsl"))
+			.vertexShader("/shaders/vertex/sprite_shader.glsl")
+			.fragmentShader("/shaders/fragment/texture_shader.glsl")
 			.attribute(0, "vertex")
 			.attribute(1, "uv")
 			.create();
