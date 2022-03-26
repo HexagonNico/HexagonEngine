@@ -25,6 +25,7 @@ public class ApplicationLauncher {
 	private void runApplication() {
 		try {
 			Engine.showWindow(this.window);
+			GameState.loadState("/test_state.json");
 			Log.info("Now running...");
 			while(Engine.isRunning(this.window)) {
 				Engine.update(this.window);

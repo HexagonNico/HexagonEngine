@@ -4,6 +4,7 @@ import hexagon.core.base.GameEntity;
 import hexagon.math.matrix.Matrices;
 import hexagon.math.matrix.Matrix4;
 import hexagon.math.vector.Float2;
+import hexagon.utils.json.JsonObject;
 
 public final class Transform2D extends Transform {
 
@@ -13,6 +14,11 @@ public final class Transform2D extends Transform {
 
 	public Transform2D(GameEntity entity) {
 		super(entity);
+	}
+
+	@Override
+	public void init(JsonObject jsonObject) {
+		// TODO Auto-generated method stub
 		this.position = Float2.ZERO;
 		this.rotation = 0.0f;
 		this.scale = new Float2(1.0f, 1.0f);

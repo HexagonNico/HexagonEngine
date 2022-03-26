@@ -5,6 +5,7 @@ import hexagon.core.base.GameEntity;
 import hexagon.core.rendering.SpriteRenderer;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
+import hexagon.utils.json.JsonObject;
 
 public final class SpriteComponent extends Component {
 	
@@ -13,9 +14,12 @@ public final class SpriteComponent extends Component {
 
 	public SpriteComponent(GameEntity entity) {
 		super(entity);
-		// TODO - Load things
-		this.texture = Texture.getOrLoad("/textures/logo.png");
-		this.shader = ShaderProgram.getOrLoad("/shaders/test_shader.json");
+	}
+
+	@Override
+	public void init(JsonObject jsonObject) {
+		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElse(""));
+		this.shader = ShaderProgram.getOrLoad(jsonObject.getString("shader").orElse(""));
 		SpriteRenderer.addToBatch(this);
 	}
 

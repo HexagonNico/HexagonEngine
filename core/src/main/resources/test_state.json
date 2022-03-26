@@ -1,0 +1,15 @@
+{
+	"entities": [
+		{
+			"components": {
+				"hexagon.core.components.Transform2D": {
+
+				},
+				"hexagon.core.components.SpriteComponent": {
+					"texture": "/textures/logo.png",
+					"shader": "/shaders/test_shader.json"
+				}
+			}
+		}
+	]
+}

@@ -2,7 +2,9 @@ package hexagon.core.base;
 
 import java.util.Optional;
 
-public class Component {
+import hexagon.utils.json.JsonObject;
+
+public abstract class Component {
 
 	protected final GameEntity entity;
 
@@ -10,7 +12,9 @@ public class Component {
 		this.entity = entity;
 	}
 
-	public <T extends Component> Optional<T> getSiblingComponent(Class<T> type) {
+	public abstract void init(JsonObject jsonObject);
+
+	public final <T extends Component> Optional<T> getSiblingComponent(Class<T> type) {
 		return this.entity.getComponent(type);
 	}
 }
