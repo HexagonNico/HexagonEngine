@@ -18,7 +18,9 @@ public final class GameState {
 	public GameState() {
 		// TODO - Load from json instead of this
 		GameEntity entity = this.createEntity();
-		entity.addComponent(new Transform2D(entity));
+		Transform2D transform2d = new Transform2D(entity);
+		transform2d.setPosition(0.3f, 0.3f);
+		entity.addComponent(transform2d);
 		entity.addComponent(new SpriteComponent(entity));
 	}
 

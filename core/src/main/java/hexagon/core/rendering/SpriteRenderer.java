@@ -6,6 +6,7 @@ import java.util.HashMap;
 import hexagon.core.components.SpriteComponent;
 import hexagon.core.components.Transform;
 import hexagon.lwjgl.opengl.DrawCalls;
+import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
 import hexagon.lwjgl.opengl.VertexObject;
 
@@ -19,6 +20,11 @@ public final class SpriteRenderer {
 	private static VertexObject quadModel = VertexObject.with()
 			.attribute(0, new float[] {-0.5f,0.5f, -0.5f,-0.5f, 0.5f,-0.5f, 0.5f,0.5f}, 2)
 			.indices(new int[] {0,1,3, 3,1,2})
+			.create();
+	private static ShaderProgram shader = ShaderProgram.with()
+			.vertexShader("/shaders/test_vertex.glsl")
+			.fragmentShader("/shaders/test_fragment.glsl")
+			.attribute(0, "vertex")
 			.create();
 
 	public static void addToBatch(SpriteComponent sprite) {
@@ -35,14 +41,17 @@ public final class SpriteRenderer {
 	}
 
 	private static void renderingProcesses() {
+		ShaderProgram.start(shader);
 		quadModel.activate(() -> {
-			// TODO - Render with texture and shader
-			renderBatch.values().stream()
-					.flatMap(ArrayList::stream)
-					.forEach(sprite -> {
-						DrawCalls.drawElements(6);
-					});
+			renderBatch.keySet().forEach(texture -> {
+				texture.bind();
+				renderBatch.get(texture).forEach(renderer -> {
+					shader.load("transformation_matrix", renderer.transform.matrix());
+					DrawCalls.drawElements(6);
+				});
+			});
 		});
+		ShaderProgram.stop();
 	}
 
 	private Transform transform;

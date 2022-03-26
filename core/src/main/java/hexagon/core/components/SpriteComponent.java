@@ -11,7 +11,7 @@ public final class SpriteComponent extends Component {
 
 	public SpriteComponent(GameEntity entity) {
 		super(entity);
-		//TODO Auto-generated constructor stub
+		this.texture = Texture.getOrLoad("/textures/logo.png");
 		SpriteRenderer.addToBatch(this);
 	}
 
