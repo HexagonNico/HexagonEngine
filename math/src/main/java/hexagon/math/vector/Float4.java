@@ -9,11 +9,11 @@ public record Float4(float x, float y, float z, float w) {
 	}
 
 	public Float4 plus(Float4 v) {
-		return this.plus(v.x(), v.y(), v.z(), v.w());
+		return v != null ? this.plus(v.x(), v.y(), v.z(), v.w()) : this;
 	}
 
 	public Float4 plus(Int4 v) {
-		return this.plus(v.asFloat());
+		return v != null ? this.plus(v.asFloat()) : this;
 	}
 
 	public Float4 minus(float x, float y, float z, float w) {
@@ -21,11 +21,11 @@ public record Float4(float x, float y, float z, float w) {
 	}
 
 	public Float4 minus(Float4 v) {
-		return this.minus(v.x(), v.y(), v.z(), v.w());
+		return v != null ? this.minus(v.x(), v.y(), v.z(), v.w()) : this;
 	}
 
 	public Float4 minus(Int4 v) {
-		return this.minus(v.asFloat());
+		return v != null ? this.minus(v.asFloat()) : this;
 	}
 
 	public Float4 multiply(float k) {
@@ -41,11 +41,11 @@ public record Float4(float x, float y, float z, float w) {
 	}
 
 	public float dotProduct(Float4 v) {
-		return this.dotProduct(v.x(), v.y(), v.z(), v.w());
+		return v != null ? this.dotProduct(v.x(), v.y(), v.z(), v.w()) : 0.0f;
 	}
 
 	public float dotProduct(Int4 v) {
-		return this.dotProduct(v.asFloat());
+		return v != null ? this.dotProduct(v.asFloat()) : 0.0f;
 	}
 
 	public Int4 castToInt() {

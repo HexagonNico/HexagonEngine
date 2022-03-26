@@ -9,11 +9,11 @@ public record Float3(float x, float y, float z) {
 	}
 
 	public Float3 plus(Float3 v) {
-		return this.plus(v.x(), v.y(), v.z());
+		return v != null ? this.plus(v.x(), v.y(), v.z()) : this;
 	}
 
 	public Float3 plus(Int3 v) {
-		return this.plus(v.asFloat());
+		return v != null ? this.plus(v.asFloat()) : this;
 	}
 
 	public Float3 minus(float x, float y, float z) {
@@ -21,11 +21,11 @@ public record Float3(float x, float y, float z) {
 	}
 
 	public Float3 minus(Float3 v) {
-		return this.minus(v.x(), v.y(), v.z());
+		return v != null ? this.minus(v.x(), v.y(), v.z()) : this;
 	}
 
 	public Float3 minus(Int3 v) {
-		return this.minus(v.asFloat());
+		return v != null ? this.minus(v.asFloat()) : this;
 	}
 
 	public Float3 multiply(float k) {
@@ -41,11 +41,11 @@ public record Float3(float x, float y, float z) {
 	}
 
 	public float dotProduct(Float3 v) {
-		return this.dotProduct(v.x(), v.y(), v.z());
+		return v != null ? this.dotProduct(v.x(), v.y(), v.z()) : 0.0f;
 	}
 
 	public float dotProduct(Int3 v) {
-		return this.dotProduct(v.asFloat());
+		return v != null ? this.dotProduct(v.asFloat()) : 0.0f;
 	}
 
 	public Int3 castToInt() {

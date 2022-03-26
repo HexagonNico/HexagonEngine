@@ -9,7 +9,7 @@ public record Int3(int x, int y, int z) {
 	}
 
 	public Int3 plus(Int3 v) {
-		return this.plus(v.x(), v.y(), v.z());
+		return v != null ? this.plus(v.x(), v.y(), v.z()) : this;
 	}
 
 	public Float3 plus(float x, float y, float z) {
@@ -17,7 +17,7 @@ public record Int3(int x, int y, int z) {
 	}
 
 	public Float3 plus(Float3 v) {
-		return this.asFloat().plus(v);
+		return v != null ? this.asFloat().plus(v) : this.asFloat();
 	}
 
 	public Int3 minus(int x, int y, int z) {
@@ -25,7 +25,7 @@ public record Int3(int x, int y, int z) {
 	}
 
 	public Int3 minus(Int3 v) {
-		return this.minus(v.x(), v.y(), v.z());
+		return v != null ? this.minus(v.x(), v.y(), v.z()) : this;
 	}
 
 	public Float3 minus(float x, float y, float z) {
@@ -33,7 +33,7 @@ public record Int3(int x, int y, int z) {
 	}
 
 	public Float3 minus(Float3 v) {
-		return this.asFloat().minus(v);
+		return v != null ? this.asFloat().minus(v) : this.asFloat();
 	}
 
 	public Int3 multiply(int k) {
@@ -57,7 +57,7 @@ public record Int3(int x, int y, int z) {
 	}
 
 	public int dotProduct(Int3 v) {
-		return this.dotProduct(v.x(), v.y(), v.z());
+		return v != null ? this.dotProduct(v.x(), v.y(), v.z()) : 0;
 	}
 
 	public float dotProduct(float x, float y, float z) {
@@ -65,7 +65,7 @@ public record Int3(int x, int y, int z) {
 	}
 
 	public float dotProduct(Float3 v) {
-		return this.asFloat().dotProduct(v);
+		return v != null ? this.asFloat().dotProduct(v) : 0.0f;
 	}
 
 	public Float3 asFloat() {

@@ -9,11 +9,11 @@ public record Float2(float x, float y) {
 	}
 
 	public Float2 plus(Float2 v) {
-		return this.plus(v.x(), v.y());
+		return v != null ? this.plus(v.x(), v.y()) : this;
 	}
 
 	public Float2 plus(Int2 v) {
-		return this.plus(v.asFloat());
+		return v != null ? this.plus(v.asFloat()) : this;
 	}
 
 	public Float2 minus(float x, float y) {
@@ -21,11 +21,11 @@ public record Float2(float x, float y) {
 	}
 
 	public Float2 minus(Float2 v) {
-		return this.minus(v.x(), v.y());
+		return v != null ? this.minus(v.x(), v.y()) : this;
 	}
 
 	public Float2 minus(Int2 v) {
-		return this.minus(v.asFloat());
+		return v != null ? this.minus(v.asFloat()) : this;
 	}
 
 	public Float2 multiply(float k) {
@@ -41,11 +41,11 @@ public record Float2(float x, float y) {
 	}
 
 	public float dotProduct(Float2 v) {
-		return this.dotProduct(v.x(), v.y());
+		return v != null ? this.dotProduct(v.x(), v.y()) : 0.0f;
 	}
 
 	public float dotProduct(Int2 v) {
-		return this.dotProduct(v.asFloat());
+		return v != null ? this.dotProduct(v.asFloat()) : 0.0f;
 	}
 
 	public Int2 castToInt() {

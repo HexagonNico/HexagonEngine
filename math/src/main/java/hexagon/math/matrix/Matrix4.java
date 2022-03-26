@@ -4,22 +4,36 @@ import hexagon.math.vector.Float4;
 
 public record Matrix4(float m00, float m01, float m02, float m03, float m10, float m11, float m12, float m13, float m20, float m21, float m22, float m23,float m30, float m31, float m32, float m33) {
 
+	public static final Matrix4 ZERO = new Matrix4(
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 0.0f
+	);
+	
+	public static final Matrix4 IDENTITY = new Matrix4(
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f
+	);
+
 	public Matrix4 plus(Matrix4 matrix) {
-		return new Matrix4(
+		return matrix != null ? new Matrix4(
 			this.m00() + matrix.m00(), this.m01() + matrix.m01(), this.m02() + matrix.m02(), this.m03() + matrix.m03(),
 			this.m10() + matrix.m10(), this.m11() + matrix.m11(), this.m12() + matrix.m12(), this.m13() + matrix.m13(),
 			this.m20() + matrix.m20(), this.m21() + matrix.m21(), this.m22() + matrix.m22(), this.m23() + matrix.m23(),
 			this.m30() + matrix.m30(), this.m31() + matrix.m31(), this.m32() + matrix.m32(), this.m33() + matrix.m33()
-		);
+		) : this;
 	}
 
 	public Matrix4 minus(Matrix4 matrix) {
-		return new Matrix4(
+		return matrix != null ? new Matrix4(
 			this.m00() - matrix.m00(), this.m01() - matrix.m01(), this.m02() - matrix.m02(), this.m03() - matrix.m03(),
 			this.m10() - matrix.m10(), this.m11() - matrix.m11(), this.m12() - matrix.m12(), this.m13() - matrix.m13(),
 			this.m20() - matrix.m20(), this.m21() - matrix.m21(), this.m22() - matrix.m22(), this.m23() - matrix.m23(),
 			this.m30() - matrix.m30(), this.m31() - matrix.m31(), this.m32() - matrix.m32(), this.m33() - matrix.m33()
-		);
+		) : this;
 	}
 
 	public Matrix4 multiply(float k) {
@@ -45,7 +59,7 @@ public record Matrix4(float m00, float m01, float m02, float m03, float m10, flo
 			case 1 -> new Float4(this.m10(), this.m11(), this.m12(), this.m13());
 			case 2 -> new Float4(this.m20(), this.m21(), this.m22(), this.m23());
 			case 3 -> new Float4(this.m30(), this.m31(), this.m32(), this.m33());
-			default -> throw new IndexOutOfBoundsException("Matrix only has 4 rows");
+			default -> Float4.ZERO;
 		};
 	}
 
@@ -55,12 +69,12 @@ public record Matrix4(float m00, float m01, float m02, float m03, float m10, flo
 			case 1 -> new Float4(this.m01(), this.m11(), this.m21(), this.m31());
 			case 2 -> new Float4(this.m02(), this.m12(), this.m22(), this.m32());
 			case 3 -> new Float4(this.m03(), this.m13(), this.m23(), this.m33());
-			default -> throw new IndexOutOfBoundsException("Matrix only has 4 columns");
+			default -> Float4.ZERO;
 		};
 	}
 
 	public Matrix4 multiply(Matrix4 matrix) {
-		return new Matrix4(
+		return matrix != null ? new Matrix4(
 			this.row(0).dotProduct(matrix.column(0)),
 			this.row(0).dotProduct(matrix.column(1)),
 			this.row(0).dotProduct(matrix.column(2)),
@@ -77,7 +91,7 @@ public record Matrix4(float m00, float m01, float m02, float m03, float m10, flo
 			this.row(3).dotProduct(matrix.column(1)),
 			this.row(3).dotProduct(matrix.column(2)),
 			this.row(3).dotProduct(matrix.column(3))
-		);
+		) : ZERO;
 	}
 
 	public Matrix4 transposed() {

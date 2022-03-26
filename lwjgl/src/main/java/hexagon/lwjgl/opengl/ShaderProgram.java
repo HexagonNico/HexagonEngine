@@ -80,13 +80,15 @@ public final class ShaderProgram {
 	 * @param matrix The matrix to load
 	 */
 	public void load(String variableName, Matrix4 matrix) {
-		int location = this.getUniformLocation(variableName);
-		FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
-		buffer.put(matrix.m00()); buffer.put(matrix.m01()); buffer.put(matrix.m02()); buffer.put(matrix.m03());
-		buffer.put(matrix.m10()); buffer.put(matrix.m11()); buffer.put(matrix.m12()); buffer.put(matrix.m13());
-		buffer.put(matrix.m20()); buffer.put(matrix.m21()); buffer.put(matrix.m22()); buffer.put(matrix.m23());
-		buffer.put(matrix.m30()); buffer.put(matrix.m31()); buffer.put(matrix.m32()); buffer.put(matrix.m33());
-		GL20.glUniformMatrix4fv(location, false, buffer.flip());
+		if(matrix != null) {
+			int location = this.getUniformLocation(variableName);
+			FloatBuffer buffer = BufferUtils.createFloatBuffer(16);
+			buffer.put(matrix.m00()); buffer.put(matrix.m01()); buffer.put(matrix.m02()); buffer.put(matrix.m03());
+			buffer.put(matrix.m10()); buffer.put(matrix.m11()); buffer.put(matrix.m12()); buffer.put(matrix.m13());
+			buffer.put(matrix.m20()); buffer.put(matrix.m21()); buffer.put(matrix.m22()); buffer.put(matrix.m23());
+			buffer.put(matrix.m30()); buffer.put(matrix.m31()); buffer.put(matrix.m32()); buffer.put(matrix.m33());
+			GL20.glUniformMatrix4fv(location, false, buffer.flip());
+		}
 	}
 
 	/**
@@ -115,10 +117,10 @@ public final class ShaderProgram {
 	 * Loads a 2D float vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load
+	 * @param v The vector to load
 	 */
-	public void load(String variableName, Float2 vector) {
-		this.load(variableName, vector.x(), vector.y());
+	public void load(String variableName, Float2 v) {
+		if(v != null) this.load(variableName, v.x(), v.y());
 	}
 
 	/**
@@ -137,10 +139,10 @@ public final class ShaderProgram {
 	 * Loads a 2D int vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load
+	 * @param v The vector to load
 	 */
-	public void load(String variableName, Int2 vector) {
-		this.load(variableName, vector.x(), vector.y());
+	public void load(String variableName, Int2 v) {
+		if(v != null) this.load(variableName, v.x(), v.y());
 	}
 
 	/**
@@ -159,10 +161,10 @@ public final class ShaderProgram {
 	 * Loads a 3D float vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load
+	 * @param v The vector to load
 	 */
-	public void load(String variableName, Float3 vector) {
-		this.load(variableName, vector.x(), vector.y(), vector.z());
+	public void load(String variableName, Float3 v) {
+		if(v != null) this.load(variableName, v.x(), v.y(), v.z());
 	}
 
 	/**
@@ -182,10 +184,10 @@ public final class ShaderProgram {
 	 * Loads a 3D int vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load
+	 * @param v The vector to load
 	 */
-	public void load(String variableName, Int3 vector) {
-		this.load(variableName, vector.x(), vector.y(), vector.z());
+	public void load(String variableName, Int3 v) {
+		if(v != null) this.load(variableName, v.x(), v.y(), v.z());
 	}
 
 	/**
@@ -205,10 +207,10 @@ public final class ShaderProgram {
 	 * Loads a 4D float vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load
+	 * @param v The vector to load
 	 */
-	public void load(String variableName, Float4 vector) {
-		this.load(variableName, vector.x(), vector.y(), vector.z(), vector.w());
+	public void load(String variableName, Float4 v) {
+		if(v != null) this.load(variableName, v.x(), v.y(), v.z(), v.w());
 	}
 
 	/**
@@ -229,10 +231,10 @@ public final class ShaderProgram {
 	 * Loads a 4D int vector as a uniform variable.
 	 * 
 	 * @param variableName Name of the variable in the shader code.
-	 * @param vector The vector to load
+	 * @param v The vector to load
 	 */
-	public void load(String variableName, Int4 vector) {
-		this.load(variableName, vector.x(), vector.y(), vector.z(), vector.w());
+	public void load(String variableName, Int4 v) {
+		if(v != null) this.load(variableName, v.x(), v.y(), v.z(), v.w());
 	}
 
 	/**
