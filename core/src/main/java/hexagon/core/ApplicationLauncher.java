@@ -28,6 +28,7 @@ public class ApplicationLauncher {
 			while(Engine.isRunning(this.window)) {
 				Engine.update(this.window);
 				GameState.update();
+				RenderingSystem.runRenderingProcess();
 			}
 		} catch (Exception any) {
 			Log.error("Uncaught exception in main");

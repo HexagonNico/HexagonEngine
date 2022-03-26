@@ -2,8 +2,9 @@ package hexagon.core.base;
 
 import java.util.ArrayList;
 
-import hexagon.core.test.TestComponent;
-import hexagon.core.test.TestScript;
+import hexagon.core.components.SpriteComponent;
+import hexagon.core.components.Transform2D;
+import hexagon.core.scripts.SpriteRenderer;
 
 public final class GameState {
 	
@@ -18,8 +19,9 @@ public final class GameState {
 	public GameState() {
 		// TODO - Load from json instead of this
 		GameEntity entity = this.createEntity();
-		entity.addComponent(new TestComponent());
-		entity.addScript(new TestScript(entity));
+		entity.addComponent(new Transform2D());
+		entity.addComponent(new SpriteComponent());
+		entity.addScript(new SpriteRenderer(entity));
 	}
 
 	public GameEntity createEntity() {
