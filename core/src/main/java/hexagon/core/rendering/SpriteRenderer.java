@@ -21,11 +21,6 @@ public final class SpriteRenderer {
 			.attribute(0, new float[] {-0.5f,0.5f, -0.5f,-0.5f, 0.5f,-0.5f, 0.5f,0.5f}, 2)
 			.indices(new int[] {0,1,3, 3,1,2})
 			.create();
-	private static ShaderProgram shader = ShaderProgram.with()
-			.vertexShader("/shaders/test_vertex.glsl")
-			.fragmentShader("/shaders/test_fragment.glsl")
-			.attribute(0, "vertex")
-			.create();
 
 	public static void addToBatch(SpriteComponent sprite) {
 		sprite.getSiblingComponent(Transform.class).ifPresent(transform -> {
@@ -41,13 +36,14 @@ public final class SpriteRenderer {
 	}
 
 	private static void renderingProcesses() {
-		ShaderProgram.start(shader);
 		quadModel.activate(() -> {
 			renderBatch.keySet().forEach(texture -> {
 				texture.bind();
 				renderBatch.get(texture).forEach(renderer -> {
-					shader.load("transformation_matrix", renderer.transform.matrix());
+					ShaderProgram.start(renderer.sprite.shader());
+					renderer.sprite.shader().load("transformation_matrix", renderer.transform.matrix());
 					DrawCalls.drawElements(6);
+					ShaderProgram.stop();
 				});
 			});
 		});

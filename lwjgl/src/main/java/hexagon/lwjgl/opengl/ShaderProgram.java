@@ -15,6 +15,8 @@ import hexagon.math.vector.Float4;
 import hexagon.math.vector.Int2;
 import hexagon.math.vector.Int3;
 import hexagon.math.vector.Int4;
+import hexagon.utils.json.JsonObject;
+import hexagon.utils.resources.ResourceLoadingException;
 
 /**
  * Class that represents a shader program.
@@ -23,7 +25,14 @@ import hexagon.math.vector.Int4;
  * @author Nico
  */
 public final class ShaderProgram {
-	
+
+	private static final HashMap<String, ShaderProgram> programs = new HashMap<>();
+
+	public static ShaderProgram getOrLoad(String programFile) {
+		ShaderProgram program = programs.get(programFile);
+		return program != null ? program : loadProgram(programFile);
+	}
+
 	/**
 	 * Starts a shader program.
 	 * Everything rendered after this call will use this shader program.
@@ -345,6 +354,40 @@ public final class ShaderProgram {
 		 * Record used to store attributes in the builder.
 		 */
 		private static record Attribute(int list, String name) {
+		}
+	}
+
+	private static ShaderProgram loadProgram(String programFile) {
+		try {
+			int id = OpenGL.createShaderProgram();
+			JsonObject programJson = JsonObject.fromFile(programFile);
+			programJson.getArray("vertex").ifPresent(vertexArray -> {
+				vertexArray.forEachString(vertexShader -> {
+					Shader shader = Shader.vertex(vertexShader);
+					OpenGL.attachShaderToProgram(id, shader.id);
+				});
+			});
+			programJson.getArray("fragment").ifPresent(fragmentArray -> {
+				fragmentArray.forEachString(fragmentShader -> {
+					Shader shader = Shader.fragment(fragmentShader);
+					OpenGL.attachShaderToProgram(id, shader.id);
+				});
+			});
+			programJson.getObject("attributes").ifPresent(attributesJson -> {
+				attributesJson.keySet().forEach(key -> {
+					attributesJson.getString(key).ifPresent(attributeName -> {
+						int attributeList = Integer.parseInt(key);
+						GL20.glBindAttribLocation(id, attributeList, attributeName);
+					});
+				});
+			});
+			GL20.glLinkProgram(id);
+			GL20.glValidateProgram(id);
+			return new ShaderProgram(id);
+		} catch (ResourceLoadingException e) {
+			// TODO - Default error shader
+			e.printStackTrace();
+			return ShaderProgram.with().create();
 		}
 	}
 }
