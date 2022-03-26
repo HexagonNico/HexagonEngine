@@ -1,0 +1,23 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>hexagon</groupId>
+		<artifactId>hexagon-engine</artifactId>
+		<version>0.3</version>
+	</parent>
+
+	<groupId>hexagon.core</groupId>
+	<artifactId>hexagon-engine-core</artifactId>
+	<packaging>jar</packaging>
+
+	<name>Hexagon Engine Core</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>hexagon.lwjgl</groupId>
+			<artifactId>hexagon-engine-lwjgl</artifactId>
+			<version>0.3</version>
+		</dependency>
+	</dependencies>
+</project>
