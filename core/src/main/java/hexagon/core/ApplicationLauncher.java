@@ -1,6 +1,7 @@
 package hexagon.core;
 
 import hexagon.core.base.GameState;
+import hexagon.core.rendering.RenderingSystem;
 import hexagon.lwjgl.glfw.Engine;
 import hexagon.lwjgl.opengl.OpenGL;
 import hexagon.utils.Log;
@@ -28,7 +29,7 @@ public class ApplicationLauncher {
 			while(Engine.isRunning(this.window)) {
 				Engine.update(this.window);
 				GameState.update();
-				RenderingSystem.runRenderingProcess();
+				RenderingSystem.renderingProcess();
 			}
 		} catch (Exception any) {
 			Log.error("Uncaught exception in main");

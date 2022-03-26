@@ -1,4 +1,4 @@
-package hexagon.core;
+package hexagon.core.rendering;
 
 import java.util.ArrayList;
 
@@ -6,15 +6,15 @@ import hexagon.lwjgl.opengl.OpenGL;
 
 public final class RenderingSystem {
 
-	private static ArrayList<Runnable> renderingProcesses = new ArrayList<>();
+	private static ArrayList<Runnable> renderers = new ArrayList<>();
 
 	public static void addRenderingProcess(Runnable runnable) {
-		renderingProcesses.add(runnable);
+		renderers.add(runnable);
 	}
 
-	public static void runRenderingProcess() {
+	public static void renderingProcess() {
 		OpenGL.clearFrame(0.8f, 0.8f, 0.8f); // TODO - Set color
-		renderingProcesses.forEach(Runnable::run);
+		renderers.forEach(Runnable::run);
 	}
 
 	private RenderingSystem() {}

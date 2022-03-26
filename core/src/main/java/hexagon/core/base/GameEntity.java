@@ -16,7 +16,7 @@ public final class GameEntity {
 
 	public <T extends Component> Optional<T> getComponent(Class<T> type) {
 		return this.components.stream()
-				.filter(component -> component.getClass().isAssignableFrom(type))
+				.filter(component -> type.isAssignableFrom(component.getClass()))
 				.findFirst().map(type::cast);
 	}
 

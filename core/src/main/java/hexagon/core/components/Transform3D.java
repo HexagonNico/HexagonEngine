@@ -1,5 +1,6 @@
 package hexagon.core.components;
 
+import hexagon.core.base.GameEntity;
 import hexagon.math.matrix.Matrices;
 import hexagon.math.matrix.Matrix4;
 import hexagon.math.vector.Float3;
@@ -10,7 +11,8 @@ public final class Transform3D extends Transform {
 	private Float3 rotation;
 	private Float3 scale;
 
-	public Transform3D() {
+	public Transform3D(GameEntity entity) {
+		super(entity);
 		this.position = Float3.ZERO;
 		this.rotation = Float3.ZERO;
 		this.scale = new Float3(1.0f, 1.0f, 1.0f);
