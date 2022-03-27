@@ -53,16 +53,32 @@ public final class JsonArray {
 		return this.get(index, this.wrapped::getInt);
 	}
 
+	public int getInt(int index, int orElse) {
+		return this.getInt(index).orElse(orElse);
+	}
+
 	public Optional<Float> getFloat(int index) {
 		return this.get(index, this.wrapped::getFloat);
+	}
+
+	public float getFloat(int index, float orElse) {
+		return this.getFloat(index).orElse(orElse);
 	}
 
 	public Optional<String> getString(int index) {
 		return this.get(index, this.wrapped::getString);
 	}
 
+	public String getString(int index, String orElse) {
+		return this.getString(index).orElse(orElse);
+	}
+
 	public Optional<Boolean> getBoolean(int index) {
 		return this.get(index, this.wrapped::getBoolean);
+	}
+
+	public boolean getBoolean(int index, boolean orElse) {
+		return this.getBoolean(index).orElse(orElse);
 	}
 
 	private <T> Optional<T> get(int index, Function<Integer, T> getter) {
@@ -81,12 +97,20 @@ public final class JsonArray {
 		}
 	}
 
+	public JsonObject getObjectOrEmpty(int index) {
+		return this.getObject(index).orElse(JsonObject.empty());
+	}
+
 	public Optional<JsonArray> getArray(int index) {
 		try {
 			return Optional.of(new JsonArray(this.wrapped.getJSONArray(index)));
 		} catch(JSONException e) {
 			return Optional.empty();
 		}
+	}
+
+	public JsonArray getArrayOrEmpty(int index) {
+		return this.getArray(index).orElse(JsonArray.empty());
 	}
 
 	public int length() {

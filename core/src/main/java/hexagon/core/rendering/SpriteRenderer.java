@@ -33,6 +33,7 @@ public final class SpriteRenderer {
 				renderBatch.put(sprite.texture(), list);
 			}
 		});
+		// TODO - Missing transform?
 	}
 
 	private static void renderingProcesses() {

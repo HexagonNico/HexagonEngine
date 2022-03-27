@@ -8,9 +8,9 @@ import hexagon.utils.json.JsonObject;
 
 public final class Transform3D extends Transform {
 
-	private Float3 position;
-	private Float3 rotation;
-	private Float3 scale;
+	private Float3 position = Float3.ZERO;
+	private Float3 rotation = Float3.ZERO;
+	private Float3 scale = Float3.ONE;
 
 	public Transform3D(GameEntity entity) {
 		super(entity);
@@ -18,10 +18,24 @@ public final class Transform3D extends Transform {
 
 	@Override
 	public void init(JsonObject jsonObject) {
-		// TODO Auto-generated method stub
-		this.position = Float3.ZERO;
-		this.rotation = Float3.ZERO;
-		this.scale = new Float3(1.0f, 1.0f, 1.0f);
+		jsonObject.getObject("position").ifPresent(positionJson -> {
+			float x = positionJson.getFloat("x", this.position.x());
+			float y = positionJson.getFloat("y", this.position.y());
+			float z = positionJson.getFloat("z", this.position.z());
+			this.position = new Float3(x, y, z);
+		});
+		jsonObject.getObject("rotation").ifPresent(rotationJson -> {
+			float x = rotationJson.getFloat("x", this.rotation.x());
+			float y = rotationJson.getFloat("y", this.rotation.y());
+			float z = rotationJson.getFloat("z", this.rotation.z());
+			this.rotation = new Float3(x, y, z);
+		});
+		jsonObject.getObject("scale").ifPresent(scaleJson -> {
+			float x = scaleJson.getFloat("x", this.scale.x());
+			float y = scaleJson.getFloat("y", this.scale.y());
+			float z = scaleJson.getFloat("z", this.scale.z());
+			this.scale = new Float3(x, y, z);
+		});
 	}
 
 	@Override

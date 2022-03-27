@@ -8,7 +8,6 @@ public abstract class Transform extends Component {
 	
 	public Transform(GameEntity entity) {
 		super(entity);
-		//TODO Auto-generated constructor stub
 	}
 
 	public abstract Matrix4 matrix();

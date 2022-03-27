@@ -50,16 +50,32 @@ public final class JsonObject {
 		return this.get(key, this.wrapped::getInt);
 	}
 
+	public int getInt(String key, int orElse) {
+		return this.getInt(key).orElse(orElse);
+	}
+
 	public Optional<Float> getFloat(String key) {
 		return this.get(key, this.wrapped::getFloat);
+	}
+
+	public float getFloat(String key, float orElse) {
+		return this.getFloat(key).orElse(orElse);
 	}
 
 	public Optional<String> getString(String key) {
 		return this.get(key, this.wrapped::getString);
 	}
 
+	public String getString(String key, String orElse) {
+		return this.getString(key).orElse(orElse);
+	}
+
 	public Optional<Boolean> getBoolean(String key) {
 		return this.get(key, this.wrapped::getBoolean);
+	}
+
+	public boolean getBoolean(String key, boolean orElse) {
+		return this.getBoolean(key).orElse(orElse);
 	}
 
 	private <T> Optional<T> get(String key, Function<String, T> getter) {
@@ -78,12 +94,20 @@ public final class JsonObject {
 		}
 	}
 
+	public JsonObject getObjectOrEmpty(String key) {
+		return this.getObject(key).orElse(JsonObject.empty());
+	}
+
 	public Optional<JsonArray> getArray(String key) {
 		try {
 			return Optional.of(JsonArray.fromString(this.wrapped.getJSONArray(key).toString()));
 		} catch(JSONException e) {
 			return Optional.empty();
 		}
+	}
+
+	public JsonArray getArrayOrEmpty(String key) {
+		return this.getArray(key).orElse(JsonArray.empty());
 	}
 
 	public Set<String> keySet() {

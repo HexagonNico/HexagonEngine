@@ -3,6 +3,7 @@ package hexagon.math.vector;
 public record Float2(float x, float y) {
 	
 	public static final Float2 ZERO = new Float2(0.0f, 0.0f);
+	public static final Float2 ONE = new Float2(1.0f, 1.0f);
 
 	public Float2 plus(float x, float y) {
 		return new Float2(this.x() + x, this.y() + y);

@@ -8,9 +8,9 @@ import hexagon.utils.json.JsonObject;
 
 public final class Transform2D extends Transform {
 
-	private Float2 position;
-	private float rotation;
-	private Float2 scale;
+	private Float2 position = Float2.ZERO;
+	private float rotation = 0.0f;
+	private Float2 scale = Float2.ONE;
 
 	public Transform2D(GameEntity entity) {
 		super(entity);
@@ -18,10 +18,17 @@ public final class Transform2D extends Transform {
 
 	@Override
 	public void init(JsonObject jsonObject) {
-		// TODO Auto-generated method stub
-		this.position = Float2.ZERO;
-		this.rotation = 0.0f;
-		this.scale = new Float2(1.0f, 1.0f);
+		jsonObject.getObject("position").ifPresent(positionJson -> {
+			float x = positionJson.getFloat("x", this.position.x());
+			float y = positionJson.getFloat("y", this.position.y());
+			this.position = new Float2(x, y);
+		});
+		this.rotation = jsonObject.getFloat("rotation", 0.0f);
+		jsonObject.getObject("scale").ifPresent(scaleJson -> {
+			float x = scaleJson.getFloat("x", this.scale.x());
+			float y = scaleJson.getFloat("y", this.scale.y());
+			this.scale = new Float2(x, y);
+		});
 	}
 
 	@Override

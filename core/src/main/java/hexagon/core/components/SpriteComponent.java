@@ -9,7 +9,7 @@ import hexagon.utils.json.JsonObject;
 
 public final class SpriteComponent extends Component {
 	
-	private Texture texture;
+	private Texture texture = Texture.ERROR;
 	private ShaderProgram shader;
 
 	public SpriteComponent(GameEntity entity) {
@@ -18,8 +18,11 @@ public final class SpriteComponent extends Component {
 
 	@Override
 	public void init(JsonObject jsonObject) {
-		this.texture = Texture.getOrLoad(jsonObject.getString("texture").orElse(""));
-		this.shader = ShaderProgram.getOrLoad(jsonObject.getString("shader").orElse(""));
+		jsonObject.getString("texture").ifPresent(textureFile -> {
+			this.texture = Texture.getOrLoad(textureFile);
+		});
+		// TODO - Error shader
+		this.shader = ShaderProgram.getOrLoad(jsonObject.getString("shader", ""));
 		SpriteRenderer.addToBatch(this);
 	}
 
