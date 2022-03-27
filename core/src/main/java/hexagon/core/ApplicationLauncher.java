@@ -7,45 +7,58 @@ import hexagon.lwjgl.opengl.OpenGL;
 import hexagon.utils.Log;
 
 public class ApplicationLauncher {
-	
-	private long window;
 
-	protected final Runnable init(String title, int width, int height) {
+	protected final AbstractApplication init(String title, int width, int height) {
 		try {
 			Engine.init();
-			this.window = Engine.createWindow(title, width, height);
-			return this::runApplication;
+			long window = Engine.createWindow(title, width, height);
+			return new ApplicationInstance(window);
 		} catch (Exception any) {
 			Log.error("Exception in initialization");
 			any.printStackTrace();
-			return this::applicationError;
+			return new ApplicationError();
 		}
 	}
 
-	private void runApplication() {
-		try {
-			Engine.showWindow(this.window);
-			GameState.loadState("/test_state.json");
-			Log.info("Now running...");
-			while(Engine.isRunning(this.window)) {
-				Engine.update(this.window);
-				GameState.update();
-				RenderingSystem.renderingProcess();
+	protected static abstract sealed class AbstractApplication permits ApplicationInstance, ApplicationError {
+
+		public abstract void run(String initialState);
+	}
+
+	protected static final class ApplicationInstance extends AbstractApplication {
+
+		private final long window;
+
+		private ApplicationInstance(long window) {
+			this.window = window;
+		}
+
+		@Override
+		public void run(String initialState) {
+			try {
+				Engine.showWindow(this.window);
+				GameState.loadState(initialState);
+				Log.info("Now running...");
+				while(Engine.isRunning(this.window)) {
+					Engine.update(this.window);
+					GameState.update();
+					RenderingSystem.renderingProcess();
+				}
+			} catch (Exception any) {
+				Log.error("Uncaught exception in main");
+				any.printStackTrace();
+			} finally {
+				OpenGL.cleanUp();
+				Engine.terminate(this.window);
 			}
-		} catch (Exception any) {
-			Log.error("Uncaught exception in main");
-			any.printStackTrace();
-		} finally {
-			OpenGL.cleanUp();
-			Engine.terminate(this.window);
 		}
 	}
 
-	private void applicationError() {
-		System.out.println(":(");
-	}
+	protected static final class ApplicationError extends AbstractApplication {
 
-	public static void main(String[] args) {
-		new ApplicationLauncher().init("test", 320, 180).run();
+		@Override
+		public void run(String initialState) {
+			Log.error("Application error");
+		}
 	}
 }
