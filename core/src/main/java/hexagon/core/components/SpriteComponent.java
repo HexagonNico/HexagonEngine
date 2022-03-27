@@ -10,7 +10,7 @@ import hexagon.utils.json.JsonObject;
 public final class SpriteComponent extends Component {
 	
 	private Texture texture = Texture.ERROR;
-	private ShaderProgram shader;
+	private ShaderProgram shader = ShaderProgram.getOrLoad("/shaders/sprites_default.json");
 
 	public SpriteComponent(GameEntity entity) {
 		super(entity);
@@ -21,8 +21,9 @@ public final class SpriteComponent extends Component {
 		jsonObject.getString("texture").ifPresent(textureFile -> {
 			this.texture = Texture.getOrLoad(textureFile);
 		});
-		// TODO - Error shader
-		this.shader = ShaderProgram.getOrLoad(jsonObject.getString("shader", ""));
+		jsonObject.getString("shader").ifPresent(shaderFile -> {
+			this.shader = ShaderProgram.getOrLoad(shaderFile);
+		});
 		SpriteRenderer.addToBatch(this);
 	}
 

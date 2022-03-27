@@ -42,6 +42,8 @@ public final class SpriteRenderer {
 				texture.bind();
 				renderBatch.get(texture).forEach(renderer -> {
 					ShaderProgram.start(renderer.sprite.shader());
+					renderer.sprite.shader().load("projection_matrix", Camera.main().projection());
+					renderer.sprite.shader().load("view_matrix", Camera.main().view());
 					renderer.sprite.shader().load("transformation_matrix", renderer.transform.matrix());
 					DrawCalls.drawElements(6);
 					ShaderProgram.stop();

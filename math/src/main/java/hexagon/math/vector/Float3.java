@@ -29,6 +29,10 @@ public record Float3(float x, float y, float z) {
 		return v != null ? this.minus(v.asFloat()) : this;
 	}
 
+	public Float3 negative() {
+		return new Float3(-this.x(), -this.y(), -this.z());
+	}
+
 	public Float3 multiply(float k) {
 		return new Float3(this.x() * k, this.y() * k, this.z() * k);
 	}

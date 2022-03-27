@@ -36,6 +36,10 @@ public record Int3(int x, int y, int z) {
 		return v != null ? this.asFloat().minus(v) : this.asFloat();
 	}
 
+	public Int3 negative() {
+		return new Int3(-this.x(), -this.y(), -this.z());
+	}
+
 	public Int3 multiply(int k) {
 		return new Int3(this.x() * k, this.y() * k, this.z() * k);
 	}

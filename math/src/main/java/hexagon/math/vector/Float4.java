@@ -28,6 +28,10 @@ public record Float4(float x, float y, float z, float w) {
 		return v != null ? this.minus(v.asFloat()) : this;
 	}
 
+	public Float4 negative() {
+		return new Float4(-this.x(), -this.y(), -this.z(), -this.w());
+	}
+
 	public Float4 multiply(float k) {
 		return new Float4(this.x() * k, this.y() * k, this.z() * k, this.w() * k);
 	}

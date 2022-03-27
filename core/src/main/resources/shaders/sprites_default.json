@@ -1,0 +1,11 @@
+{
+	"vertex": [
+		"/shaders/vertex/sprite_shader.glsl"
+	],
+	"fragment": [
+		"/shaders/fragment/texture_shader.glsl"
+	],
+	"attributes": {
+		"0": "vertex"
+	}
+}

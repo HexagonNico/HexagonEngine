@@ -36,6 +36,10 @@ public record Int2(int x, int y) {
 		return v != null ? this.asFloat().minus(v) : this.asFloat();
 	}
 
+	public Int2 negative() {
+		return new Int2(-this.x(), -this.y());
+	}
+
 	public Int2 multiply(int k) {
 		return new Int2(this.x() * k, this.y() * k);
 	}

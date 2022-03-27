@@ -29,6 +29,10 @@ public record Float2(float x, float y) {
 		return v != null ? this.minus(v.asFloat()) : this;
 	}
 
+	public Float2 negative() {
+		return new Float2(-this.x(), -this.y());
+	}
+
 	public Float2 multiply(float k) {
 		return new Float2(this.x() * k, this.y() * k);
 	}

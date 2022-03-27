@@ -61,8 +61,8 @@ public final class Transform3D extends Transform {
 		this.position = this.position.plus(x, y, z);
 	}
 
-	public void translate(Float3 v) {
-		if(v != null) this.translate(v.x(), v.y(), v.z());
+	public void translate(Float3 translation) {
+		this.position = this.position.plus(translation);
 	}
 
 	public Float3 rotation() {
@@ -81,8 +81,8 @@ public final class Transform3D extends Transform {
 		this.rotation = this.rotation.plus(x, y, z);
 	}
 
-	public void rotate(Float3 v) {
-		if(v != null) this.rotate(v.x(), v.y(), v.z());
+	public void rotate(Float3 rotation) {
+		this.rotation = this.rotation.plus(rotation);
 	}
 
 	public Float3 scale() {

@@ -54,8 +54,8 @@ public final class Transform2D extends Transform {
 		this.position = this.position.plus(x, y);
 	}
 
-	public void translate(Float2 v) {
-		if(v != null) this.translate(v.x(), v.y());
+	public void translate(Float2 translation) {
+		this.position = this.position.plus(translation);
 	}
 
 	public float rotation() {
