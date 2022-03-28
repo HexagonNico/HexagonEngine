@@ -1,32 +1,27 @@
 package hexagon.core.base;
 
-import java.util.ArrayList;
 import java.util.Optional;
+import java.util.function.Function;
 
 public final class GameEntity {
 
-	private ArrayList<Component> components = new ArrayList<>();
-	private ArrayList<Script> scripts = new ArrayList<>();
+	private final GameState state;
 
-	protected GameEntity() { }
-
-	public void update() {
-		this.scripts.forEach(Script::update);
+	public GameEntity(GameState state) {
+		this.state = state;
 	}
 
 	public <T extends Component> Optional<T> getComponent(Class<T> type) {
-		return this.components.stream()
-				.filter(component -> type.isAssignableFrom(component.getClass()))
-				.findFirst().map(type::cast);
+		return this.state.getComponent(this, type);
 	}
 
-	public void addComponent(Component component) {
-		this.components.removeIf(old -> old.getClass().isAssignableFrom(component.getClass()));
-		this.components.add(component);
+	public <T extends Component> T addComponent(Function<GameEntity, T> constructor) {
+		return this.state.addComponent(this, constructor);
 	}
 
-	public void addScript(Script script) {
-		this.scripts.removeIf(old -> old.getClass().isAssignableFrom(script.getClass()));
-		this.scripts.add(script);
+	public <T extends Script> T addScript(Function<GameEntity, T> constructor) {
+		return this.state.addScript(this, constructor);
 	}
+
+	// TODO - Get script?
 }

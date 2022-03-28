@@ -2,7 +2,7 @@ package hexagon.core.base;
 
 public abstract class Script {
 	
-	protected final GameEntity entity;
+	public final GameEntity entity;
 
 	public Script(GameEntity entity) {
 		this.entity = entity;

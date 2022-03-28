@@ -23,7 +23,7 @@ public final class SpriteRenderer {
 			.create();
 
 	public static void addToBatch(SpriteComponent sprite) {
-		sprite.getSiblingComponent(Transform.class).ifPresent(transform -> {
+		sprite.entity.getComponent(Transform.class).ifPresent(transform -> {
 			SpriteRenderer renderer = new SpriteRenderer(transform, sprite);
 			if(renderBatch.containsKey(sprite.texture())) {
 				renderBatch.get(sprite.texture()).add(renderer);
