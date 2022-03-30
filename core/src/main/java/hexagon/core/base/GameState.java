@@ -12,10 +12,6 @@ public final class GameState {
 	
 	private static GameState currentState = new GameState();
 
-	public static void update() {
-		currentState.scripts.values().stream().flatMap(ArrayList::stream).forEach(Script::update);
-	}
-
 	public static void loadState(String filePath) {
 		JsonObject stateJson = JsonObject.fromFileOrEmpty(filePath);
 		currentState = new GameState();
@@ -58,6 +54,10 @@ public final class GameState {
 		} catch (Exception e) {
 			Log.error("Cannot instantiate script " + className + ": " + e.getMessage());
 		}
+	}
+
+	public static void terminate() {
+		currentState.scripts.values().stream().flatMap(ArrayList::stream).forEach(Script::stop);
 	}
 
 	private final HashMap<Class<?>, HashMap<GameEntity, Component>> components;

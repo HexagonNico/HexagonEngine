@@ -8,6 +8,7 @@ import hexagon.lwjgl.glfw.Keyboard;
 public class MovementScript extends Script {
 
 	private Transform2D transform;
+	private float speed = 5.0f;
 
 	public MovementScript(GameEntity entity) {
 		super(entity);
@@ -18,7 +19,7 @@ public class MovementScript extends Script {
 	public void update() {
 		int x = Keyboard.getAxis(Keyboard.KEY_A, Keyboard.KEY_D);
 		int y = Keyboard.getAxis(Keyboard.KEY_S, Keyboard.KEY_W);
-		this.transform.translate(x * 0.01f, y * 0.01f);
+		this.transform.translate(x * speed * (1000.0f / 60.0f / 1000.0f), y * speed * (1000.0f / 60.0f / 1000.0f));
 	}
 	
 }
