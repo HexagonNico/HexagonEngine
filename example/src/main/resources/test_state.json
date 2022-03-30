@@ -17,6 +17,11 @@
 				"hexagon.core.components.SpriteComponent": {
 					"texture": "/textures/logo.png"
 				}
+			},
+			"scripts": {
+				"hexagon.example.MovementScript": {
+					
+				}
 			}
 		}
 	]

@@ -26,11 +26,11 @@ public final class GameState {
 				componentsJson.keySet().forEach(componentKey -> createComponent(componentKey, entity, componentsJson, loadingComponents));
 			});
 			loadingComponents.forEach((jsonObject, component) -> component.init(jsonObject));
+			// TODO - Scripts can be arrays of strings
 			entityJson.getObject("scripts").ifPresent(scriptsJson -> {
 				scriptsJson.keySet().forEach(scriptKey -> createScript(scriptKey, entity));
 			});
 		});
-		System.out.println(currentState.components);
 	}
 
 	private static void createComponent(String className, GameEntity entity, JsonObject componentsJson, HashMap<JsonObject, Component> loadingComponents) {

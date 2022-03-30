@@ -21,6 +21,7 @@ public class Engine {
 		if(window == MemoryUtil.NULL) {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
+		GLFW.glfwSetKeyCallback(window, new Keyboard());
 		return window;
 	}
 
