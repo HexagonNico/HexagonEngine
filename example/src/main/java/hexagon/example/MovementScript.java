@@ -12,14 +12,13 @@ public class MovementScript extends Script {
 
 	public MovementScript(GameEntity entity) {
 		super(entity);
-		this.transform = entity.getComponent(Transform2D.class).orElse(null);
+		this.transform = entity.getComponent(Transform2D.class);
 	}
 
 	@Override
 	public void update() {
 		int x = Keyboard.getAxis(Keyboard.KEY_A, Keyboard.KEY_D);
 		int y = Keyboard.getAxis(Keyboard.KEY_S, Keyboard.KEY_W);
-		this.transform.translate(x * speed * (1000.0f / 60.0f / 1000.0f), y * speed * (1000.0f / 60.0f / 1000.0f));
+		this.transform.translate(x * speed * Script.PERIOD, y * speed * Script.PERIOD);
 	}
-	
 }

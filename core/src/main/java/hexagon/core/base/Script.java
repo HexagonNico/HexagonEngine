@@ -7,13 +7,15 @@ import hexagon.utils.Log;
 
 public abstract class Script extends TimerTask {
 	
+	public static final float PERIOD = 0.02f;
+
 	public final GameEntity entity;
 	private final Timer timer;
 
 	public Script(GameEntity entity) {
 		this.entity = entity;
 		this.timer = new Timer();
-		this.timer.schedule(this, 0, 1000 / 60);
+		this.timer.schedule(this, 0, (long) (PERIOD * 1000));
 	}
 
 	protected abstract void update();
@@ -23,7 +25,8 @@ public abstract class Script extends TimerTask {
 		try {
 			this.update();
 		} catch (Exception e) {
-			Log.error("Exception in script: " + e.getMessage());
+			Log.error("Exception in script " + this.getClass().getName() + ": stopping script");
+			e.printStackTrace();
 			this.timer.cancel();
 		}
 	}

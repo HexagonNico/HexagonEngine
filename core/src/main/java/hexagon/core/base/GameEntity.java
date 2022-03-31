@@ -11,8 +11,12 @@ public final class GameEntity {
 		this.state = state;
 	}
 
-	public <T extends Component> Optional<T> getComponent(Class<T> type) {
-		return this.state.getComponent(this, type);
+	public <T extends Component> T getComponent(Class<T> type) {
+		return this.state.findComponent(this, type).orElse(null);
+	}
+
+	public <T extends Component> Optional<T> findComponent(Class<T> type) {
+		return this.state.findComponent(this, type);
 	}
 
 	public <T extends Component> T addComponent(Function<GameEntity, T> constructor) {

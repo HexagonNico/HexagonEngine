@@ -9,6 +9,7 @@ import hexagon.lwjgl.opengl.DrawCalls;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
 import hexagon.lwjgl.opengl.VertexObject;
+import hexagon.utils.Log;
 
 public final class SpriteRenderer {
 	
@@ -23,7 +24,7 @@ public final class SpriteRenderer {
 			.create();
 
 	public static void addToBatch(SpriteComponent sprite) {
-		sprite.entity.getComponent(Transform.class).ifPresent(transform -> {
+		sprite.entity.findComponent(Transform.class).ifPresentOrElse(transform -> {
 			SpriteRenderer renderer = new SpriteRenderer(transform, sprite);
 			if(renderBatch.containsKey(sprite.texture())) {
 				renderBatch.get(sprite.texture()).add(renderer);
@@ -32,8 +33,9 @@ public final class SpriteRenderer {
 				list.add(renderer);
 				renderBatch.put(sprite.texture(), list);
 			}
+		}, () -> {
+			Log.warning("Sprite component cannot be added to rendering system: missing transform");
 		});
-		// TODO - Missing transform?
 	}
 
 	private static void renderingProcesses() {

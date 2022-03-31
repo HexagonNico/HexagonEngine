@@ -88,7 +88,7 @@ public final class GameState {
 		return null;
 	}
 
-	public <T extends Component> Optional<T> getComponent(GameEntity entity, Class<T> type) {
+	public <T extends Component> Optional<T> findComponent(GameEntity entity, Class<T> type) {
 		if(entity != null && type != null) {
 			Class<?> componentKey = this.getComponentKey(type);
 			if(this.components.containsKey(componentKey)) {
