@@ -1,30 +1,22 @@
 package hexagon.core.components;
 
-import hexagon.core.base.Component;
-import hexagon.core.base.GameEntity;
-import hexagon.core.rendering.SpriteRenderer;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
 import hexagon.utils.json.JsonObject;
 
-public final class SpriteComponent extends Component {
+public final class SpriteComponent {
 	
 	private Texture texture = Texture.ERROR;
 	private ShaderProgram shader = ShaderProgram.getOrLoad("/shaders/sprites_default.json");
 
-	public SpriteComponent(GameEntity entity) {
-		super(entity);
-	}
-
-	@Override
-	public void init(JsonObject jsonObject) {
+	public SpriteComponent(JsonObject jsonObject) {
 		jsonObject.getString("texture").ifPresent(textureFile -> {
 			this.texture = Texture.getOrLoad(textureFile);
 		});
 		jsonObject.getString("shader").ifPresent(shaderFile -> {
 			this.shader = ShaderProgram.getOrLoad(shaderFile);
 		});
-		SpriteRenderer.addToBatch(this);
+		// TODO - SpriteRenderer.addToBatch(this);
 	}
 
 	public Texture texture() {

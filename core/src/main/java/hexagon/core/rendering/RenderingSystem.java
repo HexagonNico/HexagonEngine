@@ -12,7 +12,7 @@ public final class RenderingSystem {
 		renderers.add(runnable);
 	}
 
-	public static void renderingProcess() {
+	public static synchronized void renderingProcess() {
 		OpenGL.clearFrame(0.8f, 0.8f, 0.8f); // TODO - Set color
 		renderers.forEach(Runnable::run);
 	}

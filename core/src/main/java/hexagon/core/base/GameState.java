@@ -1,10 +1,10 @@
 package hexagon.core.base;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Optional;
-import java.util.function.Function;
 
+import hexagon.core.components.SpriteComponent;
+import hexagon.core.rendering.SpriteRenderer;
 import hexagon.utils.Log;
 import hexagon.utils.json.JsonObject;
 
@@ -17,82 +17,48 @@ public final class GameState {
 		currentState = new GameState();
 		stateJson.getArrayOrEmpty("entities").forEachObject(entityJson -> {
 			GameEntity entity = new GameEntity(currentState);
-			HashMap<JsonObject, Component> loadingComponents = new HashMap<>();
-			entityJson.getObject("components").ifPresent(componentsJson -> {
-				componentsJson.keySet().forEach(componentKey -> createComponent(componentKey, entity, componentsJson, loadingComponents));
-			});
-			loadingComponents.forEach((jsonObject, component) -> component.init(jsonObject));
-			// TODO - Scripts can be arrays of strings
-			entityJson.getObject("scripts").ifPresent(scriptsJson -> {
-				scriptsJson.keySet().forEach(scriptKey -> createScript(scriptKey, entity));
+			entityJson.keySet().forEach(componentKey -> {
+				try {
+					JsonObject componentJson = entityJson.getObjectOrEmpty(componentKey);
+					Object component = Class.forName(componentKey).getConstructor(JsonObject.class).newInstance(componentJson);
+					currentState.addComponent(entity, component);
+				} catch (Exception e) {
+					Log.error("Cannot instantiate component " + componentKey + ": " + e.getMessage());
+				}
 			});
 		});
+		// Temporary
+		currentState.startSystem(new SpriteRenderer(), SpriteComponent.class);
 	}
 
-	private static void createComponent(String className, GameEntity entity, JsonObject componentsJson, HashMap<JsonObject, Component> loadingComponents) {
-		try {
-			Component component = (Component) Class.forName(className).getConstructor(GameEntity.class).newInstance(entity);
-			loadingComponents.put(componentsJson.getObject(className).orElse(JsonObject.empty()), component);
-			currentState.addComponent(entity, component);
-		} catch (NoSuchMethodException e) {
-			Log.error("Cannot find constructor for " + className + ": define a constructor that takes in a GameEntity parameter");
-		} catch (ClassNotFoundException e) {
-			Log.error("Cannot find class for component " + className);
-		} catch (Exception e) {
-			Log.error("Cannot instantiate component " + className + ": " + e.getMessage());
-		}
+	public static void stopSystems() {
+		currentState.systems.values().forEach(SystemRunner::shutdown);
 	}
 
-	private static void createScript(String className, GameEntity entity) {
-		try {
-			Script script = (Script) Class.forName(className).getConstructor(GameEntity.class).newInstance(entity);
-			currentState.addScript(entity, script);
-		} catch (NoSuchMethodException e) {
-			Log.error("Cannot find constructor for " + className + ": define a constructor that takes in a GameEntity parameter");
-		} catch (ClassNotFoundException e) {
-			Log.error("Cannot find class for script " + className);
-		} catch (Exception e) {
-			Log.error("Cannot instantiate script " + className + ": " + e.getMessage());
-		}
-	}
-
-	public static void terminate() {
-		currentState.scripts.values().stream().flatMap(ArrayList::stream).forEach(Script::stop);
-	}
-
-	private final HashMap<Class<?>, HashMap<GameEntity, Component>> components;
-	private final HashMap<GameEntity, ArrayList<Script>> scripts;
+	private final HashMap<Class<?>, HashMap<GameEntity, Object>> components;
+	private final HashMap<Class<?>, SystemRunner<?>> systems;
 
 	private GameState() {
 		this.components = new HashMap<>();
-		this.scripts = new HashMap<>();
+		this.systems = new HashMap<>();
 	}
 
-	private void addComponent(GameEntity entity, Component component) {
+	public void addComponent(GameEntity entity, Object component) {
 		Class<?> componentKey = this.getComponentKey(component.getClass());
 		if(this.components.containsKey(componentKey)) {
 			this.components.get(componentKey).put(entity, component);
 		} else {
-			HashMap<GameEntity, Component> map = new HashMap<>();
+			HashMap<GameEntity, Object> map = new HashMap<>();
 			map.put(entity, component);
 			this.components.put(componentKey, map);
 		}
 	}
 
-	public <T extends Component> T addComponent(GameEntity entity, Function<GameEntity, T> constructor) {
-		if(entity != null && constructor != null) {
-			T component = constructor.apply(entity);
-			this.addComponent(entity, component);
-			return component;
-		}
-		return null;
-	}
-
-	public <T extends Component> Optional<T> findComponent(GameEntity entity, Class<T> type) {
+	public <T> Optional<T> findComponent(GameEntity entity, Class<T> type) {
 		if(entity != null && type != null) {
 			Class<?> componentKey = this.getComponentKey(type);
 			if(this.components.containsKey(componentKey)) {
-				HashMap<GameEntity, Component> components = this.components.get(componentKey);
+				HashMap<GameEntity, Object> components = this.components.get(componentKey);
 				if(components.containsKey(entity)) {
 					return Optional.of(type.cast(components.get(entity)));
 				}
@@ -101,29 +67,25 @@ public final class GameState {
 		return Optional.empty();
 	}
 
+	public HashMap<GameEntity, Object> getComponents(Class<?> type) {
+		if(type != null) {
+			Class<?> componentKey = this.getComponentKey(type);
+			if(this.components.containsKey(componentKey)) {
+				return this.components.get(componentKey);
+			}
+		}
+		return new HashMap<>();
+	}
+
 	private Class<?> getComponentKey(Class<?> componentType) {
 		Class<?> superClass = componentType.getSuperclass();
-		return superClass.equals(Component.class) ? componentType : this.getComponentKey(superClass);
+		return superClass.equals(Object.class) ? componentType : this.getComponentKey(superClass);
 	}
 
-	private void addScript(GameEntity entity, Script script) {
-		if(this.scripts.containsKey(entity)) {
-			this.scripts.get(entity).add(script);
-		} else {
-			ArrayList<Script> list = new ArrayList<>();
-			list.add(script);
-			this.scripts.put(entity, list);
+	public <T> void startSystem(GameSystem<T> system, Class<T> componentType) {
+		if(system != null && componentType != null) {
+			SystemRunner<T> runner = new SystemRunner<>(system, this, componentType);
+			this.systems.put(system.getClass(), runner);
 		}
 	}
-
-	public <T extends Script> T addScript(GameEntity entity, Function<GameEntity, T> constructor) {
-		if(entity != null && constructor != null) {
-			T script = constructor.apply(entity);
-			this.addScript(entity, script);
-			return script;
-		}
-		return null;
-	}
-
-	// TODO - Get script?
 }

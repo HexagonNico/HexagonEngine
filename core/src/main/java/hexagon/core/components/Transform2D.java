@@ -1,6 +1,5 @@
 package hexagon.core.components;
 
-import hexagon.core.base.GameEntity;
 import hexagon.math.matrix.Matrices;
 import hexagon.math.matrix.Matrix4;
 import hexagon.math.vector.Float2;
@@ -12,12 +11,7 @@ public final class Transform2D extends Transform {
 	private float rotation = 0.0f;
 	private Float2 scale = Float2.ONE;
 
-	public Transform2D(GameEntity entity) {
-		super(entity);
-	}
-
-	@Override
-	public void init(JsonObject jsonObject) {
+	public Transform2D(JsonObject jsonObject) {
 		jsonObject.getObject("position").ifPresent(positionJson -> {
 			float x = positionJson.getFloat("x", this.position.x());
 			float y = positionJson.getFloat("y", this.position.y());

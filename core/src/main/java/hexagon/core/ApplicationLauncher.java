@@ -49,7 +49,7 @@ public class ApplicationLauncher {
 				any.printStackTrace();
 			} finally {
 				OpenGL.cleanUp();
-				GameState.terminate();
+				GameState.stopSystems();
 				Engine.terminate(this.window);
 			}
 		}

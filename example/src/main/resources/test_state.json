@@ -1,27 +1,21 @@
 {
 	"entities": [
 		{
-			"components": {
-				"hexagon.core.components.CameraComponent": {
-					"position": {
-						"z": 2
-					}
+			"hexagon.core.components.CameraComponent": {
+				"position": {
+					"z": 2
 				}
 			}
 		},
 		{
-			"components": {
-				"hexagon.core.components.Transform2D": {
+			"hexagon.core.components.Transform2D": {
 
-				},
-				"hexagon.core.components.SpriteComponent": {
-					"texture": "/textures/logo.png"
-				}
 			},
-			"scripts": {
-				"hexagon.example.MovementScript": {
-					
-				}
+			"hexagon.core.components.SpriteComponent": {
+				"texture": "/textures/logo.png"
+			},
+			"hexagon.example.MovementScript": {
+				
 			}
 		}
 	]
