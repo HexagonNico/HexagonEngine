@@ -14,6 +14,7 @@ public final class SystemRunner<T extends Component> extends TimerTask {
 
 	public static <T extends Component> void startSystem(GameSystem<T> system) {
 		if(system != null) {
+			Log.info("Starting system " + system);
 			SystemRunner<T> runner = new SystemRunner<>(system);
 			systems.put(system.getClass(), runner);
 		}
@@ -57,6 +58,7 @@ public final class SystemRunner<T extends Component> extends TimerTask {
 	}
 
 	public void shutdown() {
+		Log.info("Shutting down system " + this);
 		this.timer.cancel();
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import hexagon.core.GameEntity;
 import hexagon.core.components.Component;
+import hexagon.utils.Log;
 
 public final class GameState {
 	
@@ -15,6 +16,7 @@ public final class GameState {
 	}
 
 	public static synchronized void loadState(String filePath) {
+		Log.info("Loading state " + filePath);
 		currentState = StateLoader.loadState(new GameState(), filePath);
 	}
 
@@ -23,18 +25,8 @@ public final class GameState {
 			map.values().removeIf(Component::markedForRemoval);
 		});
 	}
-/*
-	public static void stopSystems() {
-		currentState.systems.values().forEach(SystemRunner::shutdown);
-	}
-*/
-	private final HashMap<Class<?>, HashMap<GameEntity, Component>> components;
-	//private final HashMap<Class<?>, SystemRunner<?>> systems;
 
-	private GameState() {
-		this.components = new HashMap<>();
-		//this.systems = new HashMap<>();
-	}
+	private final HashMap<Class<?>, HashMap<GameEntity, Component>> components = new HashMap<>();
 
 	public void addComponent(GameEntity entity, Component component) {
 		Class<?> componentKey = this.getComponentKey(component.getClass());
@@ -74,12 +66,4 @@ public final class GameState {
 		Class<?> superClass = componentType.getSuperclass();
 		return superClass.equals(Component.class) ? componentType : this.getComponentKey(superClass);
 	}
-/*
-	public <T extends Component> void startSystem(GameSystem<T> system, Class<T> componentType) {
-		if(system != null && componentType != null) {
-			SystemRunner<T> runner = new SystemRunner<>(system, this, componentType);
-			this.systems.put(system.getClass(), runner);
-		}
-	}
-*/
 }

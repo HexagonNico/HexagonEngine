@@ -5,6 +5,8 @@ import org.lwjgl.glfw.GLFW;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.system.MemoryUtil;
 
+import hexagon.utils.Log;
+
 public class Engine {
 	
 	public static void init() {
@@ -12,6 +14,7 @@ public class Engine {
 		if(!GLFW.glfwInit()) {
 			throw new IllegalStateException("Unable to initialize GLFW");
 		}
+		Log.info("GLFW initialized");
 	}
 
 	// TODO - Window hints
@@ -22,6 +25,7 @@ public class Engine {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
 		GLFW.glfwSetKeyCallback(window, new Keyboard());
+		Log.info("Created window");
 		return window;
 	}
 
@@ -43,6 +47,7 @@ public class Engine {
 	}
 
 	public static void terminate(long window) {
+		Log.info("Terminating");
 		Callbacks.glfwFreeCallbacks(window);
 		GLFW.glfwDestroyWindow(window);
 		GLFW.glfwTerminate();
