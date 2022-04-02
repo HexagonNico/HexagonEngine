@@ -3,8 +3,7 @@ package hexagon.core.systems;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import hexagon.core.base.GameEntity;
-import hexagon.core.base.GameSystem;
+import hexagon.core.GameEntity;
 import hexagon.core.components.SpriteComponent;
 import hexagon.core.components.Transform;
 import hexagon.core.rendering.Camera;
@@ -14,7 +13,7 @@ import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
 import hexagon.lwjgl.opengl.VertexObject;
 
-public final class SpriteRenderer implements GameSystem<SpriteComponent> {
+public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 
 	static {
 		RenderingSystem.addRenderingProcess(SpriteRenderer::render);
@@ -41,6 +40,10 @@ public final class SpriteRenderer implements GameSystem<SpriteComponent> {
 			});
 		});
 		//renderBatch.clear();
+	}
+
+	public SpriteRenderer() {
+		super(SpriteComponent.class);
 	}
 
 	@Override

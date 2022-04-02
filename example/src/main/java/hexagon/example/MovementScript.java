@@ -1,6 +1,6 @@
 package hexagon.example;
 
-import hexagon.core.base.GameEntity;
+import hexagon.core.GameEntity;
 import hexagon.core.components.Script;
 import hexagon.core.components.Transform2D;
 import hexagon.lwjgl.glfw.Keyboard;

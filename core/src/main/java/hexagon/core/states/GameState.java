@@ -1,7 +1,10 @@
-package hexagon.core.base;
+package hexagon.core.states;
 
 import java.util.HashMap;
 import java.util.Optional;
+
+import hexagon.core.GameEntity;
+import hexagon.core.components.Component;
 
 public final class GameState {
 	

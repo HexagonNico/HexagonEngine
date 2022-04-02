@@ -1,6 +1,9 @@
-package hexagon.core.base;
+package hexagon.core;
 
 import java.util.Optional;
+
+import hexagon.core.components.Component;
+import hexagon.core.states.GameState;
 
 public final class GameEntity {
 

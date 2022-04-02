@@ -1,5 +1,7 @@
-package hexagon.core.base;
+package hexagon.core.states;
 
+import hexagon.core.GameEntity;
+import hexagon.core.components.Component;
 import hexagon.utils.Log;
 import hexagon.utils.json.JsonObject;
 

@@ -1,4 +1,4 @@
-package hexagon.core.base;
+package hexagon.core.components;
 
 import hexagon.utils.json.JsonObject;
 

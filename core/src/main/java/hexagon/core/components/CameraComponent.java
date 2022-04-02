@@ -1,6 +1,5 @@
 package hexagon.core.components;
 
-import hexagon.core.base.Component;
 import hexagon.core.rendering.Camera;
 import hexagon.utils.json.JsonObject;
 

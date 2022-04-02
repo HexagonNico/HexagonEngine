@@ -1,11 +1,14 @@
 package hexagon.core.systems;
 
-import hexagon.core.base.GameEntity;
-import hexagon.core.base.GameSystem;
+import hexagon.core.GameEntity;
 import hexagon.core.components.Script;
 import hexagon.utils.Log;
 
-public class ScriptSystem implements GameSystem<Script> {
+public class ScriptSystem extends GameSystem<Script> {
+
+	public ScriptSystem() {
+		super(Script.class);
+	}
 
 	@Override
 	public void process(GameEntity entity, Script script) {
@@ -21,5 +24,4 @@ public class ScriptSystem implements GameSystem<Script> {
 			script.queueRemove();
 		}
 	}
-	
 }

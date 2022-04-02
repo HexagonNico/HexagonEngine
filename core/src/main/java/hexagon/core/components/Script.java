@@ -1,7 +1,6 @@
 package hexagon.core.components;
 
-import hexagon.core.base.Component;
-import hexagon.core.base.GameEntity;
+import hexagon.core.GameEntity;
 
 public abstract class Script extends Component {
 

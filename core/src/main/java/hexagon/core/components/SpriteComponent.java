@@ -1,6 +1,5 @@
 package hexagon.core.components;
 
-import hexagon.core.base.Component;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
 import hexagon.utils.json.JsonObject;
