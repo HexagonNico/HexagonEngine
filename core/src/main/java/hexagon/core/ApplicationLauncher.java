@@ -1,6 +1,7 @@
 package hexagon.core;
 
 import hexagon.core.base.GameState;
+import hexagon.core.base.SystemRunner;
 import hexagon.core.rendering.RenderingSystem;
 import hexagon.lwjgl.glfw.Engine;
 import hexagon.lwjgl.opengl.OpenGL;
@@ -36,6 +37,9 @@ public class ApplicationLauncher {
 		@Override
 		public void run(String initialState) {
 			try {
+				// TODO - Move from here
+				//SystemRunner.startSystem(new SpriteRenderer(), SpriteComponent.class);
+				//SystemRunner.startSystem(new ScriptSystem(), Script.class);
 				Engine.showWindow(this.window);
 				GameState.loadState(initialState);
 				Log.info("Now running...");
@@ -49,7 +53,7 @@ public class ApplicationLauncher {
 				any.printStackTrace();
 			} finally {
 				OpenGL.cleanUp();
-				GameState.stopSystems();
+				SystemRunner.stopSystems();
 				Engine.terminate(this.window);
 			}
 		}
