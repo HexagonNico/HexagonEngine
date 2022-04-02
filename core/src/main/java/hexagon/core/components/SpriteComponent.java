@@ -1,15 +1,17 @@
 package hexagon.core.components;
 
+import hexagon.core.base.Component;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
 import hexagon.utils.json.JsonObject;
 
-public final class SpriteComponent {
+public final class SpriteComponent extends Component {
 	
 	private Texture texture = Texture.ERROR;
 	private ShaderProgram shader = ShaderProgram.getOrLoad("/shaders/sprites_default.json");
 
-	public SpriteComponent(JsonObject jsonObject) {
+	@Override
+	public void init(JsonObject jsonObject) {
 		jsonObject.getString("texture").ifPresent(textureFile -> {
 			this.texture = Texture.getOrLoad(textureFile);
 		});

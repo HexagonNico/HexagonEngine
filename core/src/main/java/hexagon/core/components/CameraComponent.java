@@ -1,13 +1,15 @@
 package hexagon.core.components;
 
+import hexagon.core.base.Component;
 import hexagon.core.rendering.Camera;
 import hexagon.utils.json.JsonObject;
 
-public final class CameraComponent {
+public final class CameraComponent extends Component {
 
 	public final Camera camera = new Camera();
 
-	public CameraComponent(JsonObject jsonObject) {
+	@Override
+	public void init(JsonObject jsonObject) {
 		jsonObject.getObject("position").ifPresent(positionJson -> {
 			float x = positionJson.getFloat("x", this.camera.position().x());
 			float y = positionJson.getFloat("y", this.camera.position().y());

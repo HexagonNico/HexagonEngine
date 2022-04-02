@@ -41,7 +41,7 @@ public class ApplicationLauncher {
 				Log.info("Now running...");
 				while(Engine.isRunning(this.window)) {
 					Engine.update(this.window);
-					//GameState.update();
+					GameState.update();
 					RenderingSystem.renderingProcess();
 				}
 			} catch (Exception any) {

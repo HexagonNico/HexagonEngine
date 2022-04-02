@@ -11,7 +11,8 @@ public final class Transform3D extends Transform {
 	private Float3 rotation = Float3.ZERO;
 	private Float3 scale = Float3.ONE;
 
-	public Transform3D(JsonObject jsonObject) {
+	@Override
+	public void init(JsonObject jsonObject) {
 		jsonObject.getObject("position").ifPresent(positionJson -> {
 			float x = positionJson.getFloat("x", this.position.x());
 			float y = positionJson.getFloat("y", this.position.y());

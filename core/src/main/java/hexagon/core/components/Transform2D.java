@@ -11,7 +11,8 @@ public final class Transform2D extends Transform {
 	private float rotation = 0.0f;
 	private Float2 scale = Float2.ONE;
 
-	public Transform2D(JsonObject jsonObject) {
+	@Override
+	public void init(JsonObject jsonObject) {
 		jsonObject.getObject("position").ifPresent(positionJson -> {
 			float x = positionJson.getFloat("x", this.position.x());
 			float y = positionJson.getFloat("y", this.position.y());

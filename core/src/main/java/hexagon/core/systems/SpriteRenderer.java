@@ -1,4 +1,4 @@
-package hexagon.core.rendering;
+package hexagon.core.systems;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -7,6 +7,8 @@ import hexagon.core.base.GameEntity;
 import hexagon.core.base.GameSystem;
 import hexagon.core.components.SpriteComponent;
 import hexagon.core.components.Transform;
+import hexagon.core.rendering.Camera;
+import hexagon.core.rendering.RenderingSystem;
 import hexagon.lwjgl.opengl.DrawCalls;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
