@@ -3,8 +3,14 @@ package hexagon.core.components;
 import hexagon.core.rendering.Camera;
 import hexagon.utils.json.JsonObject;
 
+/**
+ * Component used to handle a {@link Camera} with an entity.
+ * 
+ * @author Nico
+ */
 public final class CameraComponent extends Component {
 
+	/**Camera handled by this component */
 	public final Camera camera = new Camera();
 
 	@Override

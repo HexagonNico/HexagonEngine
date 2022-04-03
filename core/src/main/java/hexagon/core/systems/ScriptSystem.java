@@ -4,8 +4,18 @@ import hexagon.core.GameEntity;
 import hexagon.core.components.Script;
 import hexagon.utils.Log;
 
+/**
+ * Game system that handles the running of scripts.
+ * Calls {@link Script#update(GameEntity)} on all scripts
+ * and handles possible errors.
+ * 
+ * @author Nico
+ */
 public class ScriptSystem extends GameSystem<Script> {
 
+	/**
+	 * Creates script system
+	 */
 	public ScriptSystem() {
 		super(Script.class);
 	}
@@ -21,7 +31,7 @@ public class ScriptSystem extends GameSystem<Script> {
 		} catch (Exception exception) {
 			Log.error("Exception in script " + script.getClass());
 			exception.printStackTrace();
-			script.queueRemove();
+			script.markToRemove();
 		}
 	}
 }

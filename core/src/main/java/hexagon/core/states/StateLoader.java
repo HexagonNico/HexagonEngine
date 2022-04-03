@@ -5,8 +5,21 @@ import hexagon.core.components.Component;
 import hexagon.utils.Log;
 import hexagon.utils.json.JsonObject;
 
-public class StateLoader {
+/**
+ * Utility class used to load game states.
+ * 
+ * @author Nico
+ */
+public final class StateLoader {
 
+	/**
+	 * Loads a game state file by adding all entities (or their components) to the given state.
+	 * 
+	 * @param state An empty state
+	 * @param filePath Path to the state file
+	 * 
+	 * @return The loaded state
+	 */
 	public static GameState loadState(GameState state, String filePath) {
 		JsonObject stateJson = JsonObject.fromFileOrEmpty(filePath);
 		stateJson.getArrayOrEmpty("entities").forEachObject(entityJson -> {
@@ -30,4 +43,7 @@ public class StateLoader {
 		});
 		return state;
 	}
+
+	/**Class should not be instantiated */
+	private StateLoader() {}
 }
