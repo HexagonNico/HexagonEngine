@@ -25,6 +25,7 @@ public class Engine {
 			throw new RuntimeException("Failed to create the GLFW window");
 		}
 		GLFW.glfwSetKeyCallback(window, new Keyboard());
+		GLFW.glfwSetWindowSizeCallback(window, new WindowSize());
 		Log.info("Created window");
 		return window;
 	}

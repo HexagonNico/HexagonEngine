@@ -1,5 +1,6 @@
 package hexagon.core.rendering;
 
+import hexagon.lwjgl.glfw.WindowSize;
 import hexagon.math.matrix.Matrices;
 import hexagon.math.matrix.Matrix4;
 import hexagon.math.vector.Float3;
@@ -44,7 +45,7 @@ public final class Camera {
 	 */
 	public Matrix4 projection() {
 		float m00 = 1.0f / (float) Math.tan(Math.toRadians(fov / 2.0f));
-		float m11 = m00 * (16.0f / 9.0f); // TODO - Aspect ratio
+		float m11 = m00 * WindowSize.aspectRatio();
 		float m22 = -(this.farPlane + this.nearPlane) / (this.farPlane - this.nearPlane);
 		float m32 = -(2 * this.farPlane * this.nearPlane) / (this.farPlane - this.nearPlane);
 		return new Matrix4(

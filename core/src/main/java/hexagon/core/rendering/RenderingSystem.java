@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import hexagon.core.components.Component;
 import hexagon.core.systems.GameSystem;
+import hexagon.lwjgl.glfw.WindowSize;
 import hexagon.lwjgl.opengl.OpenGL;
 import hexagon.utils.Log;
 
@@ -24,6 +25,7 @@ public abstract class RenderingSystem<T extends Component> extends GameSystem<T>
 
 	public static void renderingProcess() {
 		OpenGL.clearFrame(0.8f, 0.8f, 0.8f); // TODO - Set color
+		OpenGL.setViewport(WindowSize.width(), WindowSize.height());
 		renderers.values().forEach(RenderingSystem::processEntities);
 		renderers.values().forEach(RenderingSystem::render);
 	}
