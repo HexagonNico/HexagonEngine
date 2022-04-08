@@ -1,37 +1,38 @@
 package hexagon.core.rendering;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
+import hexagon.core.components.Component;
+import hexagon.core.systems.GameSystem;
 import hexagon.lwjgl.opengl.OpenGL;
+import hexagon.utils.Log;
 
 /**
  * Class used internally to run rendering systems on the main thread.
  * 
  * @author Nico
  */
-public final class RenderingSystem {
+public abstract class RenderingSystem<T extends Component> extends GameSystem<T> {
 
-	/**Rendering processing for the different rendering systems */
-	private static ArrayList<Runnable> renderers = new ArrayList<>();
+	private static HashMap<Class<?>, RenderingSystem<?>> renderers = new HashMap<>();
 
-	/**
-	 * Adds a process that will be executed during the rendering phase.
-	 * 
-	 * @param runnable Action to execute
-	 */
-	public static void addRenderingProcess(Runnable runnable) {
-		renderers.add(runnable);
+	public static void addSystem(RenderingSystem<?> system) {
+		if(renderers.put(system.componentType, system) == null) {
+			Log.info("Starting rendering system " + system);
+		}
 	}
 
-	/**
-	 * Runs the rendering process.
-	 * Called from the main application method.
-	 */
-	public static synchronized void renderingProcess() {
+	public static void renderingProcess() {
 		OpenGL.clearFrame(0.8f, 0.8f, 0.8f); // TODO - Set color
-		renderers.forEach(Runnable::run);
+		renderers.values().forEach(RenderingSystem::processEntities);
+		renderers.values().forEach(RenderingSystem::render);
 	}
 
-	/**Class should not be instantiated */
-	private RenderingSystem() {}
+	public RenderingSystem(Class<T> componentType) {
+		super(componentType);
+	}
+
+	public abstract void processEntities();
+
+	public abstract void render();
 }

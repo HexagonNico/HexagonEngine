@@ -1,4 +1,4 @@
-package hexagon.core.systems;
+package hexagon.core.rendering;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6,8 +6,7 @@ import java.util.HashSet;
 import hexagon.core.GameEntity;
 import hexagon.core.components.SpriteComponent;
 import hexagon.core.components.Transform;
-import hexagon.core.rendering.Camera;
-import hexagon.core.rendering.RenderingSystem;
+import hexagon.core.states.GameState;
 import hexagon.lwjgl.opengl.DrawCalls;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
@@ -19,11 +18,7 @@ import hexagon.lwjgl.opengl.VertexObject;
  * 
  * @author Nico
  */
-public final class SpriteRenderer extends GameSystem<SpriteComponent> {
-
-	static {
-		RenderingSystem.addRenderingProcess(SpriteRenderer::render);
-	}
+public final class SpriteRenderer extends RenderingSystem<SpriteComponent> {
 
 	/**Sprites batch */
 	private static HashMap<Texture, HashSet<SpriteObject>> renderBatch = new HashMap<>();
@@ -34,29 +29,17 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 			.create();
 
 	/**
-	 * Rendering process called from {@link RenderingSystem}.
-	 */
-	private static void render() {
-		quadModel.activate(() -> {
-			renderBatch.keySet().forEach(texture -> {
-				texture.bind();
-				renderBatch.get(texture).forEach(renderer -> {
-					ShaderProgram.start(renderer.sprite.shader());
-					renderer.sprite.shader().load("projection_matrix", Camera.main().projection());
-					renderer.sprite.shader().load("view_matrix", Camera.main().view());
-					renderer.sprite.shader().load("transformation_matrix", renderer.transform.matrix());
-					DrawCalls.drawElements(6);
-					ShaderProgram.stop();
-				});
-			});
-		});
-	}
-
-	/**
 	 * Creates a sprite renderer
 	 */
 	public SpriteRenderer() {
 		super(SpriteComponent.class);
+	}
+
+	@Override
+	public void processEntities() {
+		GameState.current().getComponents(SpriteComponent.class).forEach((entity, component) -> {
+			this.process(entity, (SpriteComponent) component);
+		});
 	}
 
 	@Override
@@ -72,6 +55,25 @@ public final class SpriteRenderer extends GameSystem<SpriteComponent> {
 				renderBatch.put(sprite.texture(), set);
 			});
 		}
+	}
+
+	@Override
+	public void render() {
+		quadModel.activate(() -> {
+			renderBatch.keySet().forEach(texture -> {
+				texture.bind();
+				renderBatch.get(texture).forEach(renderer -> {
+					ShaderProgram.start(renderer.sprite.shader());
+					renderer.sprite.shader().load("projection_matrix", Camera.main().projection());
+					renderer.sprite.shader().load("view_matrix", Camera.main().view());
+					renderer.sprite.shader().load("transformation_matrix", renderer.transform.matrix());
+					renderer.sprite.shader().load("offset", renderer.sprite.offset());
+					DrawCalls.drawElements(6);
+					ShaderProgram.stop();
+				});
+			});
+		});
+		renderBatch.clear();
 	}
 
 	/**

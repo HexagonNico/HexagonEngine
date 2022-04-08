@@ -67,7 +67,7 @@ public final class Resources {
 		try {
 			BufferedImage image = ImageIO.read(Resources.class.getResourceAsStream(filePath));
 			return new Image(image);
-		} catch(NullPointerException e) {
+		} catch(NullPointerException | IllegalArgumentException e) {
 			throw new ResourceLoadingException("Cannot find file " + filePath, e);
 		} catch(IOException e) {
 			throw new ResourceLoadingException("Exception loading resource " + filePath, e);

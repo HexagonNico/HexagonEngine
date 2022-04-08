@@ -51,7 +51,7 @@ public final class SystemRunner<T extends Component> extends TimerTask {
 	 * Called from the main application class.
 	 */
 	public static void startSystems() {
-		SystemRunner.startSystem(new SpriteRenderer());
+		// TODO - There should be a system registry that starts/stops system when there are/aren't components
 		SystemRunner.startSystem(new ScriptSystem());
 	}
 
