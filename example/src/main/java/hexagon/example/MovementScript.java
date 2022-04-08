@@ -22,9 +22,9 @@ public class MovementScript extends Script {
 	}
 
 	@Override
-	public void update(GameEntity entity) {
+	public void update(GameEntity entity, float deltaTime) {
 		int x = Keyboard.getAxis(Keyboard.KEY_D, Keyboard.KEY_A);
 		int y = Keyboard.getAxis(Keyboard.KEY_W, Keyboard.KEY_S);
-		this.transform.translate(x * speed * 0.02f, y * speed * 0.02f);
+		this.transform.translate(x * this.speed * deltaTime, y * this.speed * deltaTime);
 	}
 }

@@ -38,12 +38,12 @@ public final class SpriteRenderer extends RenderingSystem<SpriteComponent> {
 	@Override
 	public void processEntities() {
 		GameState.current().getComponents(SpriteComponent.class).forEach((entity, component) -> {
-			this.process(entity, (SpriteComponent) component);
+			this.process(entity, (SpriteComponent) component, 0.0f);
 		});
 	}
 
 	@Override
-	public void process(GameEntity entity, SpriteComponent sprite) {
+	public void process(GameEntity entity, SpriteComponent sprite, float deltaTime) {
 		if(renderBatch.containsKey(sprite.texture())) {
 			entity.findComponent(Transform.class).ifPresent(transform -> {
 				renderBatch.get(sprite.texture()).add(new SpriteObject(sprite, transform));

@@ -69,6 +69,9 @@ public final class SystemRunner<T extends Component> extends TimerTask {
 	/**The system that is running on this thread */
 	private final GameSystem<T> system;
 
+	/**Last system processing time */
+	private long previousTime;
+
 	/**
 	 * Creates a system runner.
 	 * 
@@ -82,9 +85,11 @@ public final class SystemRunner<T extends Component> extends TimerTask {
 	@Override
 	public void run() {
 		try {
+			long time = System.nanoTime();
 			GameState.current().getComponents(this.system.componentType).forEach((entity, component) -> {
-				this.system.process(entity, this.system.componentType.cast(component));
+				this.system.process(entity, this.system.componentType.cast(component), (time - previousTime) / 1e9f);
 			});
+			previousTime = time;
 		} catch (Exception e) {
 			Log.error("Error in system " + this.system.getClass() + ": shutting down");
 			e.printStackTrace();

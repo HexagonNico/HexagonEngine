@@ -42,6 +42,7 @@ public abstract class Script extends Component {
 	 * Called every frame by the script system.
 	 * 
 	 * @param entity The entity that holds this component
+	 * @param deltaTime Time elapsed since last update (in seconds)
 	 */
-	public abstract void update(GameEntity entity);
+	public abstract void update(GameEntity entity, float deltaTime);
 }

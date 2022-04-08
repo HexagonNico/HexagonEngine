@@ -21,13 +21,13 @@ public class ScriptSystem extends GameSystem<Script> {
 	}
 
 	@Override
-	public void process(GameEntity entity, Script script) {
+	public void process(GameEntity entity, Script script, float deltaTime) {
 		try {
 			if(!script.isStarted()) {
 				script.start(entity);
 				script.setStarted();
 			}
-			script.update(entity);
+			script.update(entity, deltaTime);
 		} catch (Exception exception) {
 			Log.error("Exception in script " + script.getClass());
 			exception.printStackTrace();

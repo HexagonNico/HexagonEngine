@@ -33,6 +33,7 @@ public abstract class GameSystem<T extends Component> {
 	 * 
 	 * @param entity The entity that holds the given component
 	 * @param component The component to process
+	 * @param deltaTime Time elapsed since the last process (in seconds)
 	 */
-	public abstract void process(GameEntity entity, T component);
+	public abstract void process(GameEntity entity, T component, float deltaTime);
 }
