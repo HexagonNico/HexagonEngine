@@ -16,6 +16,6 @@ public class ExampleGame extends ApplicationLauncher {
 	}
 
 	public static void main(String[] args) {
-		new ExampleGame().init("Example Game", 400, 225).run("/test_state.json");
+		new ExampleGame().init("Example Game", 800, 450).run("/test_state.json");
 	}
 }
