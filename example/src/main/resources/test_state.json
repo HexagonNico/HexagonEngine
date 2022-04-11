@@ -3,7 +3,7 @@
 		{
 			"hexagon.core.components.CameraComponent": {
 				"position": {
-					"z": 2
+					"z": 10
 				}
 			}
 		},
@@ -16,6 +16,33 @@
 			},
 			"hexagon.example.MovementScript": {
 				
+			}
+		},
+		{
+			"hexagon.core.components.Transform2D": {
+
+			},
+			"hexagon.core.components.TilemapComponent": {
+				"origin": {
+					"x": 0.5,
+					"y": -0.5
+				},
+				"scale": {
+					"x": 0.5,
+					"y": 0.5
+				},
+				"size": {
+					"width": 7,
+					"height": 5
+				},
+				"tileset": "/textures/test-array.json",
+				"tiles": [
+					0, 1, 2, 3, 4, 5, 6,
+					1, 2, 3, 4, 5, 6, 7,
+					2, 3, 4, 5, 6, 7, 0,
+					3, 4, 5, 6, 7, 0, 1,
+					4, 5, 6, 7, 0, 1, 2
+				]
 			}
 		}
 	]

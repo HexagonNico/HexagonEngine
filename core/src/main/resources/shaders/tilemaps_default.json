@@ -1,0 +1,12 @@
+{
+	"vertex": [
+		"/shaders/vertex/tilemap_shader.glsl"
+	],
+	"fragment": [
+		"/shaders/fragment/array_texture_shader.glsl"
+	],
+	"attributes": {
+		"0": "vertex",
+		"1": "tile"
+	}
+}
