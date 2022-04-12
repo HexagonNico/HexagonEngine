@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import hexagon.core.GameEntity;
 import hexagon.core.components.Component;
+import hexagon.core.systems.GameSystem;
 import hexagon.utils.Log;
 
 /**
@@ -44,82 +45,102 @@ public final class GameState {
 	 * Called from the main application class.
 	 */
 	public static synchronized void update() {
-		currentState.components.forEach((type, map) -> {
-			map.values().removeIf(Component::markedForRemoval);
-		});
+		currentState.components.removeIf(Component::markedForRemoval);
 	}
 
-	/**Map containing all entities (or their components) in this game state */
-	private final HashMap<Class<?>, HashMap<GameEntity, Component>> components = new HashMap<>();
+	/**Component table that holds all entities and their components */
+	private final ComponentsTable components = new ComponentsTable();
+	/**System runner that manages all running systems in this state */
+	private final SystemRunner systems = new SystemRunner();
+
+	/**
+	 * Creates a {@link GameEntity} in this state.
+	 * This is equivalent as calling {@code new GameEntity(state)}.
+	 * 
+	 * @return A newly created game entity
+	 */
+	public GameEntity createEntity() {
+		return new GameEntity(this);
+	}
 
 	/**
 	 * Adds a component to an entity by storing it in the components table.
+	 * This method rarely needs to be called, use {@link GameEntity#addComponent(Component)} instead.
 	 * 
 	 * @param entity The entity to add the component to
 	 * @param component The component to add
 	 */
 	public void addComponent(GameEntity entity, Component component) {
-		Class<?> componentKey = this.getComponentKey(component.getClass());
-		if(this.components.containsKey(componentKey)) {
-			this.components.get(componentKey).put(entity, component);
-		} else {
-			HashMap<GameEntity, Component> map = new HashMap<>();
-			map.put(entity, component);
-			this.components.put(componentKey, map);
-		}
+		this.components.add(entity, component);
 	}
 
 	/**
-	 * Finds a component in the components table.
+	 * Gets a component from an entity.
+	 * This method rarely needs to be called, use {@link GameEntity#findComponent(Class)} instead.
 	 * 
-	 * @param <T> Class of the requested component
+	 * @param <T> Type of the component to get
+	 * @param entity The entity to get the component from
+	 * @param type The class of the component to get
 	 * 
-	 * @param entity The entity that holds that component
-	 * @param type Type of the component to get
-	 * 
-	 * @return An {@link Optional} containing the requested component
-	 * 		or an empty {@link Optional} if that component is not found
+	 * @return An {@link Optional} containing the required component or
+	 * 		an empty {@link Optional} if the table does not contain said component
+	 * 		or if the given entity or the given type are {@code null}
 	 */
 	public <T extends Component> Optional<T> findComponent(GameEntity entity, Class<T> type) {
-		if(entity != null && type != null) {
-			Class<?> componentKey = this.getComponentKey(type);
-			if(this.components.containsKey(componentKey)) {
-				HashMap<GameEntity, Component> components = this.components.get(componentKey);
-				if(components.containsKey(entity)) {
-					return Optional.of(type.cast(components.get(entity)));
-				}
-			}
-		}
-		return Optional.empty();
+		return this.components.find(entity, type);
 	}
 
 	/**
-	 * Gets all components of a certain type that are in this state.
+	 * Gets a component from an entity.
+	 * This method rarely needs to be called, use {@link GameEntity#findComponent(Class)} instead.
 	 * 
-	 * @param type Type of the components to get
+	 * @param <T> Type of the component to get
+	 * @param entity The entity to get the component from
+	 * @param type The class of the component to get
 	 * 
-	 * @return A {@link HashMap} containing the requested components as values
-	 * 		and the entities that hold them as keys
+	 * @return The requested component or {@code null} if that component cannot be found
+	 */
+	public <T extends Component> T getComponent(GameEntity entity, Class<T> type) {
+		return this.findComponent(entity, type).orElse(null);
+	}
+
+	/**
+	 * Gets all the components of a certain type from all the entities in this state.
+	 * 
+	 * @param type The type of component to look for
+	 * 
+	 * @return A {@link HashMap} containing all the components of the requested type
+	 * 		that uses the {@link GameEntity} holding them as key
+	 * 		or an empty {@link HashMap} if no components of that type are found
+	 * 		or if the given type is {@code null}
 	 */
 	public HashMap<GameEntity, Component> getComponents(Class<?> type) {
-		if(type != null) {
-			Class<?> componentKey = this.getComponentKey(type);
-			if(this.components.containsKey(componentKey)) {
-				return this.components.get(componentKey);
-			}
-		}
-		return new HashMap<>();
+		return this.components.getAll(type);
 	}
 
 	/**
-	 * Gets a component's key. Used internally to store components.
+	 * Starts a game system with the {@link SystemRunner}.
 	 * 
-	 * @param componentType Class of the component
-	 * 
-	 * @return The component's superclass that directly inherits from {@link Component}
+	 * @param system The game system to start
 	 */
-	private Class<?> getComponentKey(Class<?> componentType) {
-		Class<?> superClass = componentType.getSuperclass();
-		return superClass.equals(Component.class) ? componentType : this.getComponentKey(superClass);
+	public void startSystem(GameSystem<?> system) {
+		this.systems.start(this, system);
+	}
+
+	/**
+	 * Stops a game system of a certain type.
+	 * 
+	 * @param type Type of the game system to stop
+	 */
+	public void stopSystem(Class<? extends GameSystem<?>> type) {
+		this.systems.stop(type);
+	}
+
+	/**
+	 * Stops all game systems.
+	 * Called when closing the game to stop all running threads.
+	 */
+	public void clear() {
+		this.systems.stopAll();
 	}
 }

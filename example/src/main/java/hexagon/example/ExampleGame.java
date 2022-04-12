@@ -1,6 +1,7 @@
 package hexagon.example;
 
 import hexagon.core.ApplicationLauncher;
+import hexagon.lwjgl.opengl.OpenGL;
 import hexagon.utils.Log;
 
 public class ExampleGame extends ApplicationLauncher {
@@ -8,6 +9,8 @@ public class ExampleGame extends ApplicationLauncher {
 	@Override
 	protected void onInit() {
 		Log.info("Init!");
+		OpenGL.depthTest(false);
+		OpenGL.alphaBlending(true);
 	}
 
 	@Override

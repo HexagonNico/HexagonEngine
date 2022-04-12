@@ -2,7 +2,6 @@ package hexagon.core;
 
 import hexagon.core.rendering.RenderingSystem;
 import hexagon.core.states.GameState;
-import hexagon.core.systems.SystemRunner;
 import hexagon.lwjgl.glfw.Engine;
 import hexagon.lwjgl.opengl.OpenGL;
 import hexagon.utils.Log;
@@ -91,7 +90,6 @@ public abstract class ApplicationLauncher {
 			try {
 				Engine.showWindow(this.window);
 				GameState.loadState(initialState);
-				SystemRunner.startSystems();
 				this.onInit.run();
 				Log.info("Now running...");
 				while(Engine.isRunning(this.window)) {
@@ -105,7 +103,7 @@ public abstract class ApplicationLauncher {
 			} finally {
 				this.onClose.run();
 				OpenGL.cleanUp();
-				SystemRunner.stopSystems();
+				GameState.current().clear();
 				Engine.terminate(this.window);
 			}
 		}

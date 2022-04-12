@@ -2,10 +2,11 @@ package hexagon.core.systems;
 
 import hexagon.core.GameEntity;
 import hexagon.core.components.Component;
+import hexagon.core.states.SystemThread;
 
 /**
  * Represents a System in the ECS system.
- * Systems are run on separate threads by a {@link SystemRunner}
+ * Systems are run on separate threads by a {@link SystemThread}
  * and iterate through all components of a certain type to process them.
  * 
  * @author Nico
