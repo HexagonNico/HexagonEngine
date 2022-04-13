@@ -239,6 +239,8 @@ public record Int2(int x, int y) {
 		return v != null ? this.asFloat().dotProduct(v) : 0.0f;
 	}
 
+	// TODO - Normalized
+
 	/**
 	 * Gets a float vector with the same value as this one but as a float.
 	 * Useful for conversions.

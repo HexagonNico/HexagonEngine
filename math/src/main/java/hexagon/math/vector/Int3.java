@@ -249,6 +249,9 @@ public record Int3(int x, int y, int z) {
 		return v != null ? this.asFloat().dotProduct(v) : 0.0f;
 	}
 
+	// TODO - Normalized
+	// TODO - Cross product
+
 	/**
 	 * Gets a float vector with the same value as this one but as a float.
 	 * Useful for conversions.

@@ -180,6 +180,9 @@ public record Float3(float x, float y, float z) {
 		return v != null ? this.dotProduct(v.asFloat()) : 0.0f;
 	}
 
+	// TODO - Normalized
+	// TODO - Cross product
+
 	/**
 	 * Casts this float vector to an integer vector by casting all of its components.
 	 * 
