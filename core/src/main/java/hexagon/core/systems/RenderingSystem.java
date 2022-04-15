@@ -5,6 +5,8 @@ import java.util.HashMap;
 import hexagon.core.components.Component;
 import hexagon.lwjgl.glfw.WindowSize;
 import hexagon.lwjgl.opengl.OpenGL;
+import hexagon.lwjgl.opengl.ShaderProgram;
+import hexagon.lwjgl.opengl.VertexObject;
 
 public abstract class RenderingSystem<T extends Component> extends GameSystem<T> {
 
@@ -21,5 +23,7 @@ public abstract class RenderingSystem<T extends Component> extends GameSystem<T>
 		OpenGL.clearFrame(0.8f, 0.8f, 0.8f); // TODO - Set color
 		OpenGL.setViewport(WindowSize.width(), WindowSize.height());
 		renderers.values().forEach(RenderingSystem::renderAll);
+		ShaderProgram.stop();
+		VertexObject.unbind();
 	}
 }
