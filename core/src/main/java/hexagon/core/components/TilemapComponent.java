@@ -1,8 +1,8 @@
 package hexagon.core.components;
 
-import hexagon.core.rendering.RenderingSystem;
-import hexagon.core.rendering.TilemapRenderer;
+import hexagon.core.rendering.Camera;
 import hexagon.lwjgl.opengl.ArrayTexture;
+import hexagon.lwjgl.opengl.DrawCalls;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.VertexObject;
 import hexagon.math.geometry.SizeInt;
@@ -10,16 +10,12 @@ import hexagon.math.vector.Float2;
 import hexagon.utils.json.JsonArray;
 import hexagon.utils.json.JsonObject;
 
-public class TilemapComponent extends Component {
+public class TilemapComponent extends Render2DComponent {
 
 	private VertexObject tilemapMesh;
 	private ShaderProgram shader = ShaderProgram.getOrLoad("/shaders/tilemaps_default.json");
 	private ArrayTexture tilesetTexture = ArrayTexture.ERROR;
 	private SizeInt tilemapSize = new SizeInt(0, 0);
-
-	public TilemapComponent() {
-		RenderingSystem.addSystem(new TilemapRenderer());
-	}
 
 	@Override
 	public void init(JsonObject jsonObject) {
@@ -72,6 +68,19 @@ public class TilemapComponent extends Component {
 		// Get tileset
 		jsonObject.getString("tileset").ifPresent(tilesetKey -> {
 			this.tilesetTexture = ArrayTexture.getOrLoad(tilesetKey);
+		});
+	}
+
+	@Override
+	public void render(Transform transform) {
+		this.tilesetTexture.bind();
+		this.tilemapMesh.activate(() -> {
+			ShaderProgram.start(this.shader);
+			this.shader.load("projection_matrix", Camera.main().projection());
+			this.shader.load("view_matrix", Camera.main().view());
+			this.shader.load("transformation_matrix", transform.matrix());
+			DrawCalls.drawTriangles(0, this.width() * this.height() * 6);
+			ShaderProgram.stop();
 		});
 	}
 

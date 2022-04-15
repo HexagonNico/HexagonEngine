@@ -1,7 +1,7 @@
 package hexagon.core;
 
-import hexagon.core.rendering.RenderingSystem;
 import hexagon.core.states.GameState;
+import hexagon.core.systems.RenderingSystem;
 import hexagon.lwjgl.glfw.Engine;
 import hexagon.lwjgl.opengl.OpenGL;
 import hexagon.utils.Log;

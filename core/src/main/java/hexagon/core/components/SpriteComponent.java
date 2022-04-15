@@ -1,9 +1,10 @@
 package hexagon.core.components;
 
-import hexagon.core.rendering.RenderingSystem;
-import hexagon.core.rendering.SpriteRenderer;
+import hexagon.core.rendering.Camera;
+import hexagon.lwjgl.opengl.DrawCalls;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.Texture;
+import hexagon.lwjgl.opengl.VertexObject;
 import hexagon.math.vector.Float2;
 import hexagon.utils.json.JsonObject;
 
@@ -13,7 +14,12 @@ import hexagon.utils.json.JsonObject;
  * 
  * @author Nico
  */
-public final class SpriteComponent extends Component {
+public final class SpriteComponent extends Render2DComponent {
+
+	private static VertexObject quadModel = VertexObject.with()
+			.attribute(0, new float[] {-0.5f,0.5f, -0.5f,-0.5f, 0.5f,-0.5f, 0.5f,0.5f}, 2)
+			.indices(new int[] {0,1,3, 3,1,2})
+			.create();
 	
 	/**The texture this sprite uses */
 	private Texture texture = Texture.ERROR;
@@ -22,12 +28,9 @@ public final class SpriteComponent extends Component {
 	/**The offset of the sprite */
 	private Float2 offset = Float2.ZERO;
 
-	public SpriteComponent() {
-		RenderingSystem.addSystem(new SpriteRenderer());
-	}
-
 	@Override
 	public void init(JsonObject jsonObject) {
+		super.init(jsonObject);
 		jsonObject.getString("texture").ifPresent(textureFile -> {
 			this.texture = Texture.getOrLoad(textureFile);
 		});
@@ -36,6 +39,20 @@ public final class SpriteComponent extends Component {
 		});
 		jsonObject.getObject("offset").ifPresent(offsetJson -> {
 			this.offset = new Float2(offsetJson.getFloat("x", 0.0f), offsetJson.getFloat("y", 0.0f));
+		});
+	}
+
+	@Override
+	public void render(Transform transform) {
+		quadModel.activate(() -> {
+			this.texture.bind();
+			ShaderProgram.start(this.shader);
+			this.shader.load("projection_matrix", Camera.main().projection());
+			this.shader.load("view_matrix", Camera.main().view());
+			this.shader.load("transformation_matrix", transform.matrix());
+			this.shader.load("offset", this.offset);
+			DrawCalls.drawElements(6);
+			ShaderProgram.stop();
 		});
 	}
 

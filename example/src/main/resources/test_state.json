@@ -47,6 +47,7 @@
 		}
 	],
 	"systems": [
+		"hexagon.core.systems.Rendering2DSystem",
 		"hexagon.core.systems.ScriptSystem"
 	]
 }
