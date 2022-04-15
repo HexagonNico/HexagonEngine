@@ -16,7 +16,17 @@ import org.lwjgl.opengl.GL30;
  * @author Nico
  */
 public final class VertexObject {
-	
+
+	private static VertexObject currentlyBound;
+
+	public static void unbind() {
+		if(currentlyBound != null) {
+			currentlyBound.attributes.forEach(GL20::glDisableVertexAttribArray);
+			GL30.glBindVertexArray(0);
+			currentlyBound = null;
+		}
+	}
+
 	/**VAO id */
 	private final int vao;
 	/**Keeps track of all the attribute lists */
@@ -33,22 +43,12 @@ public final class VertexObject {
 		this.attributes = attributes;
 	}
 
-	/**
-	 * Safe method to use this vertex object.
-	 * <p>
-	 * 	First binds the vertex array and enables all attribute lists,
-	 * 	then performs an action,
-	 * 	then disables all attribute lists and unbind the vertex array.
-	 * </p>
-	 * 
-	 * @param action Action to execute after binding the VAO and before unbinding it.
-	 */
-	public void activate(Runnable action) {
-		GL30.glBindVertexArray(this.vao);
-		this.attributes.forEach(GL20::glEnableVertexAttribArray);
-		action.run();
-		this.attributes.forEach(GL20::glDisableVertexAttribArray);
-		GL30.glBindVertexArray(0);
+	public void bindIfNotBound() {
+		if(this != currentlyBound) {
+			GL30.glBindVertexArray(this.vao);
+			this.attributes.forEach(GL20::glEnableVertexAttribArray);
+			currentlyBound = this;
+		}
 	}
 
 	/**

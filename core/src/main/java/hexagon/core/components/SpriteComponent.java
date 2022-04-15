@@ -44,16 +44,14 @@ public final class SpriteComponent extends Render2DComponent {
 
 	@Override
 	public void render(Transform transform) {
-		quadModel.activate(() -> {
-			this.texture.bind();
-			ShaderProgram.start(this.shader);
-			this.shader.load("projection_matrix", Camera.main().projection());
-			this.shader.load("view_matrix", Camera.main().view());
-			this.shader.load("transformation_matrix", transform.matrix());
-			this.shader.load("offset", this.offset);
-			DrawCalls.drawElements(6);
-			ShaderProgram.stop();
-		});
+		quadModel.bindIfNotBound();
+		this.texture.bindIfNotBound();
+		this.shader.start();
+		this.shader.load("projection_matrix", Camera.main().projection());
+		this.shader.load("view_matrix", Camera.main().view());
+		this.shader.load("transformation_matrix", transform.matrix());
+		this.shader.load("offset", this.offset);
+		DrawCalls.drawElements(6);
 	}
 
 	/**

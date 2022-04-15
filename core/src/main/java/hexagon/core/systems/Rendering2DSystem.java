@@ -5,6 +5,8 @@ import java.util.HashMap;
 import hexagon.core.GameEntity;
 import hexagon.core.components.Render2DComponent;
 import hexagon.core.components.Transform;
+import hexagon.lwjgl.opengl.ShaderProgram;
+import hexagon.lwjgl.opengl.VertexObject;
 
 public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> {
 
@@ -27,5 +29,7 @@ public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> 
 			Transform transform = this.renderBatch.get(renderer);
 			renderer.render(transform);
 		});
+		ShaderProgram.stop();
+		VertexObject.unbind();
 	}
 }

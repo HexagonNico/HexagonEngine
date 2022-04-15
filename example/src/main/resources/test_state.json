@@ -39,6 +39,9 @@
 
 			},
 			"hexagon.core.components.SpriteComponent": {
+				"sorting": {
+					"layer": 1
+				},
 				"texture": "/textures/logo.png"
 			},
 			"hexagon.example.MovementScript": {

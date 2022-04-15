@@ -34,16 +34,6 @@ public final class ShaderProgram {
 	}
 
 	/**
-	 * Starts a shader program.
-	 * Everything rendered after this call will use this shader program.
-	 * 
-	 * @param program The shader program to use.
-	 */
-	public static void start(ShaderProgram program) {
-		GL20.glUseProgram(program.id);
-	}
-
-	/**
 	 * Stops the running shader program.
 	 * Any running shader program will be stopped after this call.
 	 */
@@ -64,6 +54,10 @@ public final class ShaderProgram {
 	private ShaderProgram(int id) {
 		this.id = id;
 		this.uniformVariables = new HashMap<>();
+	}
+
+	public void start() {
+		GL20.glUseProgram(this.id);
 	}
 
 	/**

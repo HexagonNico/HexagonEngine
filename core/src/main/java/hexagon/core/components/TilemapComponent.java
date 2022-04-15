@@ -73,15 +73,13 @@ public class TilemapComponent extends Render2DComponent {
 
 	@Override
 	public void render(Transform transform) {
-		this.tilesetTexture.bind();
-		this.tilemapMesh.activate(() -> {
-			ShaderProgram.start(this.shader);
-			this.shader.load("projection_matrix", Camera.main().projection());
-			this.shader.load("view_matrix", Camera.main().view());
-			this.shader.load("transformation_matrix", transform.matrix());
-			DrawCalls.drawTriangles(0, this.width() * this.height() * 6);
-			ShaderProgram.stop();
-		});
+		this.tilemapMesh.bindIfNotBound();
+		this.tilesetTexture.bindIfNotBound();
+		this.shader.start();
+		this.shader.load("projection_matrix", Camera.main().projection());
+		this.shader.load("view_matrix", Camera.main().view());
+		this.shader.load("transformation_matrix", transform.matrix());
+		DrawCalls.drawTriangles(0, this.width() * this.height() * 6);
 	}
 
 	public VertexObject mesh() {

@@ -15,7 +15,7 @@ import hexagon.utils.resources.Image;
 import hexagon.utils.resources.ResourceLoadingException;
 import hexagon.utils.resources.Resources;
 
-public final class ArrayTexture {
+public final class ArrayTexture extends AbstractTexture {
 
 	private static final HashMap<String, ArrayTexture> textures = new HashMap<>();
 	public static final ArrayTexture ERROR = errorTextureArray();
@@ -25,15 +25,13 @@ public final class ArrayTexture {
 		return texture != null ? texture : loadTextureArray(textureFile);
 	}
 
-	public final int id;
-
 	private ArrayTexture(int id) {
-		this.id = id;
+		super(id);
 	}
-	
-	public void bind() {
-		// TODO - Texture unit
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+
+	@Override
+	protected void bind(int textureUnit) {
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + textureUnit);
 		GL11.glBindTexture(GL30.GL_TEXTURE_2D_ARRAY, this.id);
 	}
 

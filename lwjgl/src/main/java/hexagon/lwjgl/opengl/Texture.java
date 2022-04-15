@@ -17,7 +17,7 @@ import hexagon.utils.resources.Resources;
  * 
  * @author Nico
  */
-public final class Texture {
+public final class Texture extends AbstractTexture {
 	
 	/**Map that stores all loaded textures */
 	private static final HashMap<String, Texture> textures = new HashMap<>();
@@ -40,25 +40,18 @@ public final class Texture {
 		return texture != null ? texture : loadTexture(textureFile);
 	}
 
-	/**Texture id */
-	public final int id;
-
 	/**
 	 * Creates a texture.
 	 * 
 	 * @param id Texture id.
 	 */
 	private Texture(int id) {
-		this.id = id;
+		super(id);
 	}
 
-	/**
-	 * Binds this texture.
-	 * Textures need to be bound before they can be used.
-	 */
-	public void bind() {
-		// TODO - Texture unit
-		GL13.glActiveTexture(GL13.GL_TEXTURE0);
+	@Override
+	protected void bind(int textureUnit) {
+		GL13.glActiveTexture(GL13.GL_TEXTURE0 + textureUnit);
 		GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
 	}
 
