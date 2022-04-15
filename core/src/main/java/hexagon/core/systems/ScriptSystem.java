@@ -3,6 +3,7 @@ package hexagon.core.systems;
 import hexagon.core.GameEntity;
 import hexagon.core.components.Script;
 import hexagon.utils.Log;
+import hexagon.utils.json.JsonObject;
 
 /**
  * Game system that handles the running of scripts.
@@ -19,6 +20,9 @@ public class ScriptSystem extends GameSystem<Script> {
 	public ScriptSystem() {
 		super(Script.class);
 	}
+
+	@Override
+	public void init(JsonObject jsonObject) {}
 
 	@Override
 	public void process(GameEntity entity, Script script, float deltaTime) {

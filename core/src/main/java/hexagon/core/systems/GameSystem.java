@@ -3,6 +3,7 @@ package hexagon.core.systems;
 import hexagon.core.GameEntity;
 import hexagon.core.components.Component;
 import hexagon.core.states.SystemThread;
+import hexagon.utils.json.JsonObject;
 
 /**
  * Represents a System in the ECS system.
@@ -26,6 +27,8 @@ public abstract class GameSystem<T extends Component> {
 	public GameSystem(Class<T> componentType) {
 		this.componentType = componentType;
 	}
+
+	public abstract void init(JsonObject jsonObject);
 
 	/**
 	 * Processes a component.

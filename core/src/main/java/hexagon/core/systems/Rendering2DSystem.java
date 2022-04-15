@@ -5,6 +5,7 @@ import java.util.HashMap;
 import hexagon.core.GameEntity;
 import hexagon.core.components.Render2DComponent;
 import hexagon.core.components.Transform;
+import hexagon.utils.json.JsonObject;
 
 public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> {
 
@@ -13,6 +14,9 @@ public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> 
 	public Rendering2DSystem() {
 		super(Render2DComponent.class);
 	}
+
+	@Override
+	public void init(JsonObject jsonObject) {}
 
 	@Override
 	public void process(GameEntity entity, Render2DComponent component, float deltaTime) {

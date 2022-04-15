@@ -36,6 +36,7 @@ public final class GameState {
 	 */
 	public static synchronized void loadState(String filePath) {
 		Log.info("Loading state " + filePath);
+		currentState.clear();
 		currentState = StateLoader.loadState(new GameState(), filePath);
 	}
 

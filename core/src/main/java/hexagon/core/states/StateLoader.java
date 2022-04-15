@@ -23,39 +23,44 @@ public final class StateLoader {
 	 */
 	public static GameState loadState(GameState state, String filePath) {
 		JsonObject stateJson = JsonObject.fromFileOrEmpty(filePath);
-		stateJson.getArrayOrEmpty("entities").forEachObject(entityJson -> {
+		stateJson.getArrayOrEmpty("entities").forEachArray(entityJsonArray -> {
 			GameEntity entity = state.createEntity();
-			entityJson.keySet().forEach(componentClass -> {
-				try {
-					Component component = (Component) Class.forName(componentClass).getConstructor().newInstance();
-					component.init(entityJson.getObjectOrEmpty(componentClass));
-					entity.addComponent(component);
-				} catch (NoSuchMethodException e) {
-					Log.error("Couldn't find a no-args constructor for class " + componentClass);
-				} catch (ClassNotFoundException e) {
-					Log.error("Class " + componentClass + " not found: couldn't instantiate component");
-				} catch (ClassCastException e) {
-					Log.error("Class " + componentClass + " does not extend " + Component.class);
-				} catch (Exception e) {
-					Log.error("Couldn't instantiate component " + componentClass + ": " + e.getMessage());
-					e.printStackTrace();
-				}
+			entityJsonArray.forEachObject(componentJson -> {
+				componentJson.getString("class").ifPresentOrElse(componentClass -> {
+					try {
+						Component component = (Component) Class.forName(componentClass).getConstructor().newInstance();
+						component.init(componentJson);
+						entity.addComponent(component);
+					} catch (NoSuchMethodException e) {
+						Log.error("Couldn't find a no-args constructor for class " + componentClass);
+					} catch (ClassNotFoundException e) {
+						Log.error("Class " + componentClass + " not found: couldn't instantiate component");
+					} catch (ClassCastException e) {
+						Log.error("Class " + componentClass + " does not extend " + Component.class);
+					} catch (Exception e) {
+						Log.error("Couldn't instantiate component " + componentClass + ": " + e.getMessage());
+						e.printStackTrace();
+					}
+				}, () -> Log.error("A component is missing a class"));
 			});
 		});
-		stateJson.getArrayOrEmpty("systems").forEachString(systemString -> {
-			try {
-				GameSystem<?> system = (GameSystem<?>) Class.forName(systemString).getConstructor().newInstance();
-				state.startSystem(system);
-			} catch (NoSuchMethodException e) {
-				Log.error("Couldn't find a no-args constructor for class " + systemString);
-			} catch (ClassNotFoundException e) {
-				Log.error("Class " + systemString + " not found: couldn't instantiate system");
-			} catch (ClassCastException e) {
-				Log.error("Class " + systemString + " does not extend " + GameSystem.class);
-			} catch (Exception e) {
-				Log.error("Couldn't instantiate system " + systemString + ": " + e.getMessage());
-				e.printStackTrace();
-			}
+		stateJson.getArrayOrEmpty("systems").forEachObject(systemJson -> {
+			systemJson.getString("class").ifPresentOrElse(systemClass -> {
+				try {
+					GameSystem<?> system = (GameSystem<?>) Class.forName(systemClass).getConstructor().newInstance();
+					system.init(systemJson);
+					state.startSystem(system);
+				} catch (NoSuchMethodException e) {
+					Log.error("Couldn't find a no-args constructor for class " + systemClass);
+				} catch (ClassNotFoundException e) {
+					Log.error("Class " + systemClass + " not found: couldn't instantiate system");
+				} catch (ClassCastException e) {
+					Log.error("Class " + systemClass + " does not extend " + GameSystem.class);
+				} catch (Exception e) {
+					Log.error("Couldn't instantiate system " + systemClass + ": " + e.getMessage());
+					e.printStackTrace();
+				}
+			}, () -> Log.error("A system is missing a class"));
 		});
 		return state;
 	}
