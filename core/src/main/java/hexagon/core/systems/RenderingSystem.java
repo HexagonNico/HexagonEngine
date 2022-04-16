@@ -19,7 +19,7 @@ public abstract class RenderingSystem<T extends Component> extends GameSystem<T>
 
 	public abstract void renderAll();
 
-	public static void renderingProcess() {
+	public static synchronized void renderingProcess() {
 		OpenGL.clearFrame(0.8f, 0.8f, 0.8f); // TODO - Set color
 		OpenGL.setViewport(WindowSize.width(), WindowSize.height());
 		renderers.values().forEach(RenderingSystem::renderAll);

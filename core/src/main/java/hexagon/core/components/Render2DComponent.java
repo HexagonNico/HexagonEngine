@@ -22,4 +22,12 @@ public abstract class Render2DComponent extends Component implements Comparable<
 		int depth = this.sortingLayer - that.sortingLayer;
 		return depth == 0 ? this.orderInLayer - that.orderInLayer : depth;
 	}
+
+	public int sortingLayer() {
+		return this.sortingLayer;
+	}
+
+	public int orderInLayer() {
+		return this.orderInLayer;
+	}
 }

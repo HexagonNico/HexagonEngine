@@ -50,11 +50,43 @@
 			{
 				"class": "hexagon.example.MovementScript"
 			}
+		],
+		[
+			{
+				"class": "hexagon.core.components.Transform2D",
+				"position": {
+					"x": -4.0,
+					"y": 1.0
+				}
+			},
+			{
+				"class": "hexagon.core.components.SpriteComponent",
+				"sorting": {
+					"layer": 1
+				},
+				"texture": "/textures/tileset2.png"
+			}
+		],
+		[
+			{
+				"class": "hexagon.core.components.Transform2D",
+				"position": {
+					"x": -2.0,
+					"y": -3.0
+				}
+			},
+			{
+				"class": "hexagon.core.components.SpriteComponent",
+				"sorting": {
+					"layer": 1
+				},
+				"texture": "/textures/tileset1.png"
+			}
 		]
 	],
 	"systems": [
 		{
-			"class": "hexagon.core.systems.Rendering2DSystem"
+			"class": "hexagon.core.systems.YSortRenderingSystem"
 		},
 		{
 			"class": "hexagon.core.systems.ScriptSystem"
