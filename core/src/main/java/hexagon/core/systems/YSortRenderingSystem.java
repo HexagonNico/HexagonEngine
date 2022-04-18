@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 import hexagon.core.GameEntity;
 import hexagon.core.components.Render2DComponent;
 import hexagon.core.components.Transform2D;
-import hexagon.utils.json.JsonObject;
 
 public class YSortRenderingSystem extends RenderingSystem<Render2DComponent> {
 
@@ -15,12 +14,6 @@ public class YSortRenderingSystem extends RenderingSystem<Render2DComponent> {
 
 	public YSortRenderingSystem() {
 		super(Render2DComponent.class);
-	}
-
-	@Override
-	public void init(JsonObject jsonObject) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override

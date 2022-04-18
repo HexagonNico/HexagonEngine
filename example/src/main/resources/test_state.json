@@ -85,11 +85,7 @@
 		]
 	],
 	"systems": [
-		{
-			"class": "hexagon.core.systems.YSortRenderingSystem"
-		},
-		{
-			"class": "hexagon.core.systems.ScriptSystem"
-		}
+		"hexagon.core.systems.YSortRenderingSystem",
+		"hexagon.core.systems.ScriptSystem"
 	]
 }

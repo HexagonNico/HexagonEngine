@@ -1,11 +1,12 @@
 package hexagon.core.systems;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 
 import hexagon.core.GameEntity;
 import hexagon.core.components.Render2DComponent;
 import hexagon.core.components.Transform;
-import hexagon.utils.json.JsonObject;
 
 public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> {
 
@@ -16,9 +17,6 @@ public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> 
 	}
 
 	@Override
-	public void init(JsonObject jsonObject) {}
-
-	@Override
 	public void process(GameEntity entity, Render2DComponent component, float deltaTime) {
 		entity.findComponent(Transform.class).ifPresent(transform -> {
 			this.renderBatch.put(component, transform);
@@ -27,9 +25,12 @@ public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> 
 
 	@Override
 	public void renderAll() {
-		this.renderBatch.keySet().stream().sorted().forEach(renderer -> {
-			Transform transform = this.renderBatch.get(renderer);
-			renderer.render(transform);
-		});
+		this.renderBatch.entrySet().stream()
+				.collect(Collectors.groupingBy(entry -> entry.getKey().sortingLayer()))
+				.forEach((layerIndex, sortingLayer) -> {
+					sortingLayer.stream()
+							.sorted(Comparator.comparing(entry -> entry.getKey().orderInLayer()))
+							.forEach(entry -> entry.getKey().render(entry.getValue()));
+				});
 	}
 }

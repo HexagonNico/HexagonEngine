@@ -2,7 +2,7 @@ package hexagon.core.components;
 
 import hexagon.utils.json.JsonObject;
 
-public abstract class Render2DComponent extends Component implements Comparable<Render2DComponent> {
+public abstract class Render2DComponent extends Component {
 
 	protected byte sortingLayer = 0; // TODO - Depth layer names
 	protected byte orderInLayer = 0;
@@ -16,12 +16,6 @@ public abstract class Render2DComponent extends Component implements Comparable<
 	}
 
 	public abstract void render(Transform transform);
-
-	@Override
-	public int compareTo(Render2DComponent that) {
-		int depth = this.sortingLayer - that.sortingLayer;
-		return depth == 0 ? this.orderInLayer - that.orderInLayer : depth;
-	}
 
 	public int sortingLayer() {
 		return this.sortingLayer;
