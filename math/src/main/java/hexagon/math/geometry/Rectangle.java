@@ -21,9 +21,14 @@ public record Rectangle(float left, float right, float top, float bottom) {
 	}
 
 	public Rectangle(Float2 center, Size size) {
+		this(center, size != null ? size.width() : 0.0f, size != null ? size.height() : 0.0f);
+	}
+
+	// TODO - Redo test for this
+	public Rectangle(Float2 center, float width, float height) {
 		this(
-			center != null ? center.minus(size != null ? size.width() / 2 : 0.0f, size != null ? size.height() / 2 : 0.0f) : new Float2(size != null ? -size.width() / 2 : 0.0f, size != null ? -size.height() / 2 : 0.0f),
-			center != null ? center.plus(size != null ? size.width() / 2 : 0.0f, size != null ? size.height() / 2 : 0.0f) : new Float2(size != null ? size.width() / 2 : 0.0f, size != null ? size.height() / 2 : 0.0f)
+			(center != null ? center : Float2.ZERO).minus(width / 2, height / 2),
+			(center != null ? center : Float2.ZERO).plus(width / 2, height / 2)
 		);
 	}
 
@@ -60,9 +65,19 @@ public record Rectangle(float left, float right, float top, float bottom) {
 	}
 
 	public boolean intersects(Rectangle that) {
-		return this.left() < that.right() &&
+		return !this.equals(that) &&
+				this.left() < that.right() &&
 				this.right() > that.left() &&
 				this.top() > that.bottom() &&
 				this.bottom() < that.top();
+	}
+
+	// TODO - Write tests
+	public Rectangle intersection(Rectangle that) {
+		float left = Math.max(this.left(), that.left());
+		float right = Math.min(this.right(), that.right());
+		float top = Math.min(this.top(), that.top());
+		float bottom = Math.max(this.bottom(), that.bottom());
+		return new Rectangle(left, right, top, bottom);
 	}
 }

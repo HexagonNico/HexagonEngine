@@ -49,6 +49,9 @@
 			},
 			{
 				"class": "hexagon.example.MovementScript"
+			},
+			{
+				"class": "hexagon.core.components.KinematicBody2D"
 			}
 		],
 		[
@@ -86,6 +89,7 @@
 	],
 	"systems": [
 		"hexagon.core.systems.YSortRenderingSystem",
-		"hexagon.core.systems.ScriptSystem"
+		"hexagon.core.systems.ScriptSystem",
+		"hexagon.core.systems.KinematicPhysics"
 	]
 }
