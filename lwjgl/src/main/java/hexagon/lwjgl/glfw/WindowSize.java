@@ -2,7 +2,7 @@ package hexagon.lwjgl.glfw;
 
 import org.lwjgl.glfw.GLFWWindowSizeCallbackI;
 
-import hexagon.math.geometry.SizeInt;
+import hexagon.math.geometry.Size;
 
 public final class WindowSize implements GLFWWindowSizeCallbackI {
 
@@ -16,8 +16,8 @@ public final class WindowSize implements GLFWWindowSizeCallbackI {
 		return singleton.height;
 	}
 
-	public static SizeInt size() {
-		return new SizeInt(width(), height());
+	public static Size size() {
+		return new Size(width(), height());
 	}
 
 	public static float aspectRatio() {

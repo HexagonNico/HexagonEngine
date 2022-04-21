@@ -5,7 +5,7 @@ import hexagon.lwjgl.opengl.ArrayTexture;
 import hexagon.lwjgl.opengl.DrawCalls;
 import hexagon.lwjgl.opengl.ShaderProgram;
 import hexagon.lwjgl.opengl.VertexObject;
-import hexagon.math.geometry.SizeInt;
+import hexagon.math.geometry.Size;
 import hexagon.math.vector.Float2;
 import hexagon.utils.json.JsonArray;
 import hexagon.utils.json.JsonObject;
@@ -15,15 +15,15 @@ public class TilemapComponent extends Render2DComponent {
 	private VertexObject tilemapMesh;
 	private ShaderProgram shader = ShaderProgram.getOrLoad("/shaders/tilemaps_default.json");
 	private ArrayTexture tilesetTexture = ArrayTexture.ERROR;
-	private SizeInt tilemapSize = new SizeInt(0, 0);
+	private Size tilemapSize = new Size(0, 0);
 
 	@Override
 	public void init(JsonObject jsonObject) {
 		// Tilemap size
 		jsonObject.getObject("size").ifPresent(sizeJson -> {
-			int width = sizeJson.getInt("width", this.tilemapSize.width());
-			int height = sizeJson.getInt("height", this.tilemapSize.height());
-			this.tilemapSize = new SizeInt(width, height);
+			int width = sizeJson.getInt("width", this.width());
+			int height = sizeJson.getInt("height", this.height());
+			this.tilemapSize = new Size(width, height);
 		});
 
 		// Tilemap origin
@@ -94,15 +94,15 @@ public class TilemapComponent extends Render2DComponent {
 		return this.tilesetTexture;
 	}
 
-	public SizeInt size() {
+	public Size size() {
 		return this.tilemapSize;
 	}
 
 	public int width() {
-		return this.size().width();
+		return (int) this.size().width();
 	}
 
 	public int height() {
-		return this.size().height();
+		return (int) this.size().height();
 	}
 }
