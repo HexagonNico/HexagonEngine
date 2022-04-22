@@ -51,7 +51,15 @@
 				"class": "hexagon.example.MovementScript"
 			},
 			{
-				"class": "hexagon.core.components.KinematicBody2D"
+				"class": "hexagon.core.components.KinematicBody2D",
+				"collisionShape": {
+					"offset": {
+						"y": -0.25
+					},
+					"size": {
+						"height": 0.5
+					}
+				}
 			}
 		],
 		[
@@ -84,6 +92,17 @@
 					"layer": 1
 				},
 				"texture": "/textures/tileset1.png"
+			},
+			{
+				"class": "hexagon.core.components.PhysicsBody2D",
+				"collisionShape": {
+					"offset": {
+						"y": -0.25
+					},
+					"size": {
+						"height": 0.5
+					}
+				}
 			}
 		]
 	],

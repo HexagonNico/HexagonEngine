@@ -106,17 +106,7 @@ public final class GameState {
 		return this.findComponent(entity, type).orElse(null);
 	}
 
-	/**
-	 * Gets all the components of a certain type from all the entities in this state.
-	 * 
-	 * @param type The type of component to look for
-	 * 
-	 * @return A {@link HashMap} containing all the components of the requested type
-	 * 		that uses the {@link GameEntity} holding them as key
-	 * 		or an empty {@link HashMap} if no components of that type are found
-	 * 		or if the given type is {@code null}
-	 */
-	public HashMap<GameEntity, Component> getComponents(Class<?> type) {
+	public <T extends Component> HashMap<GameEntity, T> getComponents(Class<T> type) {
 		return this.components.getAll(type);
 	}
 

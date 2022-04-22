@@ -14,7 +14,7 @@ import hexagon.core.states.GameState;
 public final class GameEntity {
 
 	/**State this entity is in */
-	private final GameState state;
+	public final GameState state;
 
 	/**
 	 * Creates a new entity.

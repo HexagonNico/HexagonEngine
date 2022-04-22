@@ -16,7 +16,7 @@ public class PhysicsBody2D extends Component {
 			shapeJson.getObject("offset").ifPresent(offsetJson -> {
 				float x = offsetJson.getFloat("x", this.collisionShape.center().x());
 				float y = offsetJson.getFloat("y", this.collisionShape.center().y());
-				this.collisionShape = new Rectangle(new Float2(x, y), this.collisionShape.center());
+				this.collisionShape = new Rectangle(new Float2(x, y), this.collisionShape.size());
 			});
 			shapeJson.getObject("size").ifPresent(sizeJson -> {
 				float width = sizeJson.getFloat("width", this.collisionShape.size().width());

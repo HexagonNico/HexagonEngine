@@ -63,24 +63,19 @@ public final class ComponentsTable {
 		return Optional.empty();
 	}
 
-	/**
-	 * Gets all the components of a certain type from all entities in the table.
-	 * 
-	 * @param type The type of component to look for
-	 * 
-	 * @return A {@link HashMap} containing all the components of the requested type
-	 * 		that uses the {@link GameEntity} holding them as key
-	 * 		or an empty {@link HashMap} if no components of that type are found
-	 * 		or if the given type is {@code null}
-	 */
-	public HashMap<GameEntity, Component> getAll(Class<?> type) {
+	public <T extends Component> HashMap<GameEntity, T> getAll(Class<T> type) {
+		HashMap<GameEntity, T> result = new HashMap<>();
 		if(type != null) {
 			Class<?> componentKey = this.getKey(type);
 			if(this.table.containsKey(componentKey)) {
-				return this.table.get(componentKey);
+				this.table.get(componentKey).forEach((entity, component) -> {
+					if(type.isInstance(component)) {
+						result.put(entity, type.cast(component));
+					}
+				});
 			}
 		}
-		return new HashMap<>();
+		return result;
 	}
 
 	/**
