@@ -1,0 +1,15 @@
+{
+	"entities": [
+		{
+			"hexagon.core.components.Transform2D": {
+
+			},
+			"hexagon.example.MovementScript": {
+				"speed": 0.5
+			}
+		}
+	],
+	"systems": [
+		"hexagon.core.systems.ScriptSystem"
+	]
+}

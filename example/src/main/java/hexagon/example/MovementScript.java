@@ -5,10 +5,12 @@ import hexagon.core.components.Script;
 import hexagon.core.components.Transform2D;
 import hexagon.lwjgl.glfw.Keyboard;
 import hexagon.utils.json.JsonObject;
+import hexagon.utils.reflection.SerializeField;
 
 public class MovementScript extends Script {
 
 	private Transform2D transform;
+	@SerializeField // TODO - Fix this class
 	private float speed = 5.0f;
 
 	@Override
@@ -19,6 +21,7 @@ public class MovementScript extends Script {
 	@Override
 	public void start(GameEntity entity) {
 		this.transform = entity.getComponent(Transform2D.class);
+		System.out.println(this.speed);
 	}
 
 	@Override

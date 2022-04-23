@@ -3,8 +3,9 @@ package hexagon.core.states;
 import hexagon.core.GameEntity;
 import hexagon.core.components.Component;
 import hexagon.core.systems.GameSystem;
-import hexagon.utils.Log;
 import hexagon.utils.json.JsonObject;
+import hexagon.utils.reflection.ReflectionHelper;
+import hexagon.utils.reflection.SerializeField;
 
 /**
  * Utility class used to load game states.
@@ -23,41 +24,27 @@ public final class StateLoader {
 	 */
 	public static GameState loadState(GameState state, String filePath) {
 		JsonObject stateJson = JsonObject.fromFileOrEmpty(filePath);
-		stateJson.getArrayOrEmpty("entities").forEachArray(entityJsonArray -> {
+		stateJson.getArray("entities").ifPresent(entitiesJsonArray -> entitiesJsonArray.forEachObject(entityJson -> {
 			GameEntity entity = state.createEntity();
-			entityJsonArray.forEachObject(componentJson -> {
-				componentJson.getString("class").ifPresentOrElse(componentClass -> {
-					try {
-						Component component = (Component) Class.forName(componentClass).getConstructor().newInstance();
-						component.init(componentJson);
-						entity.addComponent(component);
-					} catch (NoSuchMethodException e) {
-						Log.error("Couldn't find a no-args constructor for class " + componentClass);
-					} catch (ClassNotFoundException e) {
-						Log.error("Class " + componentClass + " not found: couldn't instantiate component");
-					} catch (ClassCastException e) {
-						Log.error("Class " + componentClass + " does not extend " + Component.class);
-					} catch (Exception e) {
-						Log.error("Couldn't instantiate component " + componentClass + ": " + e.getMessage());
-						e.printStackTrace();
+			entityJson.keySet().forEach(componentKey -> {
+				Component component = ReflectionHelper.instantiate(componentKey, Component.class);
+				JsonObject componentJson = entityJson.getObjectOrEmpty(componentKey);
+				entity.addComponent(component);
+				ReflectionHelper.forEachField(component.getClass(), field -> {
+					if(field.isAnnotationPresent(SerializeField.class)) {
+						SerializeField annotation = field.getAnnotation(SerializeField.class);
+						String name = annotation.value().isBlank() ? field.getName() : annotation.value();
+						// TODO - Support all types
+						if(ReflectionHelper.isFieldAssignable(field, float.class, double.class)) {
+							ReflectionHelper.setField(component, field, componentJson.getFloat(name, 0.0f));
+						}
 					}
-				}, () -> Log.error("A component is missing a class"));
+				});
 			});
-		});
+		}));
 		stateJson.getArrayOrEmpty("systems").forEachString(systemClass -> {
-			try {
-				GameSystem<?> system = (GameSystem<?>) Class.forName(systemClass).getConstructor().newInstance();
-				state.startSystem(system);
-			} catch (NoSuchMethodException e) {
-				Log.error("Couldn't find a no-args constructor for class " + systemClass);
-			} catch (ClassNotFoundException e) {
-				Log.error("Class " + systemClass + " not found: couldn't instantiate system");
-			} catch (ClassCastException e) {
-				Log.error("Class " + systemClass + " does not extend " + GameSystem.class);
-			} catch (Exception e) {
-				Log.error("Couldn't instantiate system " + systemClass + ": " + e.getMessage());
-				e.printStackTrace();
-			}
+			GameSystem<?> system = ReflectionHelper.instantiate(systemClass, GameSystem.class);
+			state.startSystem(system);
 		});
 		return state;
 	}
