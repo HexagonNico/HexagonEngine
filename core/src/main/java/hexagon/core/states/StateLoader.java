@@ -3,9 +3,10 @@ package hexagon.core.states;
 import hexagon.core.GameEntity;
 import hexagon.core.components.Component;
 import hexagon.core.systems.GameSystem;
+import hexagon.utils.Log;
 import hexagon.utils.json.JsonObject;
+import hexagon.utils.reflection.ReflectionException;
 import hexagon.utils.reflection.ReflectionHelper;
-import hexagon.utils.reflection.SerializeField;
 
 /**
  * Utility class used to load game states.
@@ -27,24 +28,25 @@ public final class StateLoader {
 		stateJson.getArray("entities").ifPresent(entitiesJsonArray -> entitiesJsonArray.forEachObject(entityJson -> {
 			GameEntity entity = state.createEntity();
 			entityJson.keySet().forEach(componentKey -> {
-				Component component = ReflectionHelper.instantiate(componentKey, Component.class);
-				JsonObject componentJson = entityJson.getObjectOrEmpty(componentKey);
-				entity.addComponent(component);
-				ReflectionHelper.forEachField(component.getClass(), field -> {
-					if(field.isAnnotationPresent(SerializeField.class)) {
-						SerializeField annotation = field.getAnnotation(SerializeField.class);
-						String name = annotation.value().isBlank() ? field.getName() : annotation.value();
-						// TODO - Support all types
-						if(ReflectionHelper.isFieldAssignable(field, float.class, double.class)) {
-							ReflectionHelper.setField(component, field, componentJson.getFloat(name, 0.0f));
-						}
-					}
-				});
+				try {
+					Component component = ReflectionHelper.instantiate(componentKey, Component.class);
+					JsonObject componentJson = entityJson.getObjectOrEmpty(componentKey);
+					component.init(componentJson);
+					entity.addComponent(component);
+				} catch (ReflectionException e) {
+					Log.error("Could not instantiate component " + componentKey);
+					e.printStackTrace();
+				}
 			});
 		}));
 		stateJson.getArrayOrEmpty("systems").forEachString(systemClass -> {
-			GameSystem<?> system = ReflectionHelper.instantiate(systemClass, GameSystem.class);
-			state.startSystem(system);
+			try {
+				GameSystem<?> system = ReflectionHelper.instantiate(systemClass, GameSystem.class);
+				state.startSystem(system);
+			} catch (ReflectionException e) {
+				Log.error("Could not instantiate system " + systemClass);
+				e.printStackTrace();
+			}
 		});
 		return state;
 	}

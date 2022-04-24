@@ -1,44 +1,27 @@
 package hexagon.utils.reflection;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.function.Consumer;
+import java.lang.reflect.InvocationTargetException;
 
 public class ReflectionHelper {
 
-	public static Object instantiate(String className) {
+	public static Object instantiate(String className) throws ReflectionException {
 		try {
 			return Class.forName(className).getConstructor().newInstance();
-		} catch (Exception e) {
-			throw new ReflectionException("Could not instantiate " + className, e);
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			throw new ReflectionException("Cannot instantiate " + className, e);
+		} catch (NoSuchMethodException | SecurityException e) {
+			throw new ReflectionException("Cannot find a no-args constructor for " + className, e);
+		} catch (ClassNotFoundException | LinkageError e) {
+			throw new ReflectionException("Cannot find class " + className, e);
 		}
 	}
 
-	public static <T> T instantiate(String className, Class<T> cast) {
-		return cast.cast(instantiate(className));
-	}
-
-	public static void forEachField(Class<?> clazz, Consumer<Field> action) {
-		for(Field field : clazz.getDeclaredFields()) {
-			action.accept(field);
-		}
-	}
-
-	public static boolean isFieldAssignable(Field field, Class<?>... types) {
-		return Arrays.stream(types).anyMatch(type -> field.getType().isAssignableFrom(type));
-	}
-
-	public static void setField(Object object, Field field, Object value) {
+	public static <T> T instantiate(String className, Class<T> cast) throws ReflectionException {
+		Object object = instantiate(className);
 		try {
-			if(field.canAccess(object)) {
-				field.set(object, value);
-			} else {
-				field.setAccessible(true);
-				field.set(object, value);
-				field.setAccessible(false);
-			}
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			throw new ReflectionException("Could not set field " + field.getName(), e);
+			return cast.cast(object);
+		} catch (ClassCastException e) {
+			throw new ReflectionException("Class " + object.getClass() + " cannot be cast to " + cast, e);
 		}
 	}
 }
