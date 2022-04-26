@@ -25,6 +25,7 @@ public final class Rendering2DSystem extends RenderingSystem<Render2DComponent> 
 
 	@Override
 	public void renderAll() {
+		this.renderBatch.entrySet().removeIf(entry -> entry.getKey().markedForRemoval());
 		this.renderBatch.entrySet().stream()
 				.collect(Collectors.groupingBy(entry -> entry.getKey().sortingLayer()))
 				.forEach((layerIndex, sortingLayer) -> {

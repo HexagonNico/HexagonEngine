@@ -1,6 +1,7 @@
 package hexagon.core.states;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
@@ -55,8 +56,9 @@ public final class ComponentsTable {
 			Class<?> componentKey = this.getKey(type);
 			if(this.table.containsKey(componentKey)) {
 				HashMap<GameEntity, Component> components = this.table.get(componentKey);
-				if(components.containsKey(entity)) {
-					return Optional.of(type.cast(components.get(entity)));
+				Component component = components.get(entity);
+				if(components.containsKey(entity) && type.isInstance(component)) {
+					return Optional.of(type.cast(component));
 				}
 			}
 		}
@@ -76,6 +78,13 @@ public final class ComponentsTable {
 			}
 		}
 		return result;
+	}
+
+	public List<Component> getAll(GameEntity entity) {
+		return this.table.values().stream()
+				.filter(map -> map.containsKey(entity))
+				.map(map -> map.get(entity))
+				.toList();
 	}
 
 	/**

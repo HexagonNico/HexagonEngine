@@ -1,6 +1,7 @@
 package hexagon.core.states;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import hexagon.core.GameEntity;
@@ -108,6 +109,10 @@ public final class GameState {
 
 	public <T extends Component> HashMap<GameEntity, T> getComponents(Class<T> type) {
 		return this.components.getAll(type);
+	}
+
+	public List<Component> getComponents(GameEntity entity) {
+		return this.components.getAll(entity);
 	}
 
 	/**

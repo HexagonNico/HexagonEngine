@@ -1,5 +1,6 @@
 package hexagon.core;
 
+import java.util.List;
 import java.util.Optional;
 
 import hexagon.core.components.Component;
@@ -73,5 +74,13 @@ public final class GameEntity {
 	 */
 	public <T extends Component> void removeComponent(Class<T> type) {
 		this.getComponent(type).markToRemove();
+	}
+
+	public List<Component> getComponents() {
+		return this.state.getComponents(this);
+	}
+
+	public void markToRemove() {
+		this.getComponents().forEach(Component::markToRemove);
 	}
 }

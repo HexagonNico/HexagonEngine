@@ -10,6 +10,8 @@ public class PhysicsBody2D extends Component {
 	// TODO - Other collision shapes
 	private Rectangle collisionShape = new Rectangle(Float2.ZERO, 1.0f, 1.0f);
 
+	// TODO - Collision layer / mask
+
 	@Override
 	public void init(JsonObject jsonObject) {
 		jsonObject.getObject("collisionShape").ifPresent(shapeJson -> {

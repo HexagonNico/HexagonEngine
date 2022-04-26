@@ -70,6 +70,9 @@
 					"layer": 1
 				},
 				"texture": "/textures/tileset2.png"
+			},
+			"hexagon.example.PickUpArea": {
+
 			}
 		},
 		{
